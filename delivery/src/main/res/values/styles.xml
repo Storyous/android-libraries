@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SelectableItem">
+        <item name="android:background">@drawable/payment_item_background_selector</item>
+        <item name="android:textColor">@color/payment_item_text_color_selector</item>
+        <item name="android:textAppearance">@style/TextAppearance.Small</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:duplicateParentState">true</item>
+    </style>
+
+    <style name="TextAppearance.Small" parent="android:TextAppearance.Holo.Small">
+        <item name="android:textSize">@dimen/default_text_size_small</item>
+    </style>
+
+    <style name="TextAppearance.Medium" parent="android:TextAppearance.Holo.Medium">
+        <item name="android:textSize">@dimen/default_text_size_medium</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:textAppearance">@style/TextAppearance.Medium</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Button.Text" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:background">@drawable/primary_button_light_background_selector</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:panelColorBackground">@color/red</item>
+        <item name="allowStacking">false</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:lines">@null</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textColor">@color/button_default_text_color_selector</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:textSize">@dimen/default_text_size_medium</item>
+    </style>
+
+    <style name="MaterialAlertDialog.Button.Text.Flush" parent="MaterialAlertDialog.Button.Text">
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+
+    <style name="priceIndicator">
+        <item name="android:textColor">@color/menu_item_price_text</item>
+    </style>
+
+    <style name="priceIndicatorCurrency" parent="priceIndicator">
+        <item name="android:textAppearance">@dimen/default_text_size_ultratiny</item>
+    </style>
+
+    <style name="priceIndicatorCurrency.Black" parent="priceIndicatorCurrency">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DeliveryItemDetailHeader">
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+</resources>

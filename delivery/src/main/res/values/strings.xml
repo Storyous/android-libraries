@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="delivery_order_not_open">No open order</string>
+    <string name="delivery_confirm_error_other">Could not confirm delivery order, please try again</string>
+    <string name="delivery_confirm_error_conflict">The order has changed, it is not possible to confirm it</string>
+    <string name="delivery_cancel_reason_title">Select cancel reason</string>
+    <string name="delivery_payment_type_header">Payment type:</string>
+    <string name="delivery_already_paid">already paid</string>
+    <string name="delivery_pay_on_delivery">pay on delivery</string>
+    <string name="delivery_service_damejidlo" translatable="false">Dáme jídlo</string>
+    <string name="delivery_service_ubereats" translatable="false">UberEats</string>
+    <string name="delivery_service_deliverect" translatable="false">Deliverect</string>
+    <string name="delivery_service_phone">phone</string>
+    <string name="delivery_service_storyous_takeaway" translatable="false">Storyous Takeaway</string>
+    <string name="delivery_service_info">Ordered via %1$s</string>
+    <string name="delivery_service_info_unknown">Order No.:</string>
+    <string name="delivery_orders_new">New orders</string>
+    <string name="delivery_orders_waiting">Accepted orders</string>
+    <string name="delivery_orders_processed">Processed orders</string>
+    <string name="delivery_order_items">Order items</string>
+    <string name="cancel_delivery_order">Cancel order</string>
+    <string name="accept_order">Accept order</string>
+    <string name="delivery_orders_declined">Declined orders</string>
+    <string name="time_at">at %s</string>
+    <string name="time_till">till %s</string>
+    <string name="delivery_type_delivery">Delivery</string>
+    <string name="delivery_type_takeaway">Takeaway</string>
+    <string name="delivery_type_dispatch">Courier pickup</string>
+    <string name="piece_measure">pcs</string>
+    <string name="new_delivery">New delivery order</string>
+    <string name="customer_detail_header">Customer detail</string>
+    <string name="order_note_header">Order note:</string>
+</resources>

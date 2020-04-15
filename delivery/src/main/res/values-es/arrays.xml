@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="delivery_cancel_reasons">
+    <item>Orden duplicada</item>
+    <item>Capacidad de pedidos en cocina alcanzada</item>
+    <item>No hay suficientes repartidores</item>
+    <item>El menú está incompleto</item>
+    <item>El elemento del menú no está disponible</item>
+    <item>El restaurante está cerrado</item>
+    <item>El cliente está fuera del área de reparto</item>
+  </string-array>
+</resources>

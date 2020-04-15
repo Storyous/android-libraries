@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:duplicateParentState="true">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sign"
+        style="@style/SelectableItem"
+        android:layout_width="@dimen/default_text_size_medium"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        android:gravity="center_horizontal"
+        app:layout_constraintBaseline_toBaselineOf="@+id/title"
+        app:layout_constraintEnd_toStartOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="+" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        style="@style/SelectableItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"
+        app:layout_constraintBottom_toTopOf="@+id/price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sign"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Cappuccino white hot black idghf uishkj susf  fsvs gbsfivb fvfvb dkvb difbviefbv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/price_value"
+        style="@style/SelectableItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:duplicateParentState="true"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="200" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/price_currency"
+        style="@style/SelectableItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/price_value"
+        app:layout_constraintStart_toEndOf="@+id/price_value"
+        tools:text="Kč" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

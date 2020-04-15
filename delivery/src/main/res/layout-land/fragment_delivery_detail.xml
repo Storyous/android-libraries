@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:forceHasOverlappingRendering="false"
+    tools:context="com.storyous.delivery.common.DeliveryDetailFragment">
+
+    <TextView
+        android:id="@+id/deliver_items_header"
+        style="@style/DeliveryItemDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="@string/delivery_order_items"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/order_items"
+        app:layout_constraintEnd_toEndOf="@+id/centerGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/order_items"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/deliver_items_header"
+        app:layout_constraintTop_toBottomOf="@id/deliver_items_header"
+        tools:itemCount="5"
+        tools:listitem="@layout/list_item_delivery_detail" />
+
+
+    <TextView
+        android:id="@+id/customer_detail_header"
+        style="@style/DeliveryItemDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_detail_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintBottom_toTopOf="@id/customer_detail_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/centerGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/customer_detail_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_header"
+        app:layout_constraintBottom_toTopOf="@id/customer_detail_address"
+        app:layout_constraintEnd_toStartOf="@+id/customer_detail_phone"
+        tools:text="Marian Kadlec" />
+
+    <TextView
+        android:id="@+id/customer_detail_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toTopOf="@id/customer_detail_name"
+        app:layout_constraintStart_toEndOf="@id/customer_detail_name"
+        tools:text="+420 123 456 789" />
+
+    <TextView
+        android:id="@+id/customer_detail_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_name"
+        app:layout_constraintBottom_toTopOf="@id/delivery_payment_type_header"
+        tools:text="Rohanské nábřeží 330, Praha 8" />
+
+    <TextView
+        android:id="@+id/delivery_payment_type_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="@string/delivery_payment_type_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_address"
+        app:layout_constraintBottom_toTopOf="@id/delivery_payment_type"
+        tools:text="Payment type:" />
+
+    <TextView
+        android:id="@+id/delivery_payment_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_header"
+        app:layout_constraintBottom_toTopOf="@id/order_note_header"
+        tools:text="already paid" />
+
+    <TextView
+        android:id="@+id/order_note_header"
+        android:text="@string/order_note_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
+        app:layout_constraintBottom_toTopOf="@id/order_note" />
+
+    <TextView
+        android:id="@+id/order_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintVertical_bias="0.0"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/order_note_header"
+        app:layout_constraintBottom_toTopOf="@id/order_number"
+        tools:text="Rohlík namazat nutellou, prosím" />
+
+    <TextView
+        android:id="@+id/order_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintBottom_toTopOf="@id/button_cancel"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/order_note"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Objednávka z Dáme jídlo č. 12345" />
+
+    <com.storyous.commonutils.widgets.LoadingButton
+        android:id="@+id/button_cancel"
+        style="@style/Button.Primary.Contextual.Light"
+        android:layout_width="0dp"
+        android:text="@string/cancel_delivery_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_accept"
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline" />
+
+    <com.storyous.commonutils.widgets.LoadingButton
+        android:id="@+id/button_accept"
+        style="@style/Button.Primary.Contextual.Light"
+        android:layout_width="0dp"
+        android:text="@string/accept_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_cancel"/>
+
+    <TextView
+        android:id="@+id/not_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delivery_order_not_open"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/order_note_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="order_note_header,order_note"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="order_items,button_accept,deliver_items_header,customer_detail_header,button_cancel,customer_detail_name,customer_detail_phone,customer_detail_address,delivery_payment_type"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/noDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="not_open"
+        tools:visibility="gone" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

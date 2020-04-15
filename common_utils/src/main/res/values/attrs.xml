@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SpanRecyclerView">
+        <attr name="adapter" format="string"/>
+        <attr name="itemOffset" format="dimension"/>
+        <attr name="itemInnerOffset" format="dimension"/>
+        <attr name="itemOuterOffset" format="dimension"/>
+    </declare-styleable>
+</resources>

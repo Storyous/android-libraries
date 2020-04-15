@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="confirm">Zatwierdź</string>
+    <string name="cancel">Anuluj</string>
+    <string name="delivery_order_not_open">Brak otwartego zamówienia</string>
+    <string name="delivery_confirm_error_other">Przy zatwierdzaniu zamówienia doszło do błędu, spróbuj ponownie</string>
+    <string name="delivery_confirm_error_conflict">Zamówienie nie można zatwierdzić, ponieważ doszło do jego zmiany</string>
+    <string name="delivery_cancel_reason_title">Wybierz powód odmówienia</string>
+    <string name="delivery_payment_type_header">Sposób płatności:</string>
+    <string name="delivery_already_paid">już opłacono</string>
+    <string name="delivery_pay_on_delivery">płatność przy odbiorze</string>
+    <string name="delivery_service_phone">telefon</string>
+    <string name="delivery_service_info">Zamówienie poprzez %1$s</string>
+    <string name="delivery_service_info_unknown">Numer zamówienia:</string>
+    <string name="delivery_orders_new">Nowe zamówienia</string>
+    <string name="delivery_orders_waiting">Zaakceptowane zamówienia</string>
+    <string name="delivery_orders_processed">Zakończone zamówienia</string>
+    <string name="delivery_order_items">Zamów produkty</string>
+    <string name="cancel_delivery_order">Anuluj zamówienie</string>
+    <string name="accept_order">Akceptuj zamówienie</string>
+    <string name="delivery_orders_declined">Odrzucone zamówienia</string>
+    <string name="time_at">na %s</string>
+    <string name="time_till">do %s</string>
+    <string name="delivery_type_delivery">Dostawa</string>
+    <string name="delivery_type_takeaway">Na wynos</string>
+    <string name="delivery_type_dispatch">Odbiór kurierem</string>
+    <string name="piece_measure">szt</string>
+    <string name="new_delivery">Nowe zamówienie</string>
+    <string name="customer_detail_header">Szczegóły klienta</string>
+    <string name="order_note_header">Notatka do zamówienia:</string>
+</resources>

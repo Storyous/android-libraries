@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="confirm">Potvrdit</string>
+    <string name="cancel">Zrušit</string>
+    <string name="delivery_order_not_open">Žádná otevřená objednávka</string>
+    <string name="delivery_confirm_error_other">Při potvrzení objednávky došlo k chybě, zkuste to prosím znovu</string>
+    <string name="delivery_confirm_error_conflict">Objednávka byla změněna, není možné ji potvrdit</string>
+    <string name="delivery_cancel_reason_title">Vyberte důvod pro odmítnutí</string>
+    <string name="delivery_payment_type_header">Způsob platby:</string>
+    <string name="delivery_already_paid">placeno předem</string>
+    <string name="delivery_pay_on_delivery">při převzetí</string>
+    <string name="delivery_service_phone">telefon</string>
+    <string name="delivery_service_info">Objednáno přes %1$s</string>
+    <string name="delivery_service_info_unknown">Objednávka č.:</string>
+    <string name="delivery_orders_new">Nové objednávky</string>
+    <string name="delivery_orders_waiting">Přijaté objednávky</string>
+    <string name="delivery_orders_processed">Vyřízené objednávky</string>
+    <string name="delivery_order_items">Položky objednávky</string>
+    <string name="cancel_delivery_order">Zrušit objednávku</string>
+    <string name="accept_order">Přijmout objednávku</string>
+    <string name="delivery_orders_declined">Odmítnuté objednávky</string>
+    <string name="time_at">v %s</string>
+    <string name="time_till">do %s</string>
+    <string name="delivery_type_delivery">Doručení</string>
+    <string name="delivery_type_takeaway">Zákazník vyzvedne</string>
+    <string name="delivery_type_dispatch">Kurýr vyzvedne</string>
+    <string name="piece_measure">ks</string>
+    <string name="new_delivery">Nová objednávka</string>
+    <string name="customer_detail_header">Detail zákazníka</string>
+    <string name="order_note_header">Poznámka k objednávce:</string>
+</resources>
