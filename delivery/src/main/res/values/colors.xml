@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">@android:color/white</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="black">@android:color/black</color>
+
+    <color name="red">#d45354</color>
+    <color name="red_light_extra">#e28181</color>
+    <color name="red_dark">#bf4d4d</color>
+    <color name="red_dark_extra">#7d3031</color>
+    <color name="grey">#cccccc</color>
+    <color name="grey_light">#f4f4f4</color>
+    <color name="grey_dark">#333</color>
+    <color name="grey_darker">#999</color>
+    <color name="grey_text">#535658</color>
+
+    <color name="menu_item_price_text">@color/white</color>
+    <color name="button_background_disabled">@color/grey_dark</color>
+    <color name="payment_detail_dialog_button_background_pressed">@color/red_dark</color>
+    <color name="primary_button_light_background_default">@color/red</color>
+
+    <color name="list_item_background_default">@color/grey</color>
+    <color name="list_item_background_selected">@color/grey_darker</color>
+    <color name="list_item_background_pressed">@color/grey_darker</color>
+
+    <color name="payment_item_text_default">@color/grey_text</color>
+    <color name="payment_item_text_pressed">@color/white</color>
+    <color name="payment_item_text_selected">@color/white</color>
+
+    <color name="payment_item_background_default">@color/transparent</color>
+    <color name="payment_item_background_pressed">@color/red_light_extra</color>
+    <color name="payment_item_background_selected">@color/red</color>
+
+    <color name="primary_button_background_pressed">@color/red_dark_extra</color>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/cancel_reason_choice_min_height"
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="?android:attr/textColorAlertDialogListItem"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/padding_16dp"
+    android:paddingLeft="@dimen/padding_16dp"
+    android:paddingEnd="@dimen/padding_8dp"
+    android:paddingRight="@dimen/padding_8dp"
+    android:checkMark="?android:attr/listChoiceIndicatorSingle"
+    android:ellipsize="marquee"
+    />

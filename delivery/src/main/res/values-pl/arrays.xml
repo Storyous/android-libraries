@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="delivery_cancel_reasons">
+    <item>Podwojone zamówienie</item>
+    <item>Kuchnia nie nadąża</item>
+    <item>Brak kurierów</item>
+    <item>Menu nie jest kompletne</item>
+    <item>Pozycja nie jest do dyspozycji</item>
+    <item>Restauracja zamknięta</item>
+    <item>Klient jest poza obszarem dostawy</item>
+  </string-array>
+</resources>
