@@ -1,6 +1,7 @@
 package com.storyous.delivery.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
@@ -35,12 +36,9 @@ open class DeliveryRepository(
 
     val newDeliveriesToHandle = Transformations.map(deliveryOrders.getDistinct()) { deliveries ->
         deliveries.any { it.state == DeliveryOrder.STATE_NEW }
-            .also { ringingState.value = it }
     }
-    val ringingState = MutableLiveData(false)
-
-    fun shouldRing(): Boolean {
-        return newDeliveriesToHandle.value == true && ringingState.value == true
+    val ringingState = MediatorLiveData<Boolean>().apply {
+        addSource(newDeliveriesToHandle) { value = it }
     }
 
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
