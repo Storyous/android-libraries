@@ -1,4 +1,4 @@
-package com.storyous.storyouspay.api
+package com.storyous.delivery.common.api
 
 import com.storyous.delivery.common.api.model.BaseDataResponse
 import com.storyous.delivery.common.api.model.DeliveryOrder

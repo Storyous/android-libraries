@@ -1,4 +1,4 @@
-package com.storyous.delivery.repositories
+package com.storyous.delivery.common.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -8,19 +8,18 @@ import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.commonutils.extensions.getDistinct
 import com.storyous.commonutils.provider
-import com.storyous.delivery.api.DeliveryErrorConverterWrapper
-import com.storyous.delivery.api.model.OrderProviderInfo
+import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
+import com.storyous.delivery.common.api.model.OrderProviderInfo
 import com.storyous.delivery.common.api.model.BaseDataResponse
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.api.model.RequestDeclineBody
-import com.storyous.storyouspay.api.DeliveryService
+import com.storyous.delivery.common.api.DeliveryService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Date
-
 
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService
@@ -49,10 +48,9 @@ open class DeliveryRepository(
             withContext(provider.IO) {
                 apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
             }
-        }.getOrElse {
+        }.onFailure {
             Timber.e(it, "Fail to load Delivery orders.")
-            null
-        }?.also { response ->
+        }.getOrNull()?.also { response ->
             deliveryOrders.value = filterLastModOrders(response).sortedByDescending { it.deliveryTime }
             lastMod = response.lastModificationAt
         }
@@ -61,25 +59,24 @@ open class DeliveryRepository(
     private fun filterLastModOrders(
         response: BaseDataResponse<List<DeliveryOrder>>
     ): List<DeliveryOrder> {
-        return if (lastMod == null || deliveryOrders.value == null) {
+        val oldOrders = deliveryOrders.value
+        val dayOld = TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time
+
+        return if (lastMod == null || oldOrders == null) {
             response.data
         } else {
             val responseIds = response.data.map { it.orderId }
-            response.data +
-                (deliveryOrders.value as List<DeliveryOrder>)
-                    .filterNot { responseIds.contains(it.orderId) }
-        }.filter { lessThanDayOld(it.deliveryTime) || lessThanDayOld(it.lastModifiedAt) }
+            response.data + oldOrders.filterNot { responseIds.contains(it.orderId) }
+        }.filter {
+            youngerThan(dayOld, it.deliveryTime) || youngerThan(dayOld, it.lastModifiedAt)
+        }
     }
 
-    private fun lessThanDayOld(isoDate: Date?): Boolean {
-        return if (isoDate == null) {
-            false
-        } else runCatching {
-            TimestampUtil.getCalendar()
-                .apply { add(Calendar.DATE, -1) }.time
-                .let { isoDate > it }
+    private fun youngerThan(referenceDate: Date, date: Date?): Boolean {
+        return runCatching {
+            referenceDate < date
         }.getOrElse {
-            Timber.e(it, "Could not parse the date: $isoDate")
+            Timber.e(it, "Could not parse the date: $date")
             false
         }
     }
@@ -138,10 +135,9 @@ open class DeliveryRepository(
                         apiService().notifyOrderDispatched(merchantId, placeId, providerInfo
                             .orderId)
                     }
-                }.getOrElse {
+                }.onFailure {
                     Timber.e(it, "Fail to notify order ${providerInfo.orderId}.")
-                    null
-                }?.also {
+                }.getOrNull()?.also {
                     updateOrder(it)
                 }
             }
