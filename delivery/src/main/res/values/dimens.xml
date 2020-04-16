@@ -16,4 +16,5 @@
     <dimen name="padding_8dp">8dp</dimen>
     <dimen name="padding_16dp">16dp</dimen>
     <dimen name="cancel_reason_choice_min_height">42dp</dimen>
+    <dimen name="contextual_button_height">56dp</dimen>
 </resources>

@@ -67,4 +67,71 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
     </style>
+
+    <style name="countIndicator">
+        <item name="android:textColor">@color/payment_item_count_text_default</item>
+    </style>
+
+    <style name="countIndicator.Value" parent="countIndicator">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Button" parent="android:Widget.Holo.Button">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">@dimen/padding_8dp</item>
+    </style>
+
+    <style name="Button.Primary.Contextual" parent="Button">
+        <item name="android:layout_height">@dimen/contextual_button_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="Button.Primary.Contextual.Dark" parent="Button.Primary.Contextual">
+        <item name="android:background">@drawable/primary_button_dark_background_selector</item>
+    </style>
+
+    <style name="overlayWhite">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@color/white_overlay</item>
+    </style>
+
+    <style name="priceIndicatorValue" parent="priceIndicator">
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="priceIndicatorValue.Black" parent="priceIndicatorValue">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Button.Primary.Contextual.Light" parent="Button.Primary.Contextual">
+        <item name="android:background">@drawable/primary_button_light_background_selector</item>
+    </style>
+
+    <style name="countIndicator.Measure" parent="countIndicator">
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="progressBar">
+        <item name="android:indeterminateDrawable">@drawable/progress_bar</item>
+        <item name="android:indeterminateDuration">1500</item>
+        <item name="android:interpolator">@android:anim/linear_interpolator</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
 </resources>
