@@ -37,6 +37,7 @@ buildscript {
     ext.timber_version = "4.7.1"
     ext.truetime_version = "3.4"
     ext.fragments_ktx_version = "1.2.4"
+    ext.room_version = '2.2.5'
 
     repositories {
         google()

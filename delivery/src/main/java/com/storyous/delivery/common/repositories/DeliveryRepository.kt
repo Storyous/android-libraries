@@ -9,20 +9,22 @@ import com.storyous.commonutils.TimestampUtil
 import com.storyous.commonutils.extensions.getDistinct
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
-import com.storyous.delivery.common.api.model.OrderProviderInfo
-import com.storyous.delivery.common.api.model.BaseDataResponse
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.api.model.RequestDeclineBody
 import com.storyous.delivery.common.api.DeliveryService
+import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.model.OrderProviderInfo
+import com.storyous.delivery.common.api.model.RequestDeclineBody
+import com.storyous.delivery.common.db.DeliveryDao
+import com.storyous.delivery.common.toApi
+import com.storyous.delivery.common.toDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.Calendar
-import java.util.Date
 
 open class DeliveryRepository(
-    private val apiService: () -> DeliveryService
+    private val apiService: () -> DeliveryService,
+    private val db: DeliveryDao
 ) : CoroutineScope by CoroutineProviderScope() {
 
     companion object {
@@ -43,45 +45,33 @@ open class DeliveryRepository(
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
     private var lastMod: String? = null
 
-    suspend fun loadDeliveryOrders(merchantId: String, placeId: String) = withContext(provider.Main) {
+    private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
+        db.storeCompleteOrders(orders.map { it.toDb() })
+        db.deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
+        db.getCompleteOrders().map { it.toApi() }
+    }
+
+    suspend fun loadDeliveryOrders(
+        merchantId: String,
+        placeId: String
+    ) = withContext(provider.Main) {
         runCatching {
             withContext(provider.IO) {
                 apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
             }
         }.onFailure {
             Timber.e(it, "Fail to load Delivery orders.")
-        }.getOrNull()?.also { response ->
-            deliveryOrders.value = filterLastModOrders(response).sortedByDescending { it.deliveryTime }
-            lastMod = response.lastModificationAt
-        }
+        }.onSuccess {
+            deliveryOrders.value = updateOrdersInDb(it.data)
+            lastMod = it.lastModificationAt
+        }.getOrNull()
     }
 
-    private fun filterLastModOrders(
-        response: BaseDataResponse<List<DeliveryOrder>>
-    ): List<DeliveryOrder> {
-        val oldOrders = deliveryOrders.value
-        val dayOld = TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time
-
-        return if (lastMod == null || oldOrders == null) {
-            response.data
-        } else {
-            val responseIds = response.data.map { it.orderId }
-            response.data + oldOrders.filterNot { responseIds.contains(it.orderId) }
-        }.filter {
-            youngerThan(dayOld, it.deliveryTime) || youngerThan(dayOld, it.lastModifiedAt)
-        }
-    }
-
-    private fun youngerThan(referenceDate: Date, date: Date?): Boolean {
-        return runCatching {
-            referenceDate < date
-        }.getOrElse {
-            Timber.e(it, "Could not parse the date: $date")
-            false
-        }
-    }
-
-    suspend fun acceptDeliveryOrder(merchantId: String, placeId: String, order: DeliveryOrder): String {
+    suspend fun acceptDeliveryOrder(
+        merchantId: String,
+        placeId: String,
+        order: DeliveryOrder
+    ): String {
         var retval = ""
 
         runCatching {
@@ -103,13 +93,21 @@ open class DeliveryRepository(
         return retval
     }
 
-    suspend fun cancelDeliveryOrder(merchantId: String, placeId: String, order: DeliveryOrder, reason: String): String {
+    suspend fun cancelDeliveryOrder(
+        merchantId: String,
+        placeId: String,
+        order: DeliveryOrder,
+        reason: String
+    ): String {
         var retval = ""
 
         runCatching {
-            apiService().declineDeliveryOrderAsync(merchantId, placeId, order.orderId,
-                RequestDeclineBody(reason))
-                .also { retval = RESULT_OK }
+            apiService().declineDeliveryOrderAsync(
+                merchantId,
+                placeId,
+                order.orderId,
+                RequestDeclineBody(reason)
+            ).also { retval = RESULT_OK }
         }.getOrElse {
             val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
 
@@ -126,14 +124,19 @@ open class DeliveryRepository(
         return retval
     }
 
-    fun notifyDeliveryOrderDispatched(merchantId: String, placeId: String, order: OrderProviderInfo?) {
+    fun notifyDeliveryOrderDispatched(
+        merchantId: String,
+        placeId: String,
+        order: OrderProviderInfo?
+    ) {
         // TODO add param responsible to recognize notification requirement
         order?.takeIf { it.code != "covermanager" }?.let { providerInfo ->
             launch {
                 runCatching {
                     withContext(provider.IO) {
-                        apiService().notifyOrderDispatched(merchantId, placeId, providerInfo
-                            .orderId)
+                        apiService().notifyOrderDispatched(
+                            merchantId, placeId, providerInfo.orderId
+                        )
                     }
                 }.onFailure {
                     Timber.e(it, "Fail to notify order ${providerInfo.orderId}.")
@@ -144,10 +147,7 @@ open class DeliveryRepository(
         }
     }
 
-    private fun updateOrder(receivedOrder: DeliveryOrder) {
-        deliveryOrders.value?.find { it.orderId == receivedOrder.orderId }?.also {
-            it.update(receivedOrder)
-            deliveryOrders.postValue(deliveryOrders.value)
-        }
+    private suspend fun updateOrder(order: DeliveryOrder) {
+        deliveryOrders.value = updateOrdersInDb(listOf(order))
     }
 }

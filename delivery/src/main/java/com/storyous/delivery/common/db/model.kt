@@ -1,42 +1,33 @@
-package com.storyous.delivery.common.api.model
+package com.storyous.delivery.common.db
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import java.math.BigDecimal
 import java.util.Date
+import java.util.UUID
 
-@SuppressWarnings("ConstructorParameterNaming")
-data class DeliveryOrder(
-    val orderId: String,
+@Entity
+open class DeliveryOrder @JvmOverloads constructor(
+    @PrimaryKey var orderId: String,
     var deliveryTime: Date,
     var deliveryOnTime: Boolean,
     var deliveryType: String,
     var discountWithVat: Int?,
-    var customer: Customer,
-    var items: List<DeliveryItem>,
+    @Ignore var customer: Customer? = null,
+    @Ignore var items: List<DeliveryItem> = listOf(),
     var state: String,
     var alreadyPaid: Boolean,
     var autoConfirm: Boolean?,
     var provider: String,
     var note: String,
-    @SerializedName("_lastModifiedAt")
-    var lastModifiedAt: Date
-) {
+    var lastModifiedAt: Date,
+    var customerId: String? = customer?.id
+)
 
-    companion object {
-        const val TYPE_DELIVERY = "delivery"
-        const val TYPE_DISPATCH = "dispatch"
-        const val TYPE_TAKEAWAY = "takeaway"
-
-        const val STATE_NEW = "NEW"
-        const val STATE_WAITING = "CONFIRMED"
-        const val STATE_DISPATCHED = "DISPATCHED"
-        const val STATE_DECLINED = "DECLINED"
-    }
-}
-
-@Suppress("LongParameterList")
+@Entity
 open class DeliveryProduct(
-    val itemId: String,
+    @PrimaryKey val itemId: String,
     val productId: String,
     val title: String,
     val unitPriceWithVat: BigDecimal,
@@ -50,9 +41,10 @@ open class DeliveryProduct(
     }
 }
 
-@Suppress("LongParameterList")
-class DeliveryItem(
+@Entity
+class DeliveryItem @JvmOverloads constructor(
     itemId: String,
+    val orderId: String,
     productId: String,
     title: String,
     unitPriceWithVat: BigDecimal,
@@ -60,17 +52,18 @@ class DeliveryItem(
     vatId: Int,
     measure: String?,
     val count: Double,
-    val additions: List<DeliveryAddition>?
+    @Ignore var additions: List<DeliveryAddition>? = null
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
 
     override fun toString(): String {
-        return "DeliveryItem(count=$count, additions=$additions): ${super.toString()}"
+        return "DeliveryItem(orderId=$orderId, count=$count, additions=$additions): ${super.toString()}"
     }
 }
 
-@Suppress("LongParameterList")
+@Entity
 class DeliveryAddition(
     itemId: String,
+    val parentItemId: String,
     productId: String,
     title: String,
     unitPriceWithVat: BigDecimal,
@@ -82,28 +75,14 @@ class DeliveryAddition(
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
 
     override fun toString(): String {
-        return "DeliveryItem(countPerMainItem=$countPerMainItem, additionId=$additionId): ${super.toString()}"
+        return "DeliveryItem(parentItemId=$parentItemId, countPerMainItem=$countPerMainItem, additionId=$additionId): ${super.toString()}"
     }
 }
 
-data class Customer(
+@Entity
+open class Customer(
     val name: String,
     val deliveryAddress: String?,
-    val phoneNumber: String
+    val phoneNumber: String,
+    @PrimaryKey val id: String = UUID.randomUUID().toString()
 )
-
-data class RequestDeclineBody(val reason: String)
-
-data class DeliveryErrorResponse(
-    val name: String,
-    val error: String,
-    val code: Int,
-    val httpStatus: Int,
-    val order: DeliveryOrder? = null
-) {
-    companion object {
-        val UNKNOWN_ERROR = DeliveryErrorResponse("", "", -1, -1)
-    }
-}
-
-data class BaseDataResponse<T>(val data: T, val lastModificationAt: String? = null)
