@@ -5,16 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import kotlinx.android.synthetic.main.activity_delivery.*
 
 class DeliveryActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: DeliveryViewModel
+    private val viewModel by viewModels<DeliveryViewModel>()
 
     companion object {
 
@@ -29,7 +29,6 @@ class DeliveryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_delivery)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this).get(DeliveryViewModel::class.java)
         viewModel.stopRinging()
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
         onOrderSelected(null)
@@ -41,13 +40,13 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when {
             isOverlappingDetailOpen() -> {
                 viewModel.getSelectedOrderLive().value = null
                 true
             }
-            item?.itemId == android.R.id.home -> {
+            item.itemId == android.R.id.home -> {
                 finish()
                 true
             }
@@ -64,12 +63,14 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        getOverlappingDetailFragment()?.view?.visibility = if (order == null) View.GONE else View.VISIBLE
+        getOverlappingDetailFragment()?.view?.visibility =
+            if (order == null) View.GONE else View.VISIBLE
     }
 
     private fun getOverlappingDetailFragment(): Fragment? {
         return supportFragmentManager.findFragmentByTag("overlappingDetail")
     }
 
-    private fun isOverlappingDetailOpen(): Boolean = getOverlappingDetailFragment()?.view?.visibility == View.VISIBLE
+    private fun isOverlappingDetailOpen(): Boolean =
+        getOverlappingDetailFragment()?.view?.visibility == View.VISIBLE
 }

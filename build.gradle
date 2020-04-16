@@ -36,6 +36,7 @@ buildscript {
     ext.android_plugin_version = "3.1.4"
     ext.timber_version = "4.7.1"
     ext.truetime_version = "3.4"
+    ext.fragments_ktx_version = "1.2.4"
 
     repositories {
         google()

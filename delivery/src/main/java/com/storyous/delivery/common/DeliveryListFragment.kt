@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.storyous.delivery.common.api.model.DeliveryOrder
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_list.*
  */
 class DeliveryListFragment : Fragment() {
 
-    private lateinit var viewModel: DeliveryViewModel
+    private val viewModel by viewModels<DeliveryViewModel>()
     private val deliveryItemsAdapter by lazy {
         DeliveryItemsAdapter(
             (context?.applicationContext as IDeliveryApplication).deliveryResourceProvider
@@ -26,13 +26,14 @@ class DeliveryListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(DeliveryViewModel::class.java)
-        } ?: throw IllegalStateException("Fragment is not within an activity")
         viewModel.getDeliveryOrdersLive().observe(this, Observer { orders -> showOrders(orders) })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_delivery_list, container, false)
     }
 
