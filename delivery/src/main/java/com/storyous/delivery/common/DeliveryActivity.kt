@@ -17,11 +17,17 @@ class DeliveryActivity : AppCompatActivity() {
     private val viewModel by viewModels<DeliveryViewModel>()
 
     companion object {
+        private const val ARG_ORDER_ID = "orderId"
 
         fun launch(context: Context) {
-            val intent = Intent(context, DeliveryActivity::class.java)
-            context.startActivity(intent)
+            context.startActivity(createLaunchIntent(context))
         }
+
+        fun createLaunchIntent(
+            context: Context,
+            orderId: String? = null
+        ) = Intent(context, DeliveryActivity::class.java)
+            .putExtra(ARG_ORDER_ID, orderId)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +43,10 @@ class DeliveryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel.deliveryResourceProvider.onActivityToolbarCreate(toolbar, supportFragmentManager)
+        
+        intent.getStringExtra(ARG_ORDER_ID)?.also { 
+            viewModel.setSelectOrder(it)
+        }
     }
 
 

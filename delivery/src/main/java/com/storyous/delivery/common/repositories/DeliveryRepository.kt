@@ -152,4 +152,9 @@ open class DeliveryRepository(
     private suspend fun updateOrder(order: DeliveryOrder) {
         deliveryOrders.value = updateOrdersInDb(listOf(order))
     }
+
+    suspend fun findOrder(orderId: String): DeliveryOrder? = withContext(provider.IO) {
+        deliveryOrders.value?.find { it.orderId == orderId }
+            ?: db.getCompleteOrder(orderId)?.toApi()
+    }
 }

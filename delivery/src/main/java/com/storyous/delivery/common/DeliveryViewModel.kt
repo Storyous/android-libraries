@@ -44,6 +44,13 @@ class DeliveryViewModel @JvmOverloads constructor(
         selectedOrderLive.value = null
     }
 
+    fun setSelectOrder(orderId: String) {
+        launch(provider.Main) {
+            deliveryResourceProvider.deliveryRepository.findOrder(orderId)
+                ?.also { setSelectOrder(it) }
+        }
+    }
+
     fun setSelectOrder(order: DeliveryOrder) {
         selectedOrderLive.value = order
         Timber.i("Delivery order selected ${order.orderId}")

@@ -42,6 +42,9 @@ abstract class DeliveryDao {
     @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date OR deliveryTime < :date")
     abstract suspend fun getOldOrders(date: Date): List<DeliveryOrder>
 
+    @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
+    abstract suspend fun getOrder(orderId: String): DeliveryOrder?
+
     @Query("SELECT * FROM Customer WHERE id = :customerId")
     abstract suspend fun getCustomer(customerId: String): Customer?
 
@@ -96,6 +99,17 @@ abstract class DeliveryDao {
                 order.items.forEach {
                     it.additions = getAdditions(it.itemId)
                 }
+            }
+        }
+    }
+
+    @Transaction
+    open suspend fun getCompleteOrder(orderId: String): DeliveryOrder? {
+        return getOrder(orderId)?.apply {
+            customer = customerId?.let { getCustomer(it) }
+            items = getItems(orderId)
+            items.forEach {
+                it.additions = getAdditions(it.itemId)
             }
         }
     }
