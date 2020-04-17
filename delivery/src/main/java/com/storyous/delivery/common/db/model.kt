@@ -7,6 +7,7 @@ import java.math.BigDecimal
 import java.util.Date
 import java.util.UUID
 
+@Suppress("LongParameterList")
 @Entity
 open class DeliveryOrder @JvmOverloads constructor(
     @PrimaryKey var orderId: String,
@@ -25,6 +26,7 @@ open class DeliveryOrder @JvmOverloads constructor(
     var customerId: String? = customer?.id
 )
 
+@Suppress("LongParameterList")
 @Entity
 open class DeliveryProduct(
     @PrimaryKey val itemId: String,
@@ -41,6 +43,7 @@ open class DeliveryProduct(
     }
 }
 
+@Suppress("LongParameterList")
 @Entity
 class DeliveryItem @JvmOverloads constructor(
     itemId: String,
@@ -60,6 +63,7 @@ class DeliveryItem @JvmOverloads constructor(
     }
 }
 
+@Suppress("LongParameterList")
 @Entity
 class DeliveryAddition(
     itemId: String,
@@ -74,6 +78,7 @@ class DeliveryAddition(
     val additionId: String? = null
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
 
+    @Suppress("MaxLineLength")
     override fun toString(): String {
         return "DeliveryItem(parentItemId=$parentItemId, countPerMainItem=$countPerMainItem, additionId=$additionId): ${super.toString()}"
     }

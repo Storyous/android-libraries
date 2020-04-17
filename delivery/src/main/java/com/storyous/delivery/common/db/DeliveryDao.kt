@@ -74,6 +74,7 @@ abstract class DeliveryDao {
         deleteOrders()
     }
 
+    @Suppress("ReturnCount")
     @Transaction
     open suspend fun deleteOrdersOlderThan(date: Date) {
         val oldOrders = getOldOrders(date)
