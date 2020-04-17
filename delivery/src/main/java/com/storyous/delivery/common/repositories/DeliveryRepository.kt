@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.TimestampUtil
-import com.storyous.commonutils.extensions.getDistinct
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
 import com.storyous.delivery.common.api.DeliveryService
@@ -34,16 +33,16 @@ open class DeliveryRepository(
     }
 
     private val deliveryOrders = MutableLiveData<List<DeliveryOrder>>()
+    private var lastMod: String? = null
 
-    val newDeliveriesToHandle = Transformations.map(deliveryOrders.getDistinct()) { deliveries ->
-        deliveries.any { it.state == DeliveryOrder.STATE_NEW }
+    val newDeliveriesToHandle = Transformations.map(deliveryOrders) { deliveries ->
+        deliveries.filter { it.state == DeliveryOrder.STATE_NEW }
     }
     val ringingState = MediatorLiveData<Boolean>().apply {
-        addSource(newDeliveriesToHandle) { value = it }
+        addSource(newDeliveriesToHandle) { value = it.isNotEmpty() }
     }
 
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
-    private var lastMod: String? = null
 
     private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
         db.storeCompleteOrders(orders.map { it.toDb() })
@@ -76,7 +75,8 @@ open class DeliveryRepository(
 
         runCatching {
             apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
-                .also { retval = RESULT_OK }
+        }.onSuccess {
+            retval = RESULT_OK
         }.getOrElse {
             val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
 
@@ -107,7 +107,9 @@ open class DeliveryRepository(
                 placeId,
                 order.orderId,
                 RequestDeclineBody(reason)
-            ).also { retval = RESULT_OK }
+            )
+        }.onSuccess {
+            retval = RESULT_OK
         }.getOrElse {
             val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
 
