@@ -1,4 +1,4 @@
-package com.storyous.delivery.api.model
+package com.storyous.delivery.common.api.model
 
 data class OrderProviderInfo(
         val orderId: String,

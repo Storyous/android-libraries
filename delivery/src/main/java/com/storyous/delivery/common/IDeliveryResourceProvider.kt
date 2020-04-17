@@ -2,14 +2,14 @@ package com.storyous.delivery.common
 
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
-import com.storyous.delivery.repositories.DeliveryRepository
+import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
 
 interface IDeliveryResourceProvider {
     var deliveryModel: DeliveryModel
     val deliveryRepository: DeliveryRepository
-    fun getMerchantId(): String
-    fun getPlaceId(): String
+    fun getMerchantId(): String?
+    fun getPlaceId(): String?
     fun canAutoConfirm(): Boolean
     fun formatCount(count: Double): String
     fun formatPrice(value: Double): String

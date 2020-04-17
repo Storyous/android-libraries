@@ -7,21 +7,16 @@ import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.repositories.DeliveryRepository
+import com.storyous.delivery.common.repositories.DeliveryRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class DeliveryViewModel(
+class DeliveryViewModel @JvmOverloads constructor(
     application: Application,
-    val deliveryResourceProvider: IDeliveryResourceProvider
+    val deliveryResourceProvider: IDeliveryResourceProvider = (application as IDeliveryApplication).deliveryResourceProvider
 ) : AndroidViewModel(application), CoroutineScope by CoroutineProviderScope() {
-
-    constructor(application: Application) : this(
-        application,
-        (application as IDeliveryApplication).deliveryResourceProvider
-    )
 
     companion object {
         const val PROVIDER_DJ = "dj"
@@ -39,16 +34,21 @@ class DeliveryViewModel(
     }
 
     private val selectedOrderLive = MutableLiveData<DeliveryOrder>()
+    private val deliveryModel = deliveryResourceProvider.deliveryModel
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
-
-    val messagesToShow = MutableLiveData<ArrayList<Int>>().also { it.value = ArrayList() }
-
-    private val deliveryModel = deliveryResourceProvider.deliveryModel
+    val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
     fun deselectOrder() {
         selectedOrderLive.value = null
+    }
+
+    fun setSelectOrder(orderId: String) {
+        launch(provider.Main) {
+            deliveryResourceProvider.deliveryRepository.findOrder(orderId)
+                ?.also { setSelectOrder(it) }
+        }
     }
 
     fun setSelectOrder(order: DeliveryOrder) {
@@ -72,7 +72,11 @@ class DeliveryViewModel(
                     deliveryResourceProvider.getMerchantId(),
                     deliveryResourceProvider.getPlaceId()
                 ) { merchantId, placeId ->
-                    deliveryResourceProvider.deliveryRepository.acceptDeliveryOrder(merchantId, placeId, order)
+                    deliveryResourceProvider.deliveryRepository.acceptDeliveryOrder(
+                        merchantId,
+                        placeId,
+                        order
+                    )
                 }
             }
 
@@ -107,7 +111,9 @@ class DeliveryViewModel(
 
                 when (result) {
                     DeliveryRepository.RESULT_OK -> addMessageToShow(MESSAGE_OK_DECLINED)
-                    DeliveryRepository.RESULT_ERR_CONFLICT -> addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    DeliveryRepository.RESULT_ERR_CONFLICT -> addMessageToShow(
+                        MESSAGE_ERROR_STATE_CONFLICT
+                    )
                     else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
 

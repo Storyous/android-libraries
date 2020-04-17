@@ -1,6 +1,6 @@
-package com.storyous.delivery.api
+package com.storyous.delivery.common.api
 
-import com.storyous.commonutils.BuildConfig
+import com.storyous.delivery.common.BuildConfig
 import com.storyous.delivery.common.api.model.DeliveryErrorResponse
 import okhttp3.ResponseBody
 import retrofit2.Converter

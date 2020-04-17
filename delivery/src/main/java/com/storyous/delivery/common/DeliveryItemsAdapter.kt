@@ -175,7 +175,7 @@ class DeliveryItemsAdapter(
                     total += addition.unitPriceWithVat.toDouble() * addition.countPerMainItem * item.count
                 }
             }
-            return deliveryResourceProvider.formatPrice(total);
+            return deliveryResourceProvider.formatPrice(total)
         }
     }
 

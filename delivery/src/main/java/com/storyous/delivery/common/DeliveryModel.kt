@@ -4,7 +4,7 @@ import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.repositories.DeliveryRepository
+import com.storyous.delivery.common.repositories.DeliveryRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

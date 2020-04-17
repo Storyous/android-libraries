@@ -22,20 +22,6 @@ data class DeliveryOrder(
     var lastModifiedAt: Date
 ) {
 
-    fun update(other: DeliveryOrder) {
-        deliveryTime = other.deliveryTime
-        deliveryOnTime = other.deliveryOnTime
-        deliveryType = other.deliveryType
-        customer = other.customer
-        items = other.items
-        state = other.state
-        discountWithVat = other.discountWithVat
-        alreadyPaid = other.alreadyPaid
-        provider = other.provider
-        note = other.note
-        lastModifiedAt = other.lastModifiedAt
-    }
-
     companion object {
         const val TYPE_DELIVERY = "delivery"
         const val TYPE_DISPATCH = "dispatch"
@@ -72,7 +58,7 @@ class DeliveryItem(
     unitPriceWithVat: BigDecimal,
     vatRate: Double,
     vatId: Int,
-    measure: String,
+    measure: String?,
     val count: Double,
     val additions: List<DeliveryAddition>?
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
@@ -90,7 +76,7 @@ class DeliveryAddition(
     unitPriceWithVat: BigDecimal,
     vatRate: Double,
     vatId: Int,
-    measure: String,
+    measure: String?,
     val countPerMainItem: Int,
     val additionId: String? = null
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
