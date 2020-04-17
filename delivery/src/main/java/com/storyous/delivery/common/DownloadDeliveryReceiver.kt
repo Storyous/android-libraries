@@ -11,8 +11,7 @@ import timber.log.Timber
 class DownloadDeliveryReceiver : BroadcastReceiver(), CoroutineScope by CoroutineProviderScope() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val deliveryResourceProvider: IDeliveryResourceProvider =
-            (context.applicationContext as IDeliveryApplication).deliveryResourceProvider
+        val deliveryResourceProvider: IDeliveryResourceProvider = context.deliveryResourceProvider
 
         val merchantId = deliveryResourceProvider.getMerchantId()
         val placeId = deliveryResourceProvider.getPlaceId()

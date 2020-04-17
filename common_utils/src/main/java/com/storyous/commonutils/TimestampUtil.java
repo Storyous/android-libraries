@@ -77,7 +77,7 @@ public enum TimestampUtil {
     }
 
     public static Date parseDate(String date) throws ParseException {
-        return DateUtils.Companion.getISO8601_FRACT().parse(date);
+        return DateUtils.INSTANCE.getISO8601_FRACT().parse(date);
     }
 
     public synchronized void start(Context context) {
@@ -131,7 +131,7 @@ public enum TimestampUtil {
         }
 
         private String format(Date date) {
-            return DateUtils.Companion.getISO8601_FRACT().format(date);
+            return DateUtils.INSTANCE.getISO8601_FRACT().format(date);
         }
     }
 }

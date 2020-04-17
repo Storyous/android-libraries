@@ -13,9 +13,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+@Suppress("TooManyFunctions")
 class DeliveryViewModel @JvmOverloads constructor(
     application: Application,
-    val deliveryResourceProvider: IDeliveryResourceProvider = (application as IDeliveryApplication).deliveryResourceProvider
+    val deliveryResourceProvider: IDeliveryResourceProvider = application.deliveryResourceProvider
 ) : AndroidViewModel(application), CoroutineScope by CoroutineProviderScope() {
 
     companion object {

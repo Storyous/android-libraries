@@ -22,9 +22,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 class DeliveryDetailFragment : Fragment() {
 
     private val itemsAdapter by lazy {
-        DeliveryDetailItemsAdapter(
-            (requireContext().applicationContext as IDeliveryApplication).deliveryResourceProvider
-        )
+        DeliveryDetailItemsAdapter(requireContext().deliveryResourceProvider)
     }
     private val viewModel by viewModels<DeliveryViewModel>()
 

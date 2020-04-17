@@ -19,9 +19,9 @@ class DeliveryListFragment : Fragment() {
 
     private val viewModel by viewModels<DeliveryViewModel>()
     private val deliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter(
-            (context?.applicationContext as IDeliveryApplication).deliveryResourceProvider
-        ) { viewModel.setSelectOrder(it) }
+        DeliveryItemsAdapter(requireContext().deliveryResourceProvider) {
+            viewModel.setSelectOrder(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

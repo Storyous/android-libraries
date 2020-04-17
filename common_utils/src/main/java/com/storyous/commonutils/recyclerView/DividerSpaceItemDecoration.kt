@@ -16,7 +16,12 @@ class DividerSpaceItemDecoration(
     private val halfInnerOffsetSize = ceil(innerOffsetSize / 2.0).toInt()
 
     @Suppress("ComplexMethod")
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         val position = parent.getChildAdapterPosition(view)
         val layoutManager = parent.layoutManager
 
@@ -25,8 +30,10 @@ class DividerSpaceItemDecoration(
             val spanSize = layoutManager.spanSizeLookup.getSpanSize(position)
             val spanIndex = layoutManager.spanSizeLookup.getSpanIndex(position, spanCount)
 
-            val firstRow = isInFirstRow(position, spanCount, layoutManager.spanSizeLookup, state.itemCount)
-            val lastRow = isInLastRow(position, spanCount, layoutManager.spanSizeLookup, state.itemCount)
+            val firstRow =
+                isInFirstRow(position, spanCount, layoutManager.spanSizeLookup, state.itemCount)
+            val lastRow =
+                isInLastRow(position, spanCount, layoutManager.spanSizeLookup, state.itemCount)
             val firstCol = spanIndex == 0
             val lastCol = spanIndex + spanSize == spanCount
 
@@ -75,13 +82,13 @@ class DividerSpaceItemDecoration(
         spanCount: Int,
         spanSizeLookup: GridLayoutManager.SpanSizeLookup,
         itemCount: Int
-    ): Array<Int> {
-        var lastRowPositions = arrayOf<Int>()
+    ): List<Int> {
+        val lastRowPositions = mutableListOf<Int>()
         var lastIndex = itemCount
         for (position in itemCount - 1 downTo 0) {
             val index = spanSizeLookup.getSpanIndex(position, spanCount)
             if (index < lastIndex) {
-                lastRowPositions += position
+                lastRowPositions.add(position)
                 lastIndex = index
             } else {
                 break
@@ -94,13 +101,13 @@ class DividerSpaceItemDecoration(
         spanCount: Int,
         spanSizeLookup: GridLayoutManager.SpanSizeLookup,
         itemCount: Int
-    ): Array<Int> {
-        var lastRowPositions = arrayOf<Int>()
+    ): List<Int> {
+        val lastRowPositions = mutableListOf<Int>()
         var lastIndex = -1
         for (position in 0 until itemCount) {
             val index = spanSizeLookup.getSpanIndex(position, spanCount)
             if (index > lastIndex) {
-                lastRowPositions += position
+                lastRowPositions.add(position)
                 lastIndex = index
             } else {
                 break
