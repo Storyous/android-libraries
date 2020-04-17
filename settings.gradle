@@ -1,2 +1,3 @@
 rootProject.name='Android libraries'
 include ':app', ':common_utils', ':delivery', ':contacts'
+include ':apitools'
