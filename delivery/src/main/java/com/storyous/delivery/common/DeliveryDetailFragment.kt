@@ -24,15 +24,12 @@ class DeliveryDetailFragment : Fragment() {
     private val itemsAdapter by lazy {
         DeliveryDetailItemsAdapter()
     }
-    private val viewModel by viewModels<DeliveryViewModel>()
+    private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
-        viewModel.getDeliveryOrdersLive()?.observe(this, Observer { orders ->
-            onOrderSetChanged(orders)
-        })
         viewModel.loadingOrderAccepting.observe(this, Observer { loading ->
             button_accept.showOverlay(loading ?: false)
         })
@@ -114,15 +111,6 @@ class DeliveryDetailFragment : Fragment() {
             .setNegativeButton(R.string.cancel, null)
             .setSingleChoiceItems(adapter, -1, null)
             .show()
-    }
-
-    private fun onOrderSetChanged(list: List<DeliveryOrder>?) {
-        val selected = list?.find { it.orderId == viewModel.getSelectedOrderLive().value?.orderId }
-        if (selected == null) {
-            repaintNoOrderSelected()
-        } else {
-            onOrderSelected(selected)
-        }
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {

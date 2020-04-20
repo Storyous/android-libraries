@@ -88,6 +88,6 @@ class DeliveryAddition(
 open class Customer(
     val name: String,
     val deliveryAddress: String?,
-    val phoneNumber: String,
+    val phoneNumber: String?,
     @PrimaryKey val id: String = UUID.randomUUID().toString()
 )
