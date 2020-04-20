@@ -149,7 +149,7 @@ open class DeliveryRepository(
         }
     }
 
-    private suspend fun updateOrder(order: DeliveryOrder) {
+    private suspend fun updateOrder(order: DeliveryOrder) = withContext(provider.Main) {
         deliveryOrders.value = updateOrdersInDb(listOf(order))
     }
 

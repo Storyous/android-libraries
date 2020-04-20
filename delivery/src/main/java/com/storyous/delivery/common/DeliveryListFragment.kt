@@ -17,11 +17,9 @@ import kotlinx.android.synthetic.main.fragment_delivery_list.*
  */
 class DeliveryListFragment : Fragment() {
 
-    private val viewModel by viewModels<DeliveryViewModel>()
+    private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
     private val deliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter() {
-            viewModel.setSelectOrder(it)
-        }
+        DeliveryItemsAdapter { viewModel.setSelectOrder(it) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,6 +2,8 @@ package com.storyous.delivery.common
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.onNonNull
@@ -14,7 +16,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-class DeliveryViewModel constructor(
+class DeliveryViewModel(
     application: Application
 ) : AndroidViewModel(application), CoroutineScope by CoroutineProviderScope() {
 
@@ -33,10 +35,30 @@ class DeliveryViewModel constructor(
 
     private val selectedOrderLive = MutableLiveData<DeliveryOrder>()
     private val deliveryModel = DeliveryConfiguration.deliveryModel
+    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
+        MediatorLiveData<List<DeliveryOrder>>().apply {
+            addSource(DeliveryConfiguration.deliveryRepository!!.getDeliveryOrders()) { orders ->
+                getSelectedOrder()?.orderId
+                    ?.let { orderId -> orders.find { it.orderId == orderId } }
+                    ?.also { deselectOrder() }
+                value = orders
+            }
+        }
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
+
+    fun loadOrders() {
+        launch(provider.Main) {
+            DeliveryConfiguration.placeInfo?.let {
+                DeliveryConfiguration.deliveryRepository?.loadDeliveryOrders(
+                    it.merchantId,
+                    it.placeId
+                )
+            }
+        }
+    }
 
     fun deselectOrder() {
         selectedOrderLive.value = null
@@ -58,7 +80,7 @@ class DeliveryViewModel constructor(
 
     fun getSelectedOrderLive() = selectedOrderLive
 
-    fun getDeliveryOrdersLive() = DeliveryConfiguration.deliveryRepository?.getDeliveryOrders()
+    fun getDeliveryOrdersLive() = deliveryOrdersLive
 
     fun acceptOrder(order: DeliveryOrder) {
         loadingOrderAccepting.postValue(true)

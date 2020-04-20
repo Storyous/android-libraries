@@ -45,10 +45,11 @@ class DeliveryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
-        
-        intent.getStringExtra(ARG_ORDER_ID)?.also { 
+
+        intent.getStringExtra(ARG_ORDER_ID)?.also {
             viewModel.setSelectOrder(it)
         }
+        viewModel.loadOrders()
     }
 
 
