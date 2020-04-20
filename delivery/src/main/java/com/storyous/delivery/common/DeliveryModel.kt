@@ -10,9 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Suppress("TooManyFunctions")
-open class DeliveryModel(
-    private val deliveryResourceProvider: IDeliveryResourceProvider
-) : CoroutineScope by CoroutineProviderScope() {
+open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
@@ -40,8 +38,8 @@ open class DeliveryModel(
     }
 
     fun confirmAutoConfirmOrders() {
-        if (deliveryResourceProvider.canAutoConfirm()) {
-            deliveryResourceProvider.deliveryRepository.getDeliveryOrders().value
+        if (Configuration.placeInfo?.autoConfirm == true) {
+            Configuration.deliveryRepository?.getDeliveryOrders()?.value
                 ?.filter { it.state == DeliveryOrder.STATE_NEW && it.autoConfirm == true }
                 ?.forEach { confirmAutoConfirmOrder(it) }
         }
@@ -51,10 +49,10 @@ open class DeliveryModel(
         launch(provider.Main) {
             val result = withContext(provider.IO) {
                 onNonNull(
-                    deliveryResourceProvider.getMerchantId(),
-                    deliveryResourceProvider.getPlaceId()
+                    Configuration.placeInfo?.merchantId,
+                    Configuration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    deliveryResourceProvider.deliveryRepository.acceptDeliveryOrder(merchantId, placeId, order)
+                    Configuration.deliveryRepository?.acceptDeliveryOrder(merchantId, placeId, order)
                 }
             }
 

@@ -14,9 +14,8 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-class DeliveryViewModel @JvmOverloads constructor(
-    application: Application,
-    val deliveryResourceProvider: IDeliveryResourceProvider = application.deliveryResourceProvider
+class DeliveryViewModel constructor(
+    application: Application
 ) : AndroidViewModel(application), CoroutineScope by CoroutineProviderScope() {
 
     companion object {
@@ -30,12 +29,10 @@ class DeliveryViewModel @JvmOverloads constructor(
         const val MESSAGE_ERROR_STATE_CONFLICT = 1
         const val MESSAGE_ERROR_OTHER = 2
         const val MESSAGE_OK_DECLINED = 3
-
-        const val MAX_PS_NAME_LENGTH = 20
     }
 
     private val selectedOrderLive = MutableLiveData<DeliveryOrder>()
-    private val deliveryModel = deliveryResourceProvider.deliveryModel
+    private val deliveryModel = Configuration.deliveryModel
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
@@ -47,7 +44,7 @@ class DeliveryViewModel @JvmOverloads constructor(
 
     fun setSelectOrder(orderId: String) {
         launch(provider.Main) {
-            deliveryResourceProvider.deliveryRepository.findOrder(orderId)
+            Configuration.deliveryRepository?.findOrder(orderId)
                 ?.also { setSelectOrder(it) }
         }
     }
@@ -61,7 +58,7 @@ class DeliveryViewModel @JvmOverloads constructor(
 
     fun getSelectedOrderLive() = selectedOrderLive
 
-    fun getDeliveryOrdersLive() = deliveryResourceProvider.deliveryRepository.getDeliveryOrders()
+    fun getDeliveryOrdersLive() = Configuration.deliveryRepository?.getDeliveryOrders()
 
     fun acceptOrder(order: DeliveryOrder) {
         loadingOrderAccepting.postValue(true)
@@ -70,10 +67,10 @@ class DeliveryViewModel @JvmOverloads constructor(
 
             val result = withContext(provider.IO) {
                 onNonNull(
-                    deliveryResourceProvider.getMerchantId(),
-                    deliveryResourceProvider.getPlaceId()
+                    Configuration.placeInfo?.merchantId,
+                    Configuration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    deliveryResourceProvider.deliveryRepository.acceptDeliveryOrder(
+                    Configuration.deliveryRepository?.acceptDeliveryOrder(
                         merchantId,
                         placeId,
                         order
@@ -101,10 +98,10 @@ class DeliveryViewModel @JvmOverloads constructor(
             launch(provider.Main) {
                 val result = withContext(provider.IO) {
                     onNonNull(
-                        deliveryResourceProvider.getMerchantId(),
-                        deliveryResourceProvider.getPlaceId()
+                        Configuration.placeInfo?.merchantId,
+                        Configuration.placeInfo?.placeId
                     ) { merchantId, placeId ->
-                        deliveryResourceProvider.deliveryRepository.cancelDeliveryOrder(
+                        Configuration.deliveryRepository?.cancelDeliveryOrder(
                             merchantId, placeId, selected, reason
                         )
                     }
@@ -132,6 +129,6 @@ class DeliveryViewModel @JvmOverloads constructor(
     }
 
     fun stopRinging() {
-        deliveryResourceProvider.deliveryRepository.ringingState.value = false
+        Configuration.deliveryRepository?.ringingState?.value = false
     }
 }

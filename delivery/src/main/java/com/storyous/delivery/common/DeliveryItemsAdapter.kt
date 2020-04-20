@@ -17,7 +17,6 @@ import com.storyous.commonutils.adapters.ListItem
 import java.util.ArrayList
 
 class DeliveryItemsAdapter(
-    private val deliveryResourceProvider: IDeliveryResourceProvider,
     private val onClickListener: (DeliveryOrder) -> Unit
 ) : RecyclerView.Adapter<DeliveryItemsAdapter.DeliveryViewHolder>() {
 
@@ -96,7 +95,6 @@ class DeliveryItemsAdapter(
                 DeliveryItemViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.list_item_delivery, parent, false),
-                    deliveryResourceProvider,
                     clickListener)
             }
             else -> throw IllegalArgumentException("Unknown item type $itemType")
@@ -127,7 +125,6 @@ class DeliveryItemsAdapter(
 
     class DeliveryItemViewHolder(
         itemView: View,
-        private val deliveryResourceProvider: IDeliveryResourceProvider,
         private val onClickListener: (Int, DeliveryOrder) -> Unit
     ) : DeliveryViewHolder(itemView) {
 
@@ -175,7 +172,7 @@ class DeliveryItemsAdapter(
                     total += addition.unitPriceWithVat.toDouble() * addition.countPerMainItem * item.count
                 }
             }
-            return deliveryResourceProvider.formatPrice(total)
+            return Configuration.formatter.formatPrice(total)
         }
     }
 

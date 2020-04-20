@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 class DeliveryDetailFragment : Fragment() {
 
     private val itemsAdapter by lazy {
-        DeliveryDetailItemsAdapter(requireContext().deliveryResourceProvider)
+        DeliveryDetailItemsAdapter()
     }
     private val viewModel by viewModels<DeliveryViewModel>()
 
@@ -30,7 +30,7 @@ class DeliveryDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
-        viewModel.getDeliveryOrdersLive().observe(this, Observer { orders ->
+        viewModel.getDeliveryOrdersLive()?.observe(this, Observer { orders ->
             onOrderSetChanged(orders)
         })
         viewModel.loadingOrderAccepting.observe(this, Observer { loading ->
