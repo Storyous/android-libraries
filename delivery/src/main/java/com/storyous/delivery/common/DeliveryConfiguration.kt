@@ -26,7 +26,7 @@ object DeliveryConfiguration {
     }
 }
 
-class ConfigurationInvalidException(message: String) : Exception(message)
+class ConfigurationInvalidException(message: String) : RuntimeException(message)
 
 data class PlaceInfo(val placeId: String, val merchantId: String, val autoConfirm: Boolean)
 
