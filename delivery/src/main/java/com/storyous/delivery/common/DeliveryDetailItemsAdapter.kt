@@ -13,9 +13,8 @@ import com.storyous.delivery.common.api.model.DeliveryAddition
 import com.storyous.delivery.common.api.model.DeliveryItem
 import kotlinx.android.synthetic.main.payment_item_additions_subitem.view.*
 
-class DeliveryDetailItemsAdapter(
-    private var deliveryResourceProvider: IDeliveryResourceProvider
-) : RecyclerView.Adapter<DeliveryDetailItemsAdapter.ItemDetailViewHolder>(),
+class DeliveryDetailItemsAdapter :
+    RecyclerView.Adapter<DeliveryDetailItemsAdapter.ItemDetailViewHolder>(),
     ItemsAdapter<DeliveryItem> {
 
     override var items = listOf<DeliveryItem>()
@@ -27,8 +26,7 @@ class DeliveryDetailItemsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, itemType: Int): ItemDetailViewHolder {
         return ItemDetailViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_delivery_detail, parent, false),
-            deliveryResourceProvider
+                .inflate(R.layout.list_item_delivery_detail, parent, false)
         )
     }
 
@@ -41,8 +39,7 @@ class DeliveryDetailItemsAdapter(
     }
 
     class ItemDetailViewHolder(
-        itemView: View,
-        private val deliveryResourceProvider: IDeliveryResourceProvider
+        itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         private val count = itemView.findViewById<TextView>(R.id.count_value)
         private val measure = itemView.findViewById<TextView>(R.id.count_measure)
@@ -52,19 +49,23 @@ class DeliveryDetailItemsAdapter(
         private val subitems = itemView.findViewById<LinearLayout>(R.id.subitems)
 
         fun bind(item: DeliveryItem) {
-            count.text = deliveryResourceProvider.formatCount(item.count)
+            count.text = DeliveryConfiguration.formatter.formatCount(item.count)
             measure.text = item.measure ?: getString(R.string.piece_measure)
             title.text = item.title
 
-            price.text = deliveryResourceProvider.formatPriceWithoutCurrency(item.unitPriceWithVat, item.count)
-            currency.text = deliveryResourceProvider.defaultCurrency()
+            price.text = DeliveryConfiguration.formatter.formatPriceWithoutCurrency(
+                item.unitPriceWithVat,
+                item.count
+            )
+            currency.text = DeliveryConfiguration.formatter.defaultCurrency(itemView.context)
 
             subitems.show(!item.additions.isNullOrEmpty())
 
             val inflater = LayoutInflater.from(itemView.context)
             subitems.removeAllViews()
             item.additions?.forEach {
-                val view = inflater.inflate(R.layout.payment_item_additions_subitem, subitems, false)
+                val view =
+                    inflater.inflate(R.layout.payment_item_additions_subitem, subitems, false)
                 bindSubItem(view, item, it)
                 subitems.addView(view)
             }
@@ -80,13 +81,14 @@ class DeliveryDetailItemsAdapter(
                 if (item.countPerMainItem == 1) it else "${item.countPerMainItem} $it"
             }
 
-            val formattedPriceWithoutCurrency = deliveryResourceProvider.formatPriceWithoutCurrency(
+            val formattedPriceWithoutCurrency = DeliveryConfiguration.formatter.formatPriceWithoutCurrency(
                 item.unitPriceWithVat, item.countPerMainItem * mainItem.count
             )
             subItemView.price_value.text = formattedPriceWithoutCurrency.let {
                 if (item.countPerMainItem < 0) "-$it" else it
             }
-            subItemView.price_currency.text = deliveryResourceProvider.defaultCurrency()
+            subItemView.price_currency.text =
+                DeliveryConfiguration.formatter.defaultCurrency(subItemView.context)
         }
     }
 }

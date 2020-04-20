@@ -19,14 +19,14 @@ class DeliveryListFragment : Fragment() {
 
     private val viewModel by viewModels<DeliveryViewModel>()
     private val deliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter(requireContext().deliveryResourceProvider) {
+        DeliveryItemsAdapter() {
             viewModel.setSelectOrder(it)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getDeliveryOrdersLive().observe(this, Observer { orders -> showOrders(orders) })
+        viewModel.getDeliveryOrdersLive()?.observe(this, Observer { orders -> showOrders(orders) })
     }
 
     override fun onCreateView(

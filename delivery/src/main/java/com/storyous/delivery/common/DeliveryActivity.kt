@@ -19,7 +19,9 @@ class DeliveryActivity : AppCompatActivity() {
     companion object {
         private const val ARG_ORDER_ID = "orderId"
 
+        @Throws(ConfigurationInvalidException::class)
         fun launch(context: Context) {
+            DeliveryConfiguration.checkValid()
             context.startActivity(createLaunchIntent(context))
         }
 
@@ -42,7 +44,7 @@ class DeliveryActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.search_arrow)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.deliveryResourceProvider.onActivityToolbarCreate(toolbar, supportFragmentManager)
+        DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
         
         intent.getStringExtra(ARG_ORDER_ID)?.also { 
             viewModel.setSelectOrder(it)
