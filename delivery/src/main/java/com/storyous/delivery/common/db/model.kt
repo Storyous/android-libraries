@@ -21,7 +21,7 @@ open class DeliveryOrder @JvmOverloads constructor(
     var alreadyPaid: Boolean,
     var autoConfirm: Boolean?,
     var provider: String,
-    var note: String,
+    var note: String?,
     var lastModifiedAt: Date,
     var customerId: String? = customer?.id
 )

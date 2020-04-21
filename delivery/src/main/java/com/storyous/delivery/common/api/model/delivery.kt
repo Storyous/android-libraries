@@ -17,7 +17,7 @@ data class DeliveryOrder(
     var alreadyPaid: Boolean,
     var autoConfirm: Boolean?,
     var provider: String,
-    var note: String,
+    var note: String?,
     @SerializedName("_lastModifiedAt")
     var lastModifiedAt: Date
 ) {
