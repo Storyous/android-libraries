@@ -38,9 +38,9 @@ class DeliveryViewModel(
     private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
         MediatorLiveData<List<DeliveryOrder>>().apply {
             addSource(DeliveryConfiguration.deliveryRepository!!.getDeliveryOrders()) { orders ->
-                getSelectedOrder()?.orderId
-                    ?.let { orderId -> orders.find { it.orderId == orderId } }
-                    ?.also { deselectOrder() }
+                if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
+                    deselectOrder()
+                }
                 value = orders
             }
         }

@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.storyous.delivery.common.api.model.DeliveryOrder
@@ -76,8 +76,7 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        getOverlappingDetailFragment()?.view?.visibility =
-            if (order == null) View.GONE else View.VISIBLE
+        getOverlappingDetailFragment()?.view?.isVisible = order != null
     }
 
     private fun getOverlappingDetailFragment(): Fragment? {
@@ -85,5 +84,5 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun isOverlappingDetailOpen(): Boolean =
-        getOverlappingDetailFragment()?.view?.visibility == View.VISIBLE
+        getOverlappingDetailFragment()?.view?.isVisible == true
 }

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:gravity="center_horizontal"
+        android:maxLines="1"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/price_currency"
         app:layout_constraintEnd_toEndOf="parent"
