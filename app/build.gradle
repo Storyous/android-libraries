@@ -23,6 +23,12 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError true
+        absolutePaths false
+        enable 'StopShip'
+        fatal 'StopShip'
+    }
 }
 
 dependencies {
