@@ -93,4 +93,6 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
+
+    implementation 'me.grantland:autofittextview:0.2.1'
 }
