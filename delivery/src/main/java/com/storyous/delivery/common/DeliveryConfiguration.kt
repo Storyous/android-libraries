@@ -43,12 +43,13 @@ class DefaultFormatter : Formatter {
         private const val NON_BREAKING_SPACE = '\u00a0'
     }
 
-    private val formatter = (DecimalFormat.getCurrencyInstance() as DecimalFormat).apply {
+    private val numberFormatter = DecimalFormat.getInstance() as DecimalFormat
+    private val currencyFormatter = (DecimalFormat.getCurrencyInstance() as DecimalFormat).apply {
         minimumFractionDigits = 2
     }
 
     override fun formatCount(count: Double): String {
-        return format(BigDecimal.valueOf(count))
+        return numberFormatter.format(BigDecimal.valueOf(count))
     }
 
     override fun formatPrice(value: Double): String {
@@ -60,12 +61,12 @@ class DefaultFormatter : Formatter {
             .multiply(BigDecimal.valueOf(quantity))
         return format(value)
             .replace(Regex("[^0-9]*$"), "")
-            .replace(formatter.positivePrefix, "")
+            .replace(currencyFormatter.positivePrefix, "")
             .trim { it <= ' ' }
     }
 
     private fun format(value: BigDecimal): String {
-        return formatter.format(value.setScale(2, RoundingMode.HALF_UP))
+        return currencyFormatter.format(value.setScale(2, RoundingMode.HALF_UP))
             .replace(NON_BREAKING_SPACE, SPACE)
     }
 

@@ -54,7 +54,7 @@
     </style>
 
     <style name="priceIndicatorCurrency" parent="priceIndicator">
-        <item name="android:textAppearance">@dimen/default_text_size_ultratiny</item>
+        <item name="android:textSize">@dimen/default_text_size_ultratiny</item>
     </style>
 
     <style name="priceIndicatorCurrency.Black" parent="priceIndicatorCurrency">
