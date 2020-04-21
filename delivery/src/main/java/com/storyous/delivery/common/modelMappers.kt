@@ -72,7 +72,7 @@ fun CustomerDb.toApi() = Customer(name, deliveryAddress, phoneNumber)
 
 fun DeliveryItemDb.toApi() = DeliveryItem(
     itemId,
-    orderId,
+    productId,
     title,
     unitPriceWithVat,
     vatRate,
