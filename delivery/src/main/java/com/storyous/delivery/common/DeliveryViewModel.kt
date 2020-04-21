@@ -102,7 +102,7 @@ class DeliveryViewModel(
 
             when (result) {
                 DeliveryRepository.RESULT_OK -> {
-                    deliveryModel.onConfirmResultOk(order)
+                    DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
                 }
                 DeliveryRepository.RESULT_ERR_CONFLICT -> {
                     addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
