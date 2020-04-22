@@ -19,7 +19,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.Calendar
+import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
@@ -32,6 +33,8 @@ open class DeliveryRepository(
         const val STATUS_CODE_CONFLICT = 409
     }
 
+    private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
+    private val confirmedOrders = MutableLiveData<DeliveryOrder>()
     private val deliveryOrders = MutableLiveData<List<DeliveryOrder>>()
     private var lastMod: String? = null
 
@@ -43,6 +46,17 @@ open class DeliveryRepository(
     }
 
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
+    fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
+
+    fun addConfirmedOrder(order: DeliveryOrder) {
+        confirmedOrdersQueue.add(order)
+        confirmedOrders.value = confirmedOrdersQueue.peek()
+    }
+
+    fun removeConfirmedOrder(order: DeliveryOrder) {
+        confirmedOrdersQueue.remove(order)
+        confirmedOrders.value = confirmedOrdersQueue.peek()
+    }
 
     private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
         db.storeCompleteOrders(orders.map { it.toDb() })

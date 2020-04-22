@@ -11,7 +11,7 @@ import com.storyous.delivery.common.BuildConfig
     entities = [
         DeliveryOrder::class, DeliveryItem::class, DeliveryAddition::class, Customer::class
     ],
-    version = 2
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class DeliveryDatabase : RoomDatabase() {

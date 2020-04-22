@@ -15,9 +15,18 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
             val type = when (provider) {
-                DeliveryViewModel.PROVIDER_DJ -> getString(R.string.delivery_service_damejidlo, null)
-                DeliveryViewModel.PROVIDER_UBER_EATS -> getString(R.string.delivery_service_ubereats, null)
-                DeliveryViewModel.PROVIDER_DELIVERECT -> getString(R.string.delivery_service_deliverect, null)
+                DeliveryViewModel.PROVIDER_DJ -> getString(
+                    R.string.delivery_service_damejidlo,
+                    null
+                )
+                DeliveryViewModel.PROVIDER_UBER_EATS -> getString(
+                    R.string.delivery_service_ubereats,
+                    null
+                )
+                DeliveryViewModel.PROVIDER_DELIVERECT -> getString(
+                    R.string.delivery_service_deliverect,
+                    null
+                )
                 DeliveryViewModel.PROVIDER_PHONE -> getString(R.string.delivery_service_phone, null)
                 DeliveryViewModel.PROVIDER_STORYOUS_TAKEAWAY_WEB,
                 DeliveryViewModel.PROVIDER_STORYOUS_TAKEAWAY_APP ->
@@ -52,17 +61,17 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     DeliveryConfiguration.placeInfo?.merchantId,
                     DeliveryConfiguration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository?.acceptDeliveryOrder(merchantId, placeId, order)
+                    DeliveryConfiguration.deliveryRepository?.acceptDeliveryOrder(
+                        merchantId,
+                        placeId,
+                        order
+                    )
                 }
             }
 
             if (DeliveryRepository.RESULT_OK == result) {
-                onConfirmResultOk(order)
+                DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
             }
         }
-    }
-
-    open fun onConfirmResultOk(order: DeliveryOrder) {
-        // implement your own
     }
 }
