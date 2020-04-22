@@ -7,13 +7,15 @@
     android:forceHasOverlappingRendering="false"
     tools:context="com.storyous.delivery.common.DeliveryActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="wrap_content"
         android:elevation="4dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/search_arrow"
+        app:title="@string/app_name" />
 
     <fragment
         android:id="@+id/fragment_delivery_list"
