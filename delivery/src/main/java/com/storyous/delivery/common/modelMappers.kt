@@ -37,7 +37,8 @@ fun DeliveryItem.toDb(orderId: String) = DeliveryItemDb(
     vatId,
     measure,
     count,
-    additions?.map { it.toDb(itemId) })
+    additions?.map { it.toDb(itemId) }
+)
 
 fun DeliveryAddition.toDb(parentItemId: String) = DeliveryAdditionDb(
     itemId,
@@ -79,7 +80,8 @@ fun DeliveryItemDb.toApi() = DeliveryItem(
     vatId,
     measure,
     count,
-    additions?.map { it.toApi() })
+    additions?.map { it.toApi() }
+)
 
 fun DeliveryAdditionDb.toApi() = DeliveryAddition(
     itemId,

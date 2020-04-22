@@ -2,8 +2,7 @@
 <resources>
 
     <style name="SelectableItem">
-        <item name="android:background">@drawable/payment_item_background_selector</item>
-        <item name="android:textColor">@color/payment_item_text_color_selector</item>
+        <item name="android:textColor">@color/grey_text</item>
         <item name="android:textAppearance">@style/TextAppearance.Small</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
