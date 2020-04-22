@@ -45,6 +45,13 @@ class DeliveryActivity : AppCompatActivity() {
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
 
+        DeliveryConfiguration.deliveryRepository?.getDeliveryError()
+            ?.observe(this, Observer { exception ->
+                if (exception.consume()) {
+                    finish()
+                }
+            })
+
         intent.getStringExtra(ARG_ORDER_ID)?.also {
             viewModel.setSelectOrder(it)
         }
