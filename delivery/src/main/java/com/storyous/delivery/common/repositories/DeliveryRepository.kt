@@ -31,6 +31,7 @@ open class DeliveryRepository(
     companion object {
         const val RESULT_OK = "ok"
         const val RESULT_ERR_CONFLICT = "conflict_state"
+        const val STATUS_CODE_UNAUTHORIZED = 401
         const val STATUS_CODE_CONFLICT = 409
     }
 
@@ -77,7 +78,7 @@ open class DeliveryRepository(
             }
         }.onFailure {
             Timber.e(it, "Fail to load Delivery orders.")
-            if (it is HttpException && it.code() == 401) {
+            if (it is HttpException && it.code() == STATUS_CODE_UNAUTHORIZED) {
                 deliveryError.value = DeliveryException(it)
             }
         }.onSuccess {
