@@ -81,14 +81,12 @@ class DeliveryDetailItemsAdapter :
                 if (item.countPerMainItem == 1) it else "${item.countPerMainItem} $it"
             }
 
-            val formattedPriceWithoutCurrency = DeliveryConfiguration.formatter.formatPriceWithoutCurrency(
-                item.unitPriceWithVat, item.countPerMainItem * mainItem.count
+            val formattedPriceWithoutCurrency = DeliveryConfiguration.formatter.formatPrice(
+                item.unitPriceWithVat.toDouble() * item.countPerMainItem * mainItem.count
             )
-            subItemView.price_value.text = formattedPriceWithoutCurrency.let {
+            subItemView.price.text = formattedPriceWithoutCurrency.let {
                 if (item.countPerMainItem < 0) "-$it" else it
             }
-            subItemView.price_currency.text =
-                DeliveryConfiguration.formatter.defaultCurrency(subItemView.context)
         }
     }
 }
