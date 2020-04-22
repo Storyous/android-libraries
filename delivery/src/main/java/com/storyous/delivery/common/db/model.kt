@@ -29,13 +29,14 @@ open class DeliveryOrder @JvmOverloads constructor(
 @Suppress("LongParameterList")
 @Entity
 open class DeliveryProduct(
-    @PrimaryKey val itemId: String,
+    val itemId: String,
     val productId: String,
     val title: String,
     val unitPriceWithVat: BigDecimal,
     val vatRate: Double,
     val vatId: Int,
-    val measure: String?
+    val measure: String?,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 ) {
     @Suppress("MaxLineLength")
     override fun toString(): String {

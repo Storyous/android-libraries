@@ -5,7 +5,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
-import com.storyous.commonutils.TimestampUtil
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
 import com.storyous.delivery.common.api.DeliveryService
@@ -20,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
-import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 open class DeliveryRepository(
@@ -63,9 +61,7 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
-        db.storeCompleteOrders(orders.map { it.toDb() })
-        db.deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
-        db.getCompleteOrders().map { it.toApi() }
+        db.updateAndGetAll(orders.map { it.toDb() }).map { it.toApi() }
     }
 
     suspend fun loadDeliveryOrders(
@@ -179,16 +175,12 @@ open class DeliveryRepository(
             ?: db.getCompleteOrder(orderId)?.toApi()
     }
 
-    class DeliveryException(cause: Exception) : java.lang.Exception(cause) {
+    class DeliveryException(cause: Throwable) : Exception(cause) {
         private var consumed = false
 
         fun consume(): Boolean {
-            if (!consumed) {
-                consumed = true
-                return false
-            } else {
-                return true
-            }
+            consumed = true
+            return !consumed
         }
     }
 }

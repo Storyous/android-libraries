@@ -6,6 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.storyous.commonutils.TimestampUtil
+import java.util.Calendar
 import java.util.Date
 
 @Suppress("TooManyFunctions")
@@ -123,5 +125,12 @@ abstract class DeliveryDao {
         insertItems(items)
         val additions = items.mapNotNull { it.additions }.flatten()
         insertAdditions(additions)
+    }
+
+    @Transaction
+    open suspend fun updateAndGetAll(orders: List<DeliveryOrder>): List<DeliveryOrder> {
+        storeCompleteOrders(orders)
+        deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
+        return getCompleteOrders()
     }
 }
