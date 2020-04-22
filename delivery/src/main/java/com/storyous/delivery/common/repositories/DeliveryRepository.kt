@@ -18,6 +18,7 @@ import com.storyous.delivery.common.toDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -30,12 +31,14 @@ open class DeliveryRepository(
     companion object {
         const val RESULT_OK = "ok"
         const val RESULT_ERR_CONFLICT = "conflict_state"
+        const val STATUS_CODE_UNAUTHORIZED = 401
         const val STATUS_CODE_CONFLICT = 409
     }
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
     private val confirmedOrders = MutableLiveData<DeliveryOrder>()
     private val deliveryOrders = MutableLiveData<List<DeliveryOrder>>()
+    private val deliveryError = MutableLiveData<DeliveryException>()
     private var lastMod: String? = null
 
     val newDeliveriesToHandle = Transformations.map(deliveryOrders) { deliveries ->
@@ -47,6 +50,7 @@ open class DeliveryRepository(
 
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
     fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
+    fun getDeliveryError(): LiveData<DeliveryException> = deliveryError
 
     fun addConfirmedOrder(order: DeliveryOrder) {
         confirmedOrdersQueue.add(order)
@@ -74,6 +78,9 @@ open class DeliveryRepository(
             }
         }.onFailure {
             Timber.e(it, "Fail to load Delivery orders.")
+            if (it is HttpException && it.code() == STATUS_CODE_UNAUTHORIZED) {
+                deliveryError.value = DeliveryException(it)
+            }
         }.onSuccess {
             deliveryOrders.value = updateOrdersInDb(it.data)
             lastMod = it.lastModificationAt
@@ -170,5 +177,18 @@ open class DeliveryRepository(
     suspend fun findOrder(orderId: String): DeliveryOrder? = withContext(provider.IO) {
         deliveryOrders.value?.find { it.orderId == orderId }
             ?: db.getCompleteOrder(orderId)?.toApi()
+    }
+
+    class DeliveryException(cause: Exception) : java.lang.Exception(cause) {
+        private var consumed = false
+
+        fun consume(): Boolean {
+            if (!consumed) {
+                consumed = true
+                return false
+            } else {
+                return true
+            }
+        }
     }
 }

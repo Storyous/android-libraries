@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.storyous.delivery.common.api.model.DeliveryOrder
@@ -41,10 +41,16 @@ class DeliveryActivity : AppCompatActivity() {
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
         onOrderSelected(null)
 
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.search_arrow)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
+
+        DeliveryConfiguration.deliveryRepository?.getDeliveryError()
+            ?.observe(this, Observer { exception ->
+                if (exception.consume()) {
+                    finish()
+                }
+            })
 
         intent.getStringExtra(ARG_ORDER_ID)?.also {
             viewModel.setSelectOrder(it)
@@ -76,8 +82,7 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        getOverlappingDetailFragment()?.view?.visibility =
-            if (order == null) View.GONE else View.VISIBLE
+        getOverlappingDetailFragment()?.view?.isVisible = order != null
     }
 
     private fun getOverlappingDetailFragment(): Fragment? {
@@ -85,5 +90,5 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun isOverlappingDetailOpen(): Boolean =
-        getOverlappingDetailFragment()?.view?.visibility == View.VISIBLE
+        getOverlappingDetailFragment()?.view?.isVisible == true
 }
