@@ -35,13 +35,11 @@ class DeliveryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivery)
-        setSupportActionBar(toolbar)
 
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        
         viewModel.stopRinging()
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
-        onOrderSelected(null)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
 
