@@ -33,7 +33,7 @@ class DeliveryViewModel(
         const val MESSAGE_OK_DECLINED = 3
     }
 
-    private val selectedOrderLive = MutableLiveData<DeliveryOrder>()
+    private val selectedOrderLive = MutableLiveData<DeliveryOrder>(null)
     private val deliveryModel = DeliveryConfiguration.deliveryModel
     private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
         MediatorLiveData<List<DeliveryOrder>>().apply {
