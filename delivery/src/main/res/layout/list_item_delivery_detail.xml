@@ -8,13 +8,12 @@
     android:forceHasOverlappingRendering="false">
 
     <include
-        android:id="@+id/count"
-        layout="@layout/count_indicator_white"
+        android:id="@+id/count_square"
+        layout="@layout/typed_value_layout"
         android:layout_width="@dimen/count_indicator_size"
         android:layout_height="@dimen/count_indicator_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_title"
-        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -24,15 +23,15 @@
         style="@style/Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/count"
-        app:layout_constraintEnd_toStartOf="@id/price"
-        app:layout_constraintStart_toEndOf="@id/count"
-        app:layout_constraintTop_toTopOf="@id/count"
+        app:layout_constraintBottom_toBottomOf="@id/count_square"
+        app:layout_constraintEnd_toStartOf="@id/price_square"
+        app:layout_constraintStart_toEndOf="@id/count_square"
+        app:layout_constraintTop_toTopOf="@id/count_square"
         tools:text="Some special product" />
 
     <include
-        android:id="@+id/price"
-        layout="@layout/price_indicator_white"
+        android:id="@+id/price_square"
+        layout="@layout/typed_value_layout"
         android:layout_width="@dimen/price_indicator_size"
         android:layout_height="@dimen/price_indicator_size"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,6 +39,13 @@
         app:layout_constraintStart_toEndOf="@id/item_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/subitems_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="count_square,item_title,price_square" />
 
     <LinearLayout
         android:id="@+id/subitems"
@@ -54,5 +60,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/item_title"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
+        app:layout_constraintTop_toBottomOf="@+id/subitems_barrier" />
 </androidx.constraintlayout.widget.ConstraintLayout>
