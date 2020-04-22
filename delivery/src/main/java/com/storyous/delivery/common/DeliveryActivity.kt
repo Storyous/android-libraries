@@ -41,7 +41,6 @@ class DeliveryActivity : AppCompatActivity() {
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
         onOrderSelected(null)
 
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.search_arrow)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
