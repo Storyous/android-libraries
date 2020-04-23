@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.DateUtils
-import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.commonutils.adapters.Header
 import com.storyous.commonutils.adapters.Item
 import com.storyous.commonutils.adapters.ItemType
 import com.storyous.commonutils.adapters.ItemType.HEADER_DISABLED
 import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
+import com.storyous.delivery.common.api.model.DeliveryOrder
+import java.math.BigDecimal
 import java.util.ArrayList
 
 class DeliveryItemsAdapter(
@@ -43,7 +44,12 @@ class DeliveryItemsAdapter(
         onClickListener(it)
     }
 
-    fun setStringValues(headerNew: String, headerWaiting: String, headerProcessed: String, headerDeclined: String) {
+    fun setStringValues(
+        headerNew: String,
+        headerWaiting: String,
+        headerProcessed: String,
+        headerDeclined: String
+    ) {
         textHeaderNew = headerNew
         textHeaderWaiting = headerWaiting
         textHeaderProcessed = headerProcessed
@@ -88,14 +94,17 @@ class DeliveryItemsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, itemType: Int): DeliveryViewHolder {
         return when (itemType) {
             ItemType.HEADER -> {
-                DeliveryHeaderViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_delivery_header, parent, false))
+                DeliveryHeaderViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.list_item_delivery_header, parent, false)
+                )
             }
             ItemType.ITEM -> {
                 DeliveryItemViewHolder(
                     LayoutInflater.from(parent.context)
                         .inflate(R.layout.list_item_delivery, parent, false),
-                    clickListener)
+                    clickListener
+                )
             }
             else -> throw IllegalArgumentException("Unknown item type $itemType")
         }
@@ -172,7 +181,7 @@ class DeliveryItemsAdapter(
                     total += addition.unitPriceWithVat.toDouble() * addition.countPerMainItem * item.count
                 }
             }
-            return DeliveryConfiguration.formatter.formatPrice(total)
+            return DeliveryConfiguration.formatter.formatPrice(BigDecimal.valueOf(total))
         }
     }
 

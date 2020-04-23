@@ -12,6 +12,7 @@ import com.storyous.delivery.common.api.model.DeliveryItem
 import kotlinx.android.synthetic.main.list_item_delivery_detail.view.*
 import kotlinx.android.synthetic.main.payment_item_additions_subitem.view.*
 import kotlinx.android.synthetic.main.typed_value_layout.view.*
+import java.math.BigDecimal
 
 class DeliveryDetailItemsAdapter :
     RecyclerView.Adapter<DeliveryDetailItemsAdapter.ItemDetailViewHolder>(),
@@ -54,8 +55,7 @@ class DeliveryDetailItemsAdapter :
             title.text = item.title
 
             price.text = DeliveryConfiguration.formatter.formatPriceWithoutCurrency(
-                item.unitPriceWithVat,
-                item.count
+                item.unitPriceWithVat.multiply(BigDecimal.valueOf(item.count))
             )
             currency.text = DeliveryConfiguration.formatter.defaultCurrency(itemView.context)
 
@@ -82,7 +82,7 @@ class DeliveryDetailItemsAdapter :
             }
 
             val formattedPriceWithoutCurrency = DeliveryConfiguration.formatter.formatPrice(
-                item.unitPriceWithVat.toDouble() * item.countPerMainItem * mainItem.count
+                item.unitPriceWithVat.multiply(BigDecimal.valueOf(item.countPerMainItem * mainItem.count))
             )
             subItemView.price.text = formattedPriceWithoutCurrency.let {
                 if (item.countPerMainItem < 0) "-$it" else it

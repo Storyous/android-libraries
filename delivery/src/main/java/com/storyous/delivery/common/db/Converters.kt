@@ -1,6 +1,9 @@
 package com.storyous.delivery.common.db
 
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.storyous.delivery.common.api.model.DeliveryItem
 import java.math.BigDecimal
 import java.util.Date
 
@@ -38,5 +41,15 @@ class Converters {
     @TypeConverter
     fun timestampToDate(value: Long?): Date? {
         return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun deliveryItemsToJson(items: List<DeliveryItem>?): String? {
+        return Gson().toJson(items)
+    }
+
+    @TypeConverter
+    fun jsonToDeliveryItems(value: String?): List<DeliveryItem>? {
+        return Gson().fromJson(value, object : TypeToken<List<DeliveryItem>>() {}.type)
     }
 }

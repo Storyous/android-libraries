@@ -3,7 +3,7 @@ package com.storyous.delivery.common.db
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import java.math.BigDecimal
+import com.storyous.delivery.common.api.model.DeliveryItem
 import java.util.Date
 import java.util.UUID
 
@@ -16,7 +16,7 @@ open class DeliveryOrder @JvmOverloads constructor(
     var deliveryType: String,
     var discountWithVat: Int?,
     @Ignore var customer: Customer? = null,
-    @Ignore var items: List<DeliveryItem> = listOf(),
+    var items: List<DeliveryItem> = listOf(),
     var state: String,
     var alreadyPaid: Boolean,
     var autoConfirm: Boolean?,
@@ -25,65 +25,6 @@ open class DeliveryOrder @JvmOverloads constructor(
     var lastModifiedAt: Date,
     var customerId: String? = customer?.id
 )
-
-@Suppress("LongParameterList")
-@Entity
-open class DeliveryProduct(
-    val itemId: String,
-    val productId: String,
-    val title: String,
-    val unitPriceWithVat: BigDecimal,
-    val vatRate: Double,
-    val vatId: Int,
-    val measure: String?,
-    @PrimaryKey(autoGenerate = true) var id: Int = 0
-) {
-    @Suppress("MaxLineLength")
-    override fun toString(): String {
-        return "DeliveryProduct(itemId=$itemId, productId=$productId, title: $title, unitPriceWithVat: $unitPriceWithVat, vatRate=$vatRate, vatId=$vatId, measure=$measure)"
-    }
-}
-
-@Suppress("LongParameterList")
-@Entity
-class DeliveryItem @JvmOverloads constructor(
-    itemId: String,
-    val orderId: String,
-    productId: String,
-    title: String,
-    unitPriceWithVat: BigDecimal,
-    vatRate: Double,
-    vatId: Int,
-    measure: String?,
-    val count: Double,
-    @Ignore var additions: List<DeliveryAddition>? = null
-) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
-
-    override fun toString(): String {
-        return "DeliveryItem(orderId=$orderId, count=$count, additions=$additions): ${super.toString()}"
-    }
-}
-
-@Suppress("LongParameterList")
-@Entity
-class DeliveryAddition(
-    itemId: String,
-    val parentItemId: String,
-    productId: String,
-    title: String,
-    unitPriceWithVat: BigDecimal,
-    vatRate: Double,
-    vatId: Int,
-    measure: String?,
-    val countPerMainItem: Int,
-    val additionId: String? = null
-) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
-
-    @Suppress("MaxLineLength")
-    override fun toString(): String {
-        return "DeliveryItem(parentItemId=$parentItemId, countPerMainItem=$countPerMainItem, additionId=$additionId): ${super.toString()}"
-    }
-}
 
 @Entity
 open class Customer(

@@ -32,8 +32,8 @@ data class PlaceInfo(val placeId: String, val merchantId: String, val autoConfir
 
 interface Formatter {
     fun formatCount(count: Double): String
-    fun formatPrice(value: Double): String
-    fun formatPriceWithoutCurrency(unitPrice: BigDecimal, quantity: Double): String
+    fun formatPrice(price: BigDecimal): String
+    fun formatPriceWithoutCurrency(price: BigDecimal): String
     fun defaultCurrency(context: Context): String
 }
 
@@ -52,14 +52,12 @@ class DefaultFormatter : Formatter {
         return numberFormatter.format(BigDecimal.valueOf(count))
     }
 
-    override fun formatPrice(value: Double): String {
-        return format(BigDecimal.valueOf(value))
+    override fun formatPrice(price: BigDecimal): String {
+        return format(price)
     }
 
-    override fun formatPriceWithoutCurrency(unitPrice: BigDecimal, quantity: Double): String {
-        val value = unitPrice
-            .multiply(BigDecimal.valueOf(quantity))
-        return format(value)
+    override fun formatPriceWithoutCurrency(price: BigDecimal): String {
+        return format(price)
             .replace(Regex("[^0-9]*$"), "")
             .replace(currencyFormatter.positivePrefix, "")
             .trim { it <= ' ' }
