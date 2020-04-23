@@ -14,8 +14,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.storyous.commonutils.widgets.LoadingButton
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
+import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 
 @Suppress("TooManyFunctions")
@@ -35,6 +37,9 @@ class DeliveryDetailFragment : Fragment() {
         })
         viewModel.loadingOrderCancelling.observe(this, Observer { loading ->
             button_cancel.showOverlay(loading ?: false)
+        })
+        viewModel.loadingOrderDispatching.observe(this, Observer { loading ->
+            button_dispatch.showOverlay(loading ?: false)
         })
         viewModel.messagesToShow.observe(this, Observer { messages -> onNewMessages(messages) })
     }
@@ -71,6 +76,14 @@ class DeliveryDetailFragment : Fragment() {
                 ).show()
         }
         button_cancel.setOnClickListener { onOrderCancelClicked() }
+        button_dispatch.setOnClickListener {
+            viewModel.getSelectedOrderLive().value?.also { viewModel.dispatchOrder(it) }
+                ?: Toast.makeText(
+                    context,
+                    R.string.delivery_dispatch_error_other,
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
     }
 
     private fun onNewMessages(messages: List<Int>?) {
@@ -117,8 +130,11 @@ class DeliveryDetailFragment : Fragment() {
         order?.let {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
-            button_accept.isEnabled = it.state == DeliveryOrder.STATE_NEW
-            button_cancel.isEnabled = it.state == DeliveryOrder.STATE_NEW
+
+            val isNew = it.state == DeliveryOrder.STATE_NEW
+            setButtonState(button_accept, isNew)
+            setButtonState(button_cancel, isNew)
+            setButtonState(button_dispatch, !isNew)
 
             itemsAdapter.items = order.items
             updateCustomerInfo(it.customer)
@@ -126,6 +142,10 @@ class DeliveryDetailFragment : Fragment() {
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
         }
+    }
+
+    private fun setButtonState(button: LoadingButton, state: Boolean) {
+        button.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun updateOrderNumber(provider: String, orderId: String) {

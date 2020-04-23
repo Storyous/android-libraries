@@ -143,27 +143,53 @@ open class DeliveryRepository(
         return retval
     }
 
+    suspend fun notifyDeliveryOrderDispatched(
+        merchantId: String,
+        placeId: String,
+        order: DeliveryOrder
+    ): String {
+        return order?.takeIf { it.provider != "covermanager" }?.let { order ->
+            notifyDeliveryOrderDispatched(merchantId, placeId, order.orderId)
+        } ?: ""
+    }
+
     fun notifyDeliveryOrderDispatched(
         merchantId: String,
         placeId: String,
         order: OrderProviderInfo?
     ) {
-        // TODO add param responsible to recognize notification requirement
         order?.takeIf { it.code != "covermanager" }?.let { providerInfo ->
             launch {
-                runCatching {
-                    withContext(provider.IO) {
-                        apiService().notifyOrderDispatched(
-                            merchantId, placeId, providerInfo.orderId
-                        )
-                    }
-                }.onFailure {
-                    Timber.e(it, "Fail to notify order ${providerInfo.orderId}.")
-                }.getOrNull()?.also {
-                    updateOrder(it)
-                }
+                notifyDeliveryOrderDispatched(merchantId, placeId, providerInfo.orderId)
             }
         }
+    }
+
+    suspend fun notifyDeliveryOrderDispatched(
+        merchantId: String,
+        placeId: String,
+        orderId: String
+    ): String {
+        var retval = ""
+
+        runCatching {
+            apiService().notifyOrderDispatched(merchantId, placeId, orderId)
+        }.onSuccess {
+            retval = RESULT_OK
+        }.getOrElse {
+            val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
+
+            if (error?.code == STATUS_CODE_CONFLICT) {
+                retval = RESULT_ERR_CONFLICT
+            }
+            Timber.e(it, "Fail to dispatch order${orderId}.")
+
+            error?.order
+        }?.also {
+            updateOrder(it)
+        }
+
+        return retval
     }
 
     private suspend fun updateOrder(order: DeliveryOrder) = withContext(provider.Main) {

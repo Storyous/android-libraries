@@ -47,6 +47,7 @@ class DeliveryViewModel(
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
+    val loadingOrderDispatching = MutableLiveData(false)
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
     fun loadOrders() {
@@ -152,5 +153,37 @@ class DeliveryViewModel(
 
     fun stopRinging() {
         DeliveryConfiguration.deliveryRepository?.ringingState?.value = false
+    }
+
+    fun dispatchOrder(order: DeliveryOrder) {
+        loadingOrderDispatching.postValue(true)
+        // hold data of selected order to prevent change data when is selected different order
+        launch(provider.Main) {
+
+            val result = withContext(provider.IO) {
+                onNonNull(
+                    DeliveryConfiguration.placeInfo?.merchantId,
+                    DeliveryConfiguration.placeInfo?.placeId
+                ) { merchantId, placeId ->
+                    DeliveryConfiguration.deliveryRepository?.notifyDeliveryOrderDispatched(
+                        merchantId,
+                        placeId,
+                        order
+                    )
+                }
+            }
+
+            when (result) {
+                DeliveryRepository.RESULT_OK -> {
+                    DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
+                }
+                DeliveryRepository.RESULT_ERR_CONFLICT -> {
+                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                }
+                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
+            }
+
+            loadingOrderAccepting.postValue(false)
+        }
     }
 }
