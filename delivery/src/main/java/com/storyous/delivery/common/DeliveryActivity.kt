@@ -29,7 +29,9 @@ class DeliveryActivity : AppCompatActivity() {
             context: Context,
             orderId: String? = null
         ) = Intent(context, DeliveryActivity::class.java)
-            .putExtra(ARG_ORDER_ID, orderId)
+            .putExtra(ARG_ORDER_ID, orderId).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +39,7 @@ class DeliveryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_delivery)
 
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        
+
         viewModel.stopRinging()
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
 
