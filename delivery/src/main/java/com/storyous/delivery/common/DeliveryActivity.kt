@@ -3,7 +3,6 @@ package com.storyous.delivery.common
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -56,21 +55,6 @@ class DeliveryActivity : AppCompatActivity() {
             viewModel.setSelectOrder(it)
         }
         viewModel.loadOrders()
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when {
-            isOverlappingDetailOpen() -> {
-                viewModel.getSelectedOrderLive().value = null
-                true
-            }
-            item.itemId == android.R.id.home -> {
-                finish()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onBackPressed() {

@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.storyous.commonutils.widgets.LoadingButton
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
@@ -33,13 +32,13 @@ class DeliveryDetailFragment : Fragment() {
 
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
         viewModel.loadingOrderAccepting.observe(this, Observer { loading ->
-            button_accept.showOverlay(loading ?: false)
+            button_accept.showOverlay(loading == true)
         })
         viewModel.loadingOrderCancelling.observe(this, Observer { loading ->
-            button_cancel.showOverlay(loading ?: false)
+            button_cancel.showOverlay(loading == true)
         })
         viewModel.loadingOrderDispatching.observe(this, Observer { loading ->
-            button_dispatch.showOverlay(loading ?: false)
+            button_dispatch.showOverlay(loading == true)
         })
         viewModel.messagesToShow.observe(this, Observer { messages -> onNewMessages(messages) })
     }
@@ -130,11 +129,14 @@ class DeliveryDetailFragment : Fragment() {
         order?.let {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
-
+            
             val isNew = it.state == DeliveryOrder.STATE_NEW
-            setButtonState(button_accept, isNew)
-            setButtonState(button_cancel, isNew)
-            setButtonState(button_dispatch, !isNew)
+            button_accept.isVisible = isNew
+            button_accept.isEnabled = isNew
+            button_cancel.isVisible = isNew
+            button_cancel.isEnabled = isNew
+            button_dispatch.isVisible = !isNew and order.alreadyPaid
+            button_dispatch.isEnabled = it.state == DeliveryOrder.STATE_CONFIRMED
 
             itemsAdapter.items = order.items
             updateCustomerInfo(it.customer)
@@ -142,10 +144,6 @@ class DeliveryDetailFragment : Fragment() {
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
         }
-    }
-
-    private fun setButtonState(button: LoadingButton, state: Boolean) {
-        button.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun updateOrderNumber(provider: String, orderId: String) {

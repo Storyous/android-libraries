@@ -28,7 +28,7 @@ data class DeliveryOrder(
         const val TYPE_TAKEAWAY = "takeaway"
 
         const val STATE_NEW = "NEW"
-        const val STATE_WAITING = "CONFIRMED"
+        const val STATE_CONFIRMED = "CONFIRMED"
         const val STATE_DISPATCHED = "DISPATCHED"
         const val STATE_DECLINED = "DECLINED"
     }

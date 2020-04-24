@@ -17,7 +17,7 @@
         app:navigationIcon="@drawable/search_arrow"
         app:title="@string/app_name" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_delivery_list"
         android:name="com.storyous.delivery.common.DeliveryListFragment"
         android:layout_width="0dp"
@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_delivery_detail"
         android:name="com.storyous.delivery.common.DeliveryDetailFragment"
         android:layout_width="0dp"

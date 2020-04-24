@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
@@ -33,8 +34,10 @@ class DeliveryViewModel(
         const val MESSAGE_OK_DECLINED = 3
     }
 
-    private val selectedOrderLive = MutableLiveData<DeliveryOrder>(null)
-    private val deliveryModel = DeliveryConfiguration.deliveryModel
+    private val selectedOrderIdLive = MutableLiveData<String>(null)
+    private val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
+        DeliveryConfiguration.deliveryRepository?.getOrderLive(it)
+    }
     private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
         MediatorLiveData<List<DeliveryOrder>>().apply {
             addSource(DeliveryConfiguration.deliveryRepository!!.getDeliveryOrders()) { orders ->
@@ -62,19 +65,16 @@ class DeliveryViewModel(
     }
 
     fun deselectOrder() {
-        selectedOrderLive.value = null
+        selectedOrderIdLive.value = null
     }
 
     fun setSelectOrder(orderId: String) {
-        launch(provider.Main) {
-            DeliveryConfiguration.deliveryRepository?.findOrder(orderId)
-                ?.also { setSelectOrder(it) }
-        }
+        selectedOrderIdLive.value = orderId
+        Timber.i("Delivery order selected $orderId")
     }
 
     fun setSelectOrder(order: DeliveryOrder) {
-        selectedOrderLive.value = order
-        Timber.i("Delivery order selected ${order.orderId}")
+        setSelectOrder(order.orderId)
     }
 
     fun getSelectedOrder() = selectedOrderLive.value
@@ -93,11 +93,8 @@ class DeliveryViewModel(
                     DeliveryConfiguration.placeInfo?.merchantId,
                     DeliveryConfiguration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository?.acceptDeliveryOrder(
-                        merchantId,
-                        placeId,
-                        order
-                    )
+                    DeliveryConfiguration.deliveryRepository
+                        ?.acceptDeliveryOrder(merchantId, placeId, order)
                 }
             }
 
@@ -124,17 +121,18 @@ class DeliveryViewModel(
                         DeliveryConfiguration.placeInfo?.merchantId,
                         DeliveryConfiguration.placeInfo?.placeId
                     ) { merchantId, placeId ->
-                        DeliveryConfiguration.deliveryRepository?.cancelDeliveryOrder(
-                            merchantId, placeId, selected, reason
-                        )
+                        DeliveryConfiguration.deliveryRepository
+                            ?.cancelDeliveryOrder(merchantId, placeId, selected, reason)
                     }
                 }
 
                 when (result) {
-                    DeliveryRepository.RESULT_OK -> addMessageToShow(MESSAGE_OK_DECLINED)
-                    DeliveryRepository.RESULT_ERR_CONFLICT -> addMessageToShow(
-                        MESSAGE_ERROR_STATE_CONFLICT
-                    )
+                    DeliveryRepository.RESULT_OK -> {
+                        addMessageToShow(MESSAGE_OK_DECLINED)
+                    }
+                    DeliveryRepository.RESULT_ERR_CONFLICT -> {
+                        addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    }
                     else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
 
@@ -165,17 +163,14 @@ class DeliveryViewModel(
                     DeliveryConfiguration.placeInfo?.merchantId,
                     DeliveryConfiguration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository?.notifyDeliveryOrderDispatched(
-                        merchantId,
-                        placeId,
-                        order
-                    )
+                    DeliveryConfiguration.deliveryRepository
+                        ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
                 }
             }
 
             when (result) {
                 DeliveryRepository.RESULT_OK -> {
-                    DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
+                    // do nothing
                 }
                 DeliveryRepository.RESULT_ERR_CONFLICT -> {
                     addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
@@ -183,7 +178,7 @@ class DeliveryViewModel(
                 else -> addMessageToShow(MESSAGE_ERROR_OTHER)
             }
 
-            loadingOrderAccepting.postValue(false)
+            loadingOrderDispatching.postValue(false)
         }
     }
 }

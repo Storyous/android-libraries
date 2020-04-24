@@ -21,6 +21,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.util.concurrent.ConcurrentLinkedQueue
 
+@Suppress("TooManyFunctions")
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
     private val db: DeliveryDao
@@ -49,6 +50,9 @@ open class DeliveryRepository(
     fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
     fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
     fun getDeliveryError(): LiveData<DeliveryException> = deliveryError
+    fun getDispatchedOrdersLive() = Transformations.map(db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED)) {
+        it.map { orderWithCustomer -> orderWithCustomer.toApi() }
+    }
 
     fun addConfirmedOrder(order: DeliveryOrder) {
         confirmedOrdersQueue.add(order)
@@ -148,8 +152,8 @@ open class DeliveryRepository(
         placeId: String,
         order: DeliveryOrder
     ): String {
-        return order?.takeIf { it.provider != "covermanager" }?.let { order ->
-            notifyDeliveryOrderDispatched(merchantId, placeId, order.orderId)
+        return order.takeIf { it.provider != "covermanager" }?.let {
+            notifyDeliveryOrderDispatched(merchantId, placeId, it.orderId)
         } ?: ""
     }
 
@@ -165,7 +169,7 @@ open class DeliveryRepository(
         }
     }
 
-    suspend fun notifyDeliveryOrderDispatched(
+    private suspend fun notifyDeliveryOrderDispatched(
         merchantId: String,
         placeId: String,
         orderId: String
@@ -182,7 +186,7 @@ open class DeliveryRepository(
             if (error?.code == STATUS_CODE_CONFLICT) {
                 retval = RESULT_ERR_CONFLICT
             }
-            Timber.e(it, "Fail to dispatch order${orderId}.")
+            Timber.e(it, "Fail to dispatch order $orderId.")
 
             error?.order
         }?.also {
@@ -196,9 +200,12 @@ open class DeliveryRepository(
         deliveryOrders.value = updateOrdersInDb(listOf(order))
     }
 
-    suspend fun findOrder(orderId: String): DeliveryOrder? = withContext(provider.IO) {
-        deliveryOrders.value?.find { it.orderId == orderId }
-            ?: db.getCompleteOrder(orderId)?.toApi()
+    fun getOrderLive(orderId: String?): LiveData<DeliveryOrder> {
+        return if (orderId == null) {
+            MutableLiveData(null)
+        } else {
+            Transformations.map(db.getOrderLive(orderId)) { it?.toApi() }
+        }
     }
 
     class DeliveryException(cause: Throwable) : Exception(cause) {
