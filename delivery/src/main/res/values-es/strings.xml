@@ -2,9 +2,10 @@
 <resources>
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
-    <string name="delivery_order_not_open">Sin orden abierta</string>
+    <string name="delivery_order_not_open">Sin pedido abierto</string>
     <string name="delivery_confirm_error_other">No se ha podido confirmar el pedido, por favor inténtelo de nuevo</string>
     <string name="delivery_confirm_error_conflict">El pedido ha cambiado, no es posible confirmarlo</string>
+    <string name="delivery_dispatch_error_other">No se ha podido despachar el pedido, por favor inténtelo de nuevo</string>
     <string name="delivery_cancel_reason_title">Seleccione el motivo de la cancelación</string>
     <string name="delivery_payment_type_header">Método de pago:</string>
     <string name="delivery_already_paid">Pagado por adelantado</string>
@@ -15,9 +16,10 @@
     <string name="delivery_orders_new">Nuevos pedidos</string>
     <string name="delivery_orders_waiting">Pedidos recibidos</string>
     <string name="delivery_orders_processed">Pedidos procesados</string>
-    <string name="delivery_order_items">Productos en la orden</string>
-    <string name="cancel_delivery_order">Cancelar orden</string>
-    <string name="accept_order">Aceptar orden</string>
+    <string name="delivery_order_items">Productos en el pedido</string>
+    <string name="cancel_delivery_order">Cancelar pedido</string>
+    <string name="dispatch_delivery_order">Despachar pedido</string>
+    <string name="accept_order">Aceptar pedido</string>
     <string name="delivery_orders_declined">Pedidos rechazados</string>
     <string name="time_at">A las %s</string>
     <string name="time_till">Hasta las %s</string>

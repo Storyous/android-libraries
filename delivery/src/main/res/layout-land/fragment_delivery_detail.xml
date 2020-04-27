@@ -156,23 +156,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:text="Objednávka z Dáme jídlo č. 12345" />
 
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_cancel"
-        style="@style/Button.Primary.Contextual.Light"
-        android:layout_width="0dp"
-        android:text="@string/cancel_delivery_order"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_accept"
-        app:layout_constraintStart_toEndOf="@+id/centerGuideline" />
-
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_accept"
-        style="@style/Button.Primary.Contextual.Light"
-        android:layout_width="0dp"
-        android:text="@string/accept_order"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_cancel"/>
+    <include layout="@layout/delivery_detail_buttons" />
 
     <TextView
         android:id="@+id/not_open"

@@ -1,5 +1,6 @@
 package com.storyous.delivery.common.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -26,17 +27,26 @@ abstract class DeliveryDao {
     @Delete
     abstract suspend fun deleteCustomers(customers: List<Customer>)
 
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
-    abstract suspend fun getOrders(): List<DeliveryOrder>
+    abstract suspend fun getOrders(): List<DeliveryOrderWithCustomer>
 
+    @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
+    abstract fun getOrdersLive(): LiveData<List<DeliveryOrderWithCustomer>>
+
+    @Query("SELECT * FROM DeliveryOrder WHERE state = :state ORDER BY deliveryTime DESC")
+    abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
+
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date OR deliveryTime < :date")
-    abstract suspend fun getOldOrders(date: Date): List<DeliveryOrder>
+    abstract suspend fun getOldOrders(date: Date): List<DeliveryOrderWithCustomer>
+
+    @Transaction
+    @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
+    abstract suspend fun getOrder(orderId: String): DeliveryOrderWithCustomer?
 
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
-    abstract suspend fun getOrder(orderId: String): DeliveryOrder?
-
-    @Query("SELECT * FROM Customer WHERE id = :customerId")
-    abstract suspend fun getCustomer(customerId: String): Customer?
+    abstract fun getOrderLive(orderId: String): LiveData<DeliveryOrderWithCustomer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertOrders(orders: List<DeliveryOrder>)
@@ -55,36 +65,15 @@ abstract class DeliveryDao {
     open suspend fun deleteOrdersOlderThan(date: Date) {
         val oldOrders = getOldOrders(date)
             .takeIf { it.isNotEmpty() } ?: return
-        deleteOrders(oldOrders)
-        deleteCustomers(oldOrders.mapNotNull { it.customer })
+
+        deleteOrders(oldOrders.map { it.order })
+        deleteCustomers(oldOrders.map { it.customer })
     }
 
     @Transaction
-    open suspend fun getCompleteOrders(): List<DeliveryOrder> {
-        return getOrders().apply {
-            forEach { order: DeliveryOrder ->
-                order.customer = order.customerId?.let { getCustomer(it) }
-            }
-        }
-    }
-
-    @Transaction
-    open suspend fun getCompleteOrder(orderId: String): DeliveryOrder? {
-        return getOrder(orderId)?.apply {
-            customer = customerId?.let { getCustomer(it) }
-        }
-    }
-
-    @Transaction
-    open suspend fun storeCompleteOrders(orders: List<DeliveryOrder>) {
-        insertOrders(orders)
-        insertCustomers(orders.mapNotNull { it.customer })
-    }
-
-    @Transaction
-    open suspend fun updateAndGetAll(orders: List<DeliveryOrder>): List<DeliveryOrder> {
-        storeCompleteOrders(orders)
+    open suspend fun update(orders: List<DeliveryOrderWithCustomer>) {
+        insertOrders(orders.map { it.order })
+        insertCustomers(orders.map { it.customer })
         deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
-        return getCompleteOrders()
     }
 }

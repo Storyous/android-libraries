@@ -63,7 +63,7 @@ class DeliveryItemsAdapter(
         ordersDeclined.clear()
 
         ordersNew.addAll(items.filter { it.state == DeliveryOrder.STATE_NEW })
-        ordersWaiting.addAll(items.filter { it.state == DeliveryOrder.STATE_WAITING })
+        ordersWaiting.addAll(items.filter { it.state == DeliveryOrder.STATE_CONFIRMED })
         ordersProcessed.addAll(items.filter { it.state == DeliveryOrder.STATE_DISPATCHED })
         ordersDeclined.addAll(items.filter { it.state == DeliveryOrder.STATE_DECLINED })
 

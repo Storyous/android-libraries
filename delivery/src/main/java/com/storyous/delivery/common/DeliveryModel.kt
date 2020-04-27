@@ -48,7 +48,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     fun confirmAutoConfirmOrders() {
         if (DeliveryConfiguration.placeInfo?.autoConfirm == true) {
-            DeliveryConfiguration.deliveryRepository?.getDeliveryOrders()?.value
+            DeliveryConfiguration.deliveryRepository?.deliveryOrdersLive?.value
                 ?.filter { it.state == DeliveryOrder.STATE_NEW && it.autoConfirm == true }
                 ?.forEach { confirmAutoConfirmOrder(it) }
         }

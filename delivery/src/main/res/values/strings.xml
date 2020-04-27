@@ -5,6 +5,7 @@
     <string name="delivery_order_not_open">No open order</string>
     <string name="delivery_confirm_error_other">Could not confirm delivery order, please try again</string>
     <string name="delivery_confirm_error_conflict">The order has changed, it is not possible to confirm it</string>
+    <string name="delivery_dispatch_error_other">Could not dispatch delivery order, please try again</string>
     <string name="delivery_cancel_reason_title">Select cancel reason</string>
     <string name="delivery_payment_type_header">Payment type:</string>
     <string name="delivery_already_paid">already paid</string>
@@ -21,6 +22,7 @@
     <string name="delivery_orders_processed">Processed orders</string>
     <string name="delivery_order_items">Order items</string>
     <string name="cancel_delivery_order">Cancel order</string>
+    <string name="dispatch_delivery_order">Dispatch order</string>
     <string name="accept_order">Accept order</string>
     <string name="delivery_orders_declined">Declined orders</string>
     <string name="time_at">at %s</string>

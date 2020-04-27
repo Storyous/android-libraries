@@ -1,10 +1,10 @@
 package com.storyous.delivery.common
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
@@ -16,9 +16,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-class DeliveryViewModel(
-    application: Application
-) : AndroidViewModel(application), CoroutineScope by CoroutineProviderScope() {
+class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope() {
 
     companion object {
         const val PROVIDER_DJ = "dj"
@@ -33,20 +31,22 @@ class DeliveryViewModel(
         const val MESSAGE_OK_DECLINED = 3
     }
 
-    private val selectedOrderLive = MutableLiveData<DeliveryOrder>(null)
-    private val deliveryModel = DeliveryConfiguration.deliveryModel
-    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
-        MediatorLiveData<List<DeliveryOrder>>().apply {
-            addSource(DeliveryConfiguration.deliveryRepository!!.getDeliveryOrders()) { orders ->
-                if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
-                    deselectOrder()
-                }
-                value = orders
+    private val selectedOrderIdLive = MutableLiveData<String>(null)
+    private val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
+        DeliveryConfiguration.deliveryRepository?.getOrderLive(it)
+    }
+    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> = MediatorLiveData<List<DeliveryOrder>>().apply {
+        addSource(DeliveryConfiguration.deliveryRepository!!.deliveryOrdersLive) { orders ->
+            if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
+                deselectOrder()
             }
+            value = orders
         }
+    }
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
+    val loadingOrderDispatching = MutableLiveData(false)
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
     fun loadOrders() {
@@ -61,19 +61,16 @@ class DeliveryViewModel(
     }
 
     fun deselectOrder() {
-        selectedOrderLive.value = null
+        selectedOrderIdLive.value = null
     }
 
     fun setSelectOrder(orderId: String) {
-        launch(provider.Main) {
-            DeliveryConfiguration.deliveryRepository?.findOrder(orderId)
-                ?.also { setSelectOrder(it) }
-        }
+        selectedOrderIdLive.value = orderId
+        Timber.i("Delivery order selected $orderId")
     }
 
     fun setSelectOrder(order: DeliveryOrder) {
-        selectedOrderLive.value = order
-        Timber.i("Delivery order selected ${order.orderId}")
+        setSelectOrder(order.orderId)
     }
 
     fun getSelectedOrder() = selectedOrderLive.value
@@ -92,11 +89,8 @@ class DeliveryViewModel(
                     DeliveryConfiguration.placeInfo?.merchantId,
                     DeliveryConfiguration.placeInfo?.placeId
                 ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository?.acceptDeliveryOrder(
-                        merchantId,
-                        placeId,
-                        order
-                    )
+                    DeliveryConfiguration.deliveryRepository
+                        ?.acceptDeliveryOrder(merchantId, placeId, order)
                 }
             }
 
@@ -123,17 +117,18 @@ class DeliveryViewModel(
                         DeliveryConfiguration.placeInfo?.merchantId,
                         DeliveryConfiguration.placeInfo?.placeId
                     ) { merchantId, placeId ->
-                        DeliveryConfiguration.deliveryRepository?.cancelDeliveryOrder(
-                            merchantId, placeId, selected, reason
-                        )
+                        DeliveryConfiguration.deliveryRepository
+                            ?.cancelDeliveryOrder(merchantId, placeId, selected, reason)
                     }
                 }
 
                 when (result) {
-                    DeliveryRepository.RESULT_OK -> addMessageToShow(MESSAGE_OK_DECLINED)
-                    DeliveryRepository.RESULT_ERR_CONFLICT -> addMessageToShow(
-                        MESSAGE_ERROR_STATE_CONFLICT
-                    )
+                    DeliveryRepository.RESULT_OK -> {
+                        addMessageToShow(MESSAGE_OK_DECLINED)
+                    }
+                    DeliveryRepository.RESULT_ERR_CONFLICT -> {
+                        addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    }
                     else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
 
@@ -152,5 +147,34 @@ class DeliveryViewModel(
 
     fun stopRinging() {
         DeliveryConfiguration.deliveryRepository?.ringingState?.value = false
+    }
+
+    fun dispatchOrder(order: DeliveryOrder) {
+        loadingOrderDispatching.postValue(true)
+        // hold data of selected order to prevent change data when is selected different order
+        launch(provider.Main) {
+
+            val result = withContext(provider.IO) {
+                onNonNull(
+                    DeliveryConfiguration.placeInfo?.merchantId,
+                    DeliveryConfiguration.placeInfo?.placeId
+                ) { merchantId, placeId ->
+                    DeliveryConfiguration.deliveryRepository
+                        ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
+                }
+            }
+
+            when (result) {
+                DeliveryRepository.RESULT_OK -> {
+                    // do nothing
+                }
+                DeliveryRepository.RESULT_ERR_CONFLICT -> {
+                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                }
+                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
+            }
+
+            loadingOrderDispatching.postValue(false)
+        }
     }
 }

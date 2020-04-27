@@ -21,6 +21,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.util.concurrent.ConcurrentLinkedQueue
 
+@Suppress("TooManyFunctions")
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
     private val db: DeliveryDao
@@ -35,18 +36,18 @@ open class DeliveryRepository(
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
     private val confirmedOrders = MutableLiveData<DeliveryOrder>()
-    private val deliveryOrders = MutableLiveData<List<DeliveryOrder>>()
+    val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
+    val deliveryOrdersLive = db.getOrdersLive().toApi()
     private val deliveryError = MutableLiveData<DeliveryException>()
     private var lastMod: String? = null
 
-    val newDeliveriesToHandle = Transformations.map(deliveryOrders) { deliveries ->
+    val newDeliveriesToHandle = Transformations.map(deliveryOrdersLive) { deliveries ->
         deliveries.filter { it.state == DeliveryOrder.STATE_NEW }
     }
     val ringingState = MediatorLiveData<Boolean>().apply {
         addSource(newDeliveriesToHandle) { value = it.isNotEmpty() }
     }
 
-    fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
     fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
     fun getDeliveryError(): LiveData<DeliveryException> = deliveryError
 
@@ -61,7 +62,7 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
-        db.updateAndGetAll(orders.map { it.toDb() }).map { it.toApi() }
+        db.update(orders.map { it.toDb() })
     }
 
     suspend fun loadDeliveryOrders(
@@ -78,7 +79,7 @@ open class DeliveryRepository(
                 deliveryError.value = DeliveryException(it)
             }
         }.onSuccess {
-            deliveryOrders.value = updateOrdersInDb(it.data)
+            updateOrdersInDb(it.data)
             lastMod = it.lastModificationAt
         }.getOrNull()
     }
@@ -143,44 +144,60 @@ open class DeliveryRepository(
         return retval
     }
 
+    suspend fun notifyDeliveryOrderDispatched(
+        merchantId: String,
+        placeId: String,
+        order: DeliveryOrder
+    ): String {
+        return order.takeIf { it.provider != "covermanager" }?.let {
+            notifyDeliveryOrderDispatched(merchantId, placeId, it.orderId)
+        } ?: ""
+    }
+
     fun notifyDeliveryOrderDispatched(
         merchantId: String,
         placeId: String,
         order: OrderProviderInfo?
     ) {
-        // TODO add param responsible to recognize notification requirement
         order?.takeIf { it.code != "covermanager" }?.let { providerInfo ->
             launch {
-                runCatching {
-                    withContext(provider.IO) {
-                        apiService().notifyOrderDispatched(
-                            merchantId, placeId, providerInfo.orderId
-                        )
-                    }
-                }.onFailure {
-                    Timber.e(it, "Fail to notify order ${providerInfo.orderId}.")
-                }.getOrNull()?.also {
-                    updateOrder(it)
-                }
+                notifyDeliveryOrderDispatched(merchantId, placeId, providerInfo.orderId)
             }
         }
     }
 
-    private suspend fun updateOrder(order: DeliveryOrder) = withContext(provider.Main) {
-        deliveryOrders.value = updateOrdersInDb(listOf(order))
-    }
+    private suspend fun notifyDeliveryOrderDispatched(
+        merchantId: String,
+        placeId: String,
+        orderId: String
+    ): String {
+        var retval = ""
 
-    suspend fun findOrder(orderId: String): DeliveryOrder? = withContext(provider.IO) {
-        deliveryOrders.value?.find { it.orderId == orderId }
-            ?: db.getCompleteOrder(orderId)?.toApi()
-    }
+        runCatching {
+            apiService().notifyOrderDispatched(merchantId, placeId, orderId)
+        }.onSuccess {
+            retval = RESULT_OK
+        }.getOrElse {
+            val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
 
-    class DeliveryException(cause: Throwable) : Exception(cause) {
-        private var consumed = false
+            if (error?.code == STATUS_CODE_CONFLICT) {
+                retval = RESULT_ERR_CONFLICT
+            }
+            Timber.e(it, "Fail to dispatch order $orderId.")
 
-        fun consume(): Boolean {
-            consumed = true
-            return !consumed
+            error?.order
+        }?.also {
+            updateOrder(it)
         }
+
+        return retval
+    }
+
+    private suspend fun updateOrder(order: DeliveryOrder) {
+        updateOrdersInDb(listOf(order))
+    }
+
+    fun getOrderLive(orderId: String?): LiveData<DeliveryOrder>? {
+        return orderId?.let { Transformations.map(db.getOrderLive(it)) { order -> order?.toApi() } }
     }
 }

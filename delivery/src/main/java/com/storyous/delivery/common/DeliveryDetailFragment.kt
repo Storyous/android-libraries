@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
+import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 
 @Suppress("TooManyFunctions")
@@ -31,10 +32,13 @@ class DeliveryDetailFragment : Fragment() {
 
         viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
         viewModel.loadingOrderAccepting.observe(this, Observer { loading ->
-            button_accept.showOverlay(loading ?: false)
+            button_accept.showOverlay(loading == true)
         })
         viewModel.loadingOrderCancelling.observe(this, Observer { loading ->
-            button_cancel.showOverlay(loading ?: false)
+            button_cancel.showOverlay(loading == true)
+        })
+        viewModel.loadingOrderDispatching.observe(this, Observer { loading ->
+            button_dispatch.showOverlay(loading == true)
         })
         viewModel.messagesToShow.observe(this, Observer { messages -> onNewMessages(messages) })
     }
@@ -71,6 +75,14 @@ class DeliveryDetailFragment : Fragment() {
                 ).show()
         }
         button_cancel.setOnClickListener { onOrderCancelClicked() }
+        button_dispatch.setOnClickListener {
+            viewModel.getSelectedOrderLive().value?.also { viewModel.dispatchOrder(it) }
+                ?: Toast.makeText(
+                    context,
+                    R.string.delivery_dispatch_error_other,
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
     }
 
     private fun onNewMessages(messages: List<Int>?) {
@@ -117,8 +129,14 @@ class DeliveryDetailFragment : Fragment() {
         order?.let {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
-            button_accept.isEnabled = it.state == DeliveryOrder.STATE_NEW
-            button_cancel.isEnabled = it.state == DeliveryOrder.STATE_NEW
+            
+            val isNew = it.state == DeliveryOrder.STATE_NEW
+            button_accept.isVisible = isNew
+            button_accept.isEnabled = isNew
+            button_cancel.isVisible = isNew
+            button_cancel.isEnabled = isNew
+            button_dispatch.isVisible = DeliveryConfiguration.dispatchVisible(order)
+            button_dispatch.isEnabled = DeliveryConfiguration.dispatchEnabled(order)
 
             itemsAdapter.items = order.items
             updateCustomerInfo(it.customer)

@@ -5,6 +5,7 @@
     <string name="delivery_order_not_open">Žádná otevřená objednávka</string>
     <string name="delivery_confirm_error_other">Při potvrzení objednávky došlo k chybě, zkuste to prosím znovu</string>
     <string name="delivery_confirm_error_conflict">Objednávka byla změněna, není možné ji potvrdit</string>
+    <string name="delivery_dispatch_error_other">Při odbavení objednávky došlo k chybě, zkuste to prosím znovu</string>
     <string name="delivery_cancel_reason_title">Vyberte důvod pro odmítnutí</string>
     <string name="delivery_payment_type_header">Způsob platby:</string>
     <string name="delivery_already_paid">placeno předem</string>
@@ -17,6 +18,7 @@
     <string name="delivery_orders_processed">Vyřízené objednávky</string>
     <string name="delivery_order_items">Položky objednávky</string>
     <string name="cancel_delivery_order">Zrušit objednávku</string>
+    <string name="dispatch_delivery_order">Vydat objednávku</string>
     <string name="accept_order">Přijmout objednávku</string>
     <string name="delivery_orders_declined">Odmítnuté objednávky</string>
     <string name="time_at">v %s</string>

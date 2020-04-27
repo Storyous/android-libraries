@@ -10,7 +10,7 @@ import com.storyous.commonutils.show
 import com.storyous.delivery.common.api.model.DeliveryAddition
 import com.storyous.delivery.common.api.model.DeliveryItem
 import kotlinx.android.synthetic.main.list_item_delivery_detail.view.*
-import kotlinx.android.synthetic.main.payment_item_additions_subitem.view.*
+import kotlinx.android.synthetic.main.list_item_delivery_addition.view.*
 import kotlinx.android.synthetic.main.typed_value_layout.view.*
 import java.math.BigDecimal
 
@@ -65,7 +65,7 @@ class DeliveryDetailItemsAdapter :
             subitems.removeAllViews()
             item.additions?.forEach {
                 val view =
-                    inflater.inflate(R.layout.payment_item_additions_subitem, subitems, false)
+                    inflater.inflate(R.layout.list_item_delivery_addition, subitems, false)
                 bindSubItem(view, item, it)
                 subitems.addView(view)
             }
