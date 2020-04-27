@@ -24,7 +24,7 @@ class DeliveryListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getDeliveryOrdersLive()?.observe(this, Observer { orders -> showOrders(orders) })
+        viewModel.getDeliveryOrdersLive().observe(this, Observer { orders -> showOrders(orders) })
     }
 
     override fun onCreateView(
