@@ -34,15 +34,17 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     private val selectedOrderIdLive = MutableLiveData<String>(null)
     private val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
         DeliveryConfiguration.deliveryRepository?.getOrderLive(it)
+            ?: MutableLiveData<DeliveryOrder>(null)
     }
-    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> = MediatorLiveData<List<DeliveryOrder>>().apply {
-        addSource(DeliveryConfiguration.deliveryRepository!!.deliveryOrdersLive) { orders ->
-            if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
-                deselectOrder()
+    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
+        MediatorLiveData<List<DeliveryOrder>>().apply {
+            addSource(DeliveryConfiguration.deliveryRepository!!.deliveryOrdersLive) { orders ->
+                if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
+                    deselectOrder()
+                }
+                value = orders
             }
-            value = orders
         }
-    }
 
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
@@ -64,7 +66,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         selectedOrderIdLive.value = null
     }
 
-    fun setSelectOrder(orderId: String) {
+    fun setSelectOrder(orderId: String?) {
         selectedOrderIdLive.value = orderId
         Timber.i("Delivery order selected $orderId")
     }

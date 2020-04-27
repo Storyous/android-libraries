@@ -31,9 +31,11 @@ abstract class DeliveryDao {
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
     abstract suspend fun getOrders(): List<DeliveryOrderWithCustomer>
 
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
     abstract fun getOrdersLive(): LiveData<List<DeliveryOrderWithCustomer>>
 
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state ORDER BY deliveryTime DESC")
     abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
 
@@ -45,6 +47,7 @@ abstract class DeliveryDao {
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
     abstract suspend fun getOrder(orderId: String): DeliveryOrderWithCustomer?
 
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
     abstract fun getOrderLive(orderId: String): LiveData<DeliveryOrderWithCustomer>
 

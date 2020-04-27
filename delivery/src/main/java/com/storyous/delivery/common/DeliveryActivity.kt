@@ -51,18 +51,16 @@ class DeliveryActivity : AppCompatActivity() {
                 }
             })
 
-        intent.getStringExtra(ARG_ORDER_ID)?.also {
-            viewModel.setSelectOrder(it)
-        }
+        viewModel.setSelectOrder(intent.getStringExtra(ARG_ORDER_ID))
         viewModel.loadOrders()
     }
 
     override fun onBackPressed() {
-        if (isOverlappingDetailOpen()) {
+        if (viewModel.getSelectedOrder() == null) {
+            super.onBackPressed()
+        } else {
             viewModel.deselectOrder()
-            return
         }
-        super.onBackPressed()
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
@@ -72,7 +70,4 @@ class DeliveryActivity : AppCompatActivity() {
     private fun getOverlappingDetailFragment(): Fragment? {
         return supportFragmentManager.findFragmentByTag("overlappingDetail")
     }
-
-    private fun isOverlappingDetailOpen(): Boolean =
-        getOverlappingDetailFragment()?.view?.isVisible == true
 }
