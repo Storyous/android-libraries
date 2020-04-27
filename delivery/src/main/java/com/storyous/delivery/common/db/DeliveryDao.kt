@@ -31,6 +31,9 @@ abstract class DeliveryDao {
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
     abstract suspend fun getOrders(): List<DeliveryOrderWithCustomer>
 
+    @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
+    abstract fun getOrdersLive(): LiveData<List<DeliveryOrderWithCustomer>>
+
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state ORDER BY deliveryTime DESC")
     abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
 
@@ -68,10 +71,9 @@ abstract class DeliveryDao {
     }
 
     @Transaction
-    open suspend fun updateAndGetAll(orders: List<DeliveryOrderWithCustomer>): List<DeliveryOrderWithCustomer> {
+    open suspend fun update(orders: List<DeliveryOrderWithCustomer>) {
         insertOrders(orders.map { it.order })
         insertCustomers(orders.map { it.customer })
         deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
-        return getOrders()
     }
 }

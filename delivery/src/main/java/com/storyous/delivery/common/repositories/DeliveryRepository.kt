@@ -36,23 +36,20 @@ open class DeliveryRepository(
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
     private val confirmedOrders = MutableLiveData<DeliveryOrder>()
-    private val deliveryOrders = MutableLiveData<List<DeliveryOrder>>()
+    val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
+    val deliveryOrdersLive = db.getOrdersLive().toApi()
     private val deliveryError = MutableLiveData<DeliveryException>()
     private var lastMod: String? = null
 
-    val newDeliveriesToHandle = Transformations.map(deliveryOrders) { deliveries ->
+    val newDeliveriesToHandle = Transformations.map(deliveryOrdersLive) { deliveries ->
         deliveries.filter { it.state == DeliveryOrder.STATE_NEW }
     }
     val ringingState = MediatorLiveData<Boolean>().apply {
         addSource(newDeliveriesToHandle) { value = it.isNotEmpty() }
     }
 
-    fun getDeliveryOrders(): LiveData<List<DeliveryOrder>> = deliveryOrders
     fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
     fun getDeliveryError(): LiveData<DeliveryException> = deliveryError
-    fun getDispatchedOrdersLive() = Transformations.map(db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED)) {
-        it.map { orderWithCustomer -> orderWithCustomer.toApi() }
-    }
 
     fun addConfirmedOrder(order: DeliveryOrder) {
         confirmedOrdersQueue.add(order)
@@ -65,7 +62,7 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
-        db.updateAndGetAll(orders.map { it.toDb() }).map { it.toApi() }
+        db.update(orders.map { it.toDb() })
     }
 
     suspend fun loadDeliveryOrders(
@@ -82,7 +79,7 @@ open class DeliveryRepository(
                 deliveryError.value = DeliveryException(it)
             }
         }.onSuccess {
-            deliveryOrders.value = updateOrdersInDb(it.data)
+            updateOrdersInDb(it.data)
             lastMod = it.lastModificationAt
         }.getOrNull()
     }
@@ -196,24 +193,11 @@ open class DeliveryRepository(
         return retval
     }
 
-    private suspend fun updateOrder(order: DeliveryOrder) = withContext(provider.Main) {
-        deliveryOrders.value = updateOrdersInDb(listOf(order))
+    private suspend fun updateOrder(order: DeliveryOrder) {
+        updateOrdersInDb(listOf(order))
     }
 
-    fun getOrderLive(orderId: String?): LiveData<DeliveryOrder> {
-        return if (orderId == null) {
-            MutableLiveData(null)
-        } else {
-            Transformations.map(db.getOrderLive(orderId)) { it?.toApi() }
-        }
-    }
-
-    class DeliveryException(cause: Throwable) : Exception(cause) {
-        private var consumed = false
-
-        fun consume(): Boolean {
-            consumed = true
-            return !consumed
-        }
+    fun getOrderLive(orderId: String?): LiveData<DeliveryOrder>? {
+        return orderId?.let { Transformations.map(db.getOrderLive(it)) { order -> order?.toApi() } }
     }
 }

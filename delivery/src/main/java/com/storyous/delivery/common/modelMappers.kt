@@ -1,5 +1,7 @@
 package com.storyous.delivery.common
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.db.DeliveryOrderWithCustomer
@@ -47,3 +49,7 @@ fun DeliveryOrderWithCustomer.toApi() = DeliveryOrder(
 )
 
 fun CustomerDb.toApi() = Customer(name, deliveryAddress, phoneNumber)
+
+fun LiveData<List<DeliveryOrderWithCustomer>>.toApi() = Transformations.map(this) {
+    it.map { orderWithCustomer -> orderWithCustomer.toApi() }
+}
