@@ -3,12 +3,13 @@ package com.storyous.delivery.common
 import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
-object DeliveryConfiguration {
+object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var deliveryModel: DeliveryModel = DeliveryModel()
     var deliveryRepository: DeliveryRepository? = null
     var placeInfo: PlaceInfo? = null
@@ -70,5 +71,20 @@ class DefaultFormatter : Formatter {
 
     override fun defaultCurrency(context: Context): String {
         return context.getString(R.string.default_currency)
+    }
+}
+
+interface DeliveryOrderFunctions {
+    var dispatchVisible: (DeliveryOrder) -> Boolean
+    var dispatchEnabled: (DeliveryOrder) -> Boolean
+}
+
+object DefaultOrderFunctions : DeliveryOrderFunctions {
+    override var dispatchVisible: (DeliveryOrder) -> Boolean = { order ->
+        (order.state != DeliveryOrder.STATE_NEW) and order.alreadyPaid
+    }
+
+    override var dispatchEnabled: (DeliveryOrder) -> Boolean = { order ->
+        order.state == DeliveryOrder.STATE_CONFIRMED
     }
 }
