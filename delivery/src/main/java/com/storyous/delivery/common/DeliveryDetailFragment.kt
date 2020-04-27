@@ -135,8 +135,8 @@ class DeliveryDetailFragment : Fragment() {
             button_accept.isEnabled = isNew
             button_cancel.isVisible = isNew
             button_cancel.isEnabled = isNew
-            button_dispatch.isVisible = !isNew and order.alreadyPaid
-            button_dispatch.isEnabled = it.state == DeliveryOrder.STATE_CONFIRMED
+            button_dispatch.isVisible = DeliveryConfiguration.dispatchVisible(order)
+            button_dispatch.isEnabled = DeliveryConfiguration.dispatchEnabled(order)
 
             itemsAdapter.items = order.items
             updateCustomerInfo(it.customer)

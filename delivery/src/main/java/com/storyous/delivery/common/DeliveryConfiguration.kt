@@ -81,7 +81,7 @@ interface DeliveryOrderFunctions {
 
 object DefaultOrderFunctions : DeliveryOrderFunctions {
     override var dispatchVisible: (DeliveryOrder) -> Boolean = { order ->
-        (order.state != DeliveryOrder.STATE_NEW) and order.alreadyPaid
+        order.state != DeliveryOrder.STATE_NEW
     }
 
     override var dispatchEnabled: (DeliveryOrder) -> Boolean = { order ->
