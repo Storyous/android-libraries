@@ -1,16 +1,27 @@
 package com.storyous.delivery.common
 
 import com.storyous.commonutils.CoroutineProviderScope
-import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
+
+    private var loadingOrdersJob: Job? = null
+
+    var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
+        orders.forEach {
+            if (it.autoConfirm == true && DeliveryConfiguration.placeInfo?.autoConfirmEnabled == true) {
+                confirmOrder(it)
+            }
+        }
+    }
 
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
@@ -46,32 +57,47 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
         }
     }
 
-    fun confirmAutoConfirmOrders() {
-        if (DeliveryConfiguration.placeInfo?.autoConfirm == true) {
-            DeliveryConfiguration.deliveryRepository?.deliveryOrdersLive?.value
-                ?.filter { it.state == DeliveryOrder.STATE_NEW && it.autoConfirm == true }
-                ?.forEach { confirmAutoConfirmOrder(it) }
+    fun loadOrders(): Job? {
+        if (loadingOrdersJob?.isActive != true) {
+            loadingOrdersJob = launch(provider.Main) {
+                DeliveryConfiguration.placeInfo?.let {
+                    Timber.d("Delivery order download started.")
+
+                    DeliveryConfiguration.deliveryRepository
+                        ?.loadDeliveryOrders(it.merchantId, it.placeId)
+
+                    DeliveryConfiguration.deliveryRepository
+                        ?.getNewOrdersFromDb()
+                        ?.also { newOrdersInterceptor(it) }
+
+                } ?: Timber.w("Delivery is not configured to load new orders")
+            }
+        }
+        return loadingOrdersJob
+    }
+    
+    
+    
+
+    suspend fun confirmOrder(order: DeliveryOrder) {
+        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
+
+        val result = withContext(provider.IO) {
+            DeliveryConfiguration.deliveryRepository
+                ?.acceptDeliveryOrder(merchantId, placeId, order)
+        }
+
+        if (DeliveryRepository.RESULT_OK == result) {
+            DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
         }
     }
 
-    private fun confirmAutoConfirmOrder(order: DeliveryOrder) {
-        launch(provider.Main) {
-            val result = withContext(provider.IO) {
-                onNonNull(
-                    DeliveryConfiguration.placeInfo?.merchantId,
-                    DeliveryConfiguration.placeInfo?.placeId
-                ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository?.acceptDeliveryOrder(
-                        merchantId,
-                        placeId,
-                        order
-                    )
-                }
-            }
+    suspend fun decline(order: DeliveryOrder) {
+        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
 
-            if (DeliveryRepository.RESULT_OK == result) {
-                DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
-            }
+        withContext(provider.IO) {
+            DeliveryConfiguration.deliveryRepository
+                ?.cancelDeliveryOrder(merchantId, placeId, order, "Unknown desk")
         }
     }
 }

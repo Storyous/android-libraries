@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.storyous.commonutils.CoroutineProviderScope
-import com.storyous.commonutils.onNonNull
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
@@ -33,7 +32,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
 
     private val selectedOrderIdLive = MutableLiveData<String>(null)
     private val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
-        DeliveryConfiguration.deliveryRepository?.getOrderLive(it)
+        it?.let { DeliveryConfiguration.deliveryRepository?.getOrderLive(it) }
             ?: MutableLiveData<DeliveryOrder>(null)
     }
     private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
@@ -52,14 +51,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
     fun loadOrders() {
-        launch(provider.Main) {
-            DeliveryConfiguration.placeInfo?.let {
-                DeliveryConfiguration.deliveryRepository?.loadDeliveryOrders(
-                    it.merchantId,
-                    it.placeId
-                )
-            }
-        }
+        DeliveryConfiguration.deliveryModel.loadOrders()
     }
 
     fun deselectOrder() {
@@ -87,13 +79,10 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         launch(provider.Main) {
 
             val result = withContext(provider.IO) {
-                onNonNull(
-                    DeliveryConfiguration.placeInfo?.merchantId,
-                    DeliveryConfiguration.placeInfo?.placeId
-                ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository
-                        ?.acceptDeliveryOrder(merchantId, placeId, order)
-                }
+                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+                    ?: return@withContext null
+                DeliveryConfiguration.deliveryRepository
+                    ?.acceptDeliveryOrder(merchantId, placeId, order)
             }
 
             when (result) {
@@ -115,13 +104,10 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         getSelectedOrder()?.let { selected ->
             launch(provider.Main) {
                 val result = withContext(provider.IO) {
-                    onNonNull(
-                        DeliveryConfiguration.placeInfo?.merchantId,
-                        DeliveryConfiguration.placeInfo?.placeId
-                    ) { merchantId, placeId ->
-                        DeliveryConfiguration.deliveryRepository
-                            ?.cancelDeliveryOrder(merchantId, placeId, selected, reason)
-                    }
+                    val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+                        ?: return@withContext null
+                    DeliveryConfiguration.deliveryRepository
+                        ?.cancelDeliveryOrder(merchantId, placeId, selected, reason)
                 }
 
                 when (result) {
@@ -157,13 +143,10 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         launch(provider.Main) {
 
             val result = withContext(provider.IO) {
-                onNonNull(
-                    DeliveryConfiguration.placeInfo?.merchantId,
-                    DeliveryConfiguration.placeInfo?.placeId
-                ) { merchantId, placeId ->
-                    DeliveryConfiguration.deliveryRepository
-                        ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
-                }
+                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+                    ?: return@withContext null
+                DeliveryConfiguration.deliveryRepository
+                    ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
             }
 
             when (result) {

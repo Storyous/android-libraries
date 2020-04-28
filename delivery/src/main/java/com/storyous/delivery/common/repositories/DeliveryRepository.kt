@@ -36,16 +36,14 @@ open class DeliveryRepository(
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
     private val confirmedOrders = MutableLiveData<DeliveryOrder>()
+    val newOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_NEW).toApi()
     val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
     val deliveryOrdersLive = db.getOrdersLive().toApi()
     private val deliveryError = MutableLiveData<DeliveryException>()
     private var lastMod: String? = null
 
-    val newDeliveriesToHandle = Transformations.map(deliveryOrdersLive) { deliveries ->
-        deliveries.filter { it.state == DeliveryOrder.STATE_NEW }
-    }
     val ringingState = MediatorLiveData<Boolean>().apply {
-        addSource(newDeliveriesToHandle) { value = it.isNotEmpty() }
+        addSource(newOrdersLive) { value = it.isNotEmpty() }
     }
 
     fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
@@ -61,8 +59,12 @@ open class DeliveryRepository(
         confirmedOrders.value = confirmedOrdersQueue.peek()
     }
 
-    private suspend fun updateOrdersInDb(orders: List<DeliveryOrder>) = withContext(provider.IO) {
+    private suspend fun updateOrdersInDb(
+        orders: List<DeliveryOrder>,
+        lastModification: String?
+    ) = withContext(provider.IO) {
         db.update(orders.map { it.toDb() })
+        lastMod = lastModification
     }
 
     suspend fun loadDeliveryOrders(
@@ -79,8 +81,7 @@ open class DeliveryRepository(
                 deliveryError.value = DeliveryException(it)
             }
         }.onSuccess {
-            updateOrdersInDb(it.data)
-            lastMod = it.lastModificationAt
+            updateOrdersInDb(it.data, it.lastModificationAt)
         }.getOrNull()
     }
 
@@ -194,10 +195,12 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrder(order: DeliveryOrder) {
-        updateOrdersInDb(listOf(order))
+        updateOrdersInDb(listOf(order), lastMod)
     }
 
-    fun getOrderLive(orderId: String?): LiveData<DeliveryOrder>? {
-        return orderId?.let { Transformations.map(db.getOrderLive(it)) { order -> order?.toApi() } }
+    fun getOrderLive(orderId: String): LiveData<DeliveryOrder> {
+        return Transformations.map(db.getOrderLive(orderId)) { it?.toApi() }
     }
+
+    suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
 }
