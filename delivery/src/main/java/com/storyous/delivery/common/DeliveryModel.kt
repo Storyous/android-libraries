@@ -75,9 +75,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
         }
         return loadingOrdersJob
     }
-    
-    
-    
+
 
     suspend fun confirmOrder(order: DeliveryOrder) {
         val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
@@ -99,5 +97,9 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
             DeliveryConfiguration.deliveryRepository
                 ?.cancelDeliveryOrder(merchantId, placeId, order, "Unknown desk")
         }
+    }
+
+    fun clear() = launch {
+        DeliveryConfiguration.deliveryRepository?.clear()
     }
 }

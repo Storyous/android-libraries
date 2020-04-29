@@ -203,4 +203,14 @@ open class DeliveryRepository(
     }
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
+    
+    suspend fun clear() {
+        withContext(provider.IO) {
+            db.delete()
+        }
+        lastMod = null
+        confirmedOrdersQueue.clear()
+        confirmedOrders.value = null
+        deliveryError.value = null
+    }
 }
