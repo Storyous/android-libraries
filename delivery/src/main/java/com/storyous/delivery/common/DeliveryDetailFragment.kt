@@ -129,7 +129,7 @@ class DeliveryDetailFragment : Fragment() {
         order?.let {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
-            
+
             val isNew = it.state == DeliveryOrder.STATE_NEW
             button_accept.isVisible = isNew
             button_accept.isEnabled = isNew

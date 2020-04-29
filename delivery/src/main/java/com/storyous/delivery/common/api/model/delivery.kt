@@ -1,5 +1,6 @@
 package com.storyous.delivery.common.api.model
 
+import androidx.annotation.StringDef
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 import java.util.Date
@@ -7,25 +8,35 @@ import java.util.Date
 @SuppressWarnings("ConstructorParameterNaming")
 data class DeliveryOrder(
     val orderId: String,
-    var deliveryTime: Date,
-    var deliveryOnTime: Boolean,
-    var deliveryType: String,
-    var discountWithVat: Int?,
-    var customer: Customer,
-    var items: List<DeliveryItem>,
-    var state: String,
-    var alreadyPaid: Boolean,
-    var autoConfirm: Boolean?,
-    var provider: String,
-    var note: String?,
+    val deliveryTime: Date,
+    val deliveryOnTime: Boolean,
+    @DeliveryType val deliveryType: String,
+    val discountWithVat: Int?,
+    val customer: Customer,
+    val deskId: String?,
+    val items: List<DeliveryItem>,
+    @DeliveryState val state: String,
+    val alreadyPaid: Boolean,
+    val autoConfirm: Boolean?,
+    val provider: String,
+    val note: String?,
     @SerializedName("_lastModifiedAt")
-    var lastModifiedAt: Date
-) {
+    val lastModifiedAt: Date
+) { 
 
     companion object {
+        @Retention(AnnotationRetention.SOURCE)
+        @StringDef(TYPE_DELIVERY, TYPE_DISPATCH, TYPE_TAKEAWAY, TYPE_TABLE_ORDER)
+        annotation class DeliveryType
+
         const val TYPE_DELIVERY = "delivery"
         const val TYPE_DISPATCH = "dispatch"
         const val TYPE_TAKEAWAY = "takeaway"
+        const val TYPE_TABLE_ORDER = "orderToTable"
+
+        @Retention(AnnotationRetention.SOURCE)
+        @StringDef(STATE_NEW, STATE_CONFIRMED, STATE_DISPATCHED, STATE_DECLINED)
+        annotation class DeliveryState
 
         const val STATE_NEW = "NEW"
         const val STATE_CONFIRMED = "CONFIRMED"

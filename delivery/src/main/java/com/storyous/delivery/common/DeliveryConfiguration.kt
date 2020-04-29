@@ -29,7 +29,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
 
 class ConfigurationInvalidException(message: String) : RuntimeException(message)
 
-data class PlaceInfo(val placeId: String, val merchantId: String, val autoConfirm: Boolean)
+data class PlaceInfo(val placeId: String, val merchantId: String, val autoConfirmEnabled: Boolean)
 
 interface Formatter {
     fun formatCount(count: Double): String

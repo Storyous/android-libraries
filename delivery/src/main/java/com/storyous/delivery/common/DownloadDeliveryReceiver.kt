@@ -5,23 +5,10 @@ import android.content.Context
 import android.content.Intent
 import com.storyous.commonutils.CoroutineProviderScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class DownloadDeliveryReceiver : BroadcastReceiver(), CoroutineScope by CoroutineProviderScope() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val merchantId = DeliveryConfiguration.placeInfo?.merchantId
-        val placeId = DeliveryConfiguration.placeInfo?.placeId
-
-        if (merchantId == null || placeId == null) {
-            Timber.w("Unknown merchantId or placeId to load delivery orders.")
-        } else {
-            Timber.d("Delivery order download started.")
-            launch {
-                DeliveryConfiguration.deliveryRepository?.loadDeliveryOrders(merchantId, placeId)
-                DeliveryConfiguration.deliveryModel.confirmAutoConfirmOrders()
-            }
-        }
+        DeliveryConfiguration.deliveryModel.loadOrders()
     }
 }

@@ -16,6 +16,7 @@ open class DeliveryOrder(
     var deliveryOnTime: Boolean,
     var deliveryType: String,
     var discountWithVat: Int?,
+    var deskId: String?,
     var items: List<DeliveryItem> = listOf(),
     var state: String,
     var alreadyPaid: Boolean,
