@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import kotlinx.android.synthetic.main.activity_delivery.*
 
@@ -40,16 +40,16 @@ class DeliveryActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
         viewModel.stopRinging()
-        viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
+        viewModel.getSelectedOrderLive().observe(this) { onOrderSelected(it) }
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
 
-        DeliveryConfiguration.deliveryRepository?.getDeliveryError()
-            ?.observe(this, Observer { exception ->
-                if (exception.consume()) {
-                    finish()
-                }
-            })
+        DeliveryConfiguration.deliveryRepository?.getDeliveryError()?.observe(this) {
+            it?.takeIf { !it.consumed }?.run {
+                consume()
+                finish()
+            }
+        }
 
         viewModel.setSelectOrder(intent.getStringExtra(ARG_ORDER_ID))
         viewModel.loadOrders()

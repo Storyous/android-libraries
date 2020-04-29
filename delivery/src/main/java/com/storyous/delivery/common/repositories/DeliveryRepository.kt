@@ -35,19 +35,19 @@ open class DeliveryRepository(
     }
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
-    private val confirmedOrders = MutableLiveData<DeliveryOrder>()
+    private val confirmedOrders = MutableLiveData<DeliveryOrder?>()
     val newOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_NEW).toApi()
     val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
     val deliveryOrdersLive = db.getOrdersLive().toApi()
-    private val deliveryError = MutableLiveData<DeliveryException>()
+    private val deliveryError = MutableLiveData<DeliveryException?>()
     private var lastMod: String? = null
 
     val ringingState = MediatorLiveData<Boolean>().apply {
         addSource(newOrdersLive) { value = it.isNotEmpty() }
     }
 
-    fun getConfirmedOrders(): LiveData<DeliveryOrder> = confirmedOrders
-    fun getDeliveryError(): LiveData<DeliveryException> = deliveryError
+    fun getConfirmedOrders(): LiveData<DeliveryOrder?> = confirmedOrders
+    fun getDeliveryError(): LiveData<DeliveryException?> = deliveryError
 
     fun addConfirmedOrder(order: DeliveryOrder) {
         confirmedOrdersQueue.add(order)
@@ -198,12 +198,12 @@ open class DeliveryRepository(
         updateOrdersInDb(listOf(order), lastMod)
     }
 
-    fun getOrderLive(orderId: String): LiveData<DeliveryOrder> {
-        return Transformations.map(db.getOrderLive(orderId)) { it?.toApi() }
+    fun getOrderLive(orderId: String) = Transformations.map(db.getOrderLive(orderId)) {
+        it?.toApi()
     }
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
-    
+
     suspend fun clear() {
         withContext(provider.IO) {
             db.delete()

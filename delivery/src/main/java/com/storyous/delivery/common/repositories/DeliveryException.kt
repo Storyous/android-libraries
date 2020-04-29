@@ -1,10 +1,11 @@
 package com.storyous.delivery.common.repositories
 
 class DeliveryException(cause: Throwable) : Exception(cause) {
-    private var consumed = false
 
-    fun consume(): Boolean {
+    var consumed = false
+        private set
+
+    fun consume() {
         consumed = true
-        return !consumed
     }
 }
