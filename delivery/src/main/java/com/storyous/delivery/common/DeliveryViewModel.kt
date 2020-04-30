@@ -104,13 +104,12 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         launch(provider.Main) {
 
             val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
                 DeliveryConfiguration.deliveryRepository
-                    ?.acceptDeliveryOrder(merchantId, placeId, order)
+                    ?.acceptDeliveryOrder(order)
             }
 
             when (result) {
+                DeliveryRepository.RESULT_NONE -> return@launch
                 DeliveryRepository.RESULT_OK -> {
                     DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
                 }
@@ -126,15 +125,15 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
 
     fun cancelOrder(order: DeliveryOrder, reason: String) {
         loadingOrderCancelling.postValue(true)
-        launch {
+        
+        launch(provider.Main) {
             val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
                 DeliveryConfiguration.deliveryRepository
-                    ?.cancelDeliveryOrder(merchantId, placeId, order, reason)
+                    ?.cancelDeliveryOrder(order, reason)
             }
-
+                
             when (result) {
+                DeliveryRepository.RESULT_NONE -> return@launch
                 DeliveryRepository.RESULT_OK -> {
                     addMessageToShow(MESSAGE_OK_DECLINED)
                 }
@@ -166,13 +165,12 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         launch(provider.Main) {
 
             val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
                 DeliveryConfiguration.deliveryRepository
-                    ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
+                    ?.notifyDeliveryOrderDispatched(order)
             }
 
             when (result) {
+                DeliveryRepository.RESULT_NONE -> return@launch
                 DeliveryRepository.RESULT_OK -> {
                     // do nothing
                 }

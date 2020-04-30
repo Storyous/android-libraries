@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
+import com.storyous.delivery.common.PlaceInfo
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
 import com.storyous.delivery.common.api.DeliveryService
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.api.model.OrderProviderInfo
 import com.storyous.delivery.common.api.model.RequestDeclineBody
 import com.storyous.delivery.common.db.DeliveryDao
+import com.storyous.delivery.common.db.DeliveryOrderWithCustomer
 import com.storyous.delivery.common.toApi
 import com.storyous.delivery.common.toDb
 import kotlinx.coroutines.CoroutineScope
@@ -37,9 +39,27 @@ open class DeliveryRepository(
 
     private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
     private val confirmedOrders = MutableLiveData<DeliveryOrder?>()
-    val newOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_NEW).toApi()
-    val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
-    val deliveryOrdersLive = db.getOrdersLive().toApi()
+    val placeInfo = MutableLiveData<PlaceInfo?>()
+    val newOrdersLive = Transformations.switchMap(placeInfo) {
+        db.getOrdersLive(
+            it?.merchantId ?: "#",
+            it?.placeId ?: "#",
+            DeliveryOrder.STATE_NEW
+        ).toApi()
+    }
+    val dispatchedOrdersLive = Transformations.switchMap(placeInfo) {
+        db.getOrdersLive(
+            it?.merchantId ?: "#",
+            it?.placeId ?: "#",
+            DeliveryOrder.STATE_DISPATCHED
+        ).toApi()
+    }
+    val deliveryOrdersLive = Transformations.switchMap(placeInfo) {
+        db.getOrdersLive(
+            placeInfo.value?.merchantId ?: "#",
+            placeInfo.value?.placeId ?: "#"
+        ).toApi()
+    }
     private val deliveryError = MutableLiveData<DeliveryException?>()
     private var lastMod: String? = null
 
@@ -61,17 +81,17 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrdersInDb(
+        merchantId: String,
+        placeId: String,
         orders: List<DeliveryOrder>,
         lastModification: String?
     ) = withContext(provider.IO) {
-        db.update(orders.map { it.toDb() })
+        db.update(orders.map { it.toDb(merchantId, placeId) })
         lastMod = lastModification
     }
 
-    suspend fun loadDeliveryOrders(
-        merchantId: String,
-        placeId: String
-    ) = withContext(provider.Main) {
+    suspend fun loadDeliveryOrders() = withContext(provider.Main) {
+        val (placeId, merchantId, autoConfirm) = placeInfo.value ?: return@withContext
         runCatching {
             withContext(provider.IO) {
                 apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
@@ -82,17 +102,15 @@ open class DeliveryRepository(
                 deliveryError.value = DeliveryException(it)
             }
         }.onSuccess {
-            updateOrdersInDb(it.data, it.lastModificationAt)
+            updateOrdersInDb(merchantId, placeId, it.data, it.lastModificationAt)
         }.getOrNull()
     }
 
     suspend fun acceptDeliveryOrder(
-        merchantId: String,
-        placeId: String,
         order: DeliveryOrder
     ): String {
         var retval = RESULT_NONE
-
+        val (placeId, merchantId, autoConfirm) = placeInfo.value ?: return retval
         runCatching {
             apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
         }.onSuccess {
@@ -114,13 +132,11 @@ open class DeliveryRepository(
     }
 
     suspend fun cancelDeliveryOrder(
-        merchantId: String,
-        placeId: String,
         order: DeliveryOrder,
         reason: String
     ): String {
         var retval = RESULT_NONE
-
+        val (placeId, merchantId, autoConfirm) = placeInfo.value ?: return retval
         runCatching {
             apiService().declineDeliveryOrderAsync(
                 merchantId,
@@ -147,34 +163,28 @@ open class DeliveryRepository(
     }
 
     suspend fun notifyDeliveryOrderDispatched(
-        merchantId: String,
-        placeId: String,
         order: DeliveryOrder
     ): String {
         return order.takeIf { it.provider != "covermanager" }?.let {
-            notifyDeliveryOrderDispatched(merchantId, placeId, it.orderId)
+            notifyDeliveryOrderDispatched(it.orderId)
         } ?: RESULT_NONE
     }
 
     fun notifyDeliveryOrderDispatched(
-        merchantId: String,
-        placeId: String,
         order: OrderProviderInfo?
     ) {
         order?.takeIf { it.code != "covermanager" }?.let { providerInfo ->
             launch {
-                notifyDeliveryOrderDispatched(merchantId, placeId, providerInfo.orderId)
+                notifyDeliveryOrderDispatched(providerInfo.orderId)
             }
         }
     }
 
     private suspend fun notifyDeliveryOrderDispatched(
-        merchantId: String,
-        placeId: String,
         orderId: String
     ): String {
         var retval = RESULT_NONE
-
+        val (placeId, merchantId, autoConfirm) = placeInfo.value ?: return retval
         runCatching {
             apiService().notifyOrderDispatched(merchantId, placeId, orderId)
         }.onSuccess {
@@ -196,14 +206,17 @@ open class DeliveryRepository(
     }
 
     private suspend fun updateOrder(order: DeliveryOrder) {
-        updateOrdersInDb(listOf(order), lastMod)
+        val (placeId, merchantId, autoConfirm) = placeInfo.value ?: return
+        updateOrdersInDb(merchantId, placeId, listOf(order), lastMod)
     }
 
-    fun getOrderLive(orderId: String) = Transformations.map(db.getOrderLive(orderId)) {
-        it?.toApi()
+    fun getOrderLive(orderId: String) = Transformations.switchMap(placeInfo) { info ->
+        Transformations.map(db.getOrderLive(info?.merchantId ?: "#", info?.placeId ?: "#", orderId)) { it?.toApi() }
     }
 
-    suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
+    suspend fun getNewOrdersFromDb() = placeInfo.value?.let {
+        db.getOrders(it.merchantId, it.placeId, DeliveryOrder.STATE_NEW).map { it.toApi() }
+    } ?: emptyList()
 
     suspend fun clear() {
         withContext(provider.IO) {

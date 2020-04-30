@@ -28,32 +28,32 @@ abstract class DeliveryDao {
     abstract suspend fun deleteCustomers(customers: List<Customer>)
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
-    abstract suspend fun getOrders(): List<DeliveryOrderWithCustomer>
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId ORDER BY deliveryTime DESC")
+    abstract suspend fun getOrders(merchantId: String, placeId: String): List<DeliveryOrderWithCustomer>
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
-    abstract fun getOrdersLive(): LiveData<List<DeliveryOrderWithCustomer>>
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId ORDER BY deliveryTime DESC")
+    abstract fun getOrdersLive(merchantId: String, placeId: String): LiveData<List<DeliveryOrderWithCustomer>>
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
-    abstract suspend fun getOrders(state: String): List<DeliveryOrderWithCustomer>
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId AND state = :state")
+    abstract suspend fun getOrders(merchantId: String, placeId: String, state: String): List<DeliveryOrderWithCustomer>
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
-    abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId AND state = :state")
+    abstract fun getOrdersLive(merchantId: String, placeId: String, state: String): LiveData<List<DeliveryOrderWithCustomer>>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date OR deliveryTime < :date")
     abstract suspend fun getOldOrders(date: Date): List<DeliveryOrderWithCustomer>
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
-    abstract suspend fun getOrder(orderId: String): DeliveryOrderWithCustomer?
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId AND orderId = :orderId")
+    abstract suspend fun getOrder(merchantId: String, placeId: String, orderId: String): DeliveryOrderWithCustomer?
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
-    abstract fun getOrderLive(orderId: String): LiveData<DeliveryOrderWithCustomer>
+    @Query("SELECT * FROM DeliveryOrder WHERE merchantId = :merchantId AND placeId = :placeId AND orderId = :orderId")
+    abstract fun getOrderLive(merchantId: String, placeId: String, orderId: String): LiveData<DeliveryOrderWithCustomer>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertOrders(orders: List<DeliveryOrder>)

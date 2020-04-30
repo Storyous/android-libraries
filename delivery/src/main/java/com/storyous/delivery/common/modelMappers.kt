@@ -8,7 +8,7 @@ import com.storyous.delivery.common.db.DeliveryOrderWithCustomer
 import com.storyous.delivery.common.db.Customer as CustomerDb
 import com.storyous.delivery.common.db.DeliveryOrder as DeliveryOrderDb
 
-fun DeliveryOrder.toDb(): DeliveryOrderWithCustomer {
+fun DeliveryOrder.toDb(merchantId: String, placeId: String): DeliveryOrderWithCustomer {
     val customer = customer.toDb()
     return DeliveryOrderWithCustomer(
         DeliveryOrderDb(
@@ -25,7 +25,9 @@ fun DeliveryOrder.toDb(): DeliveryOrderWithCustomer {
             provider,
             note,
             lastModifiedAt,
-            customer.id
+            customer.id,
+            merchantId,
+            placeId
         ),
         customer
     )

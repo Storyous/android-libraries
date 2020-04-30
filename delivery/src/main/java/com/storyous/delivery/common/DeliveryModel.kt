@@ -17,7 +17,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
         orders.forEach {
-            if (it.autoConfirm == true && DeliveryConfiguration.placeInfo?.autoConfirmEnabled == true) {
+            if (it.autoConfirm == true && DeliveryConfiguration.placeInfo.value?.autoConfirmEnabled == true) {
                 confirmOrder(it)
             }
         }
@@ -60,11 +60,11 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     fun loadOrders(): Job? {
         if (loadingOrdersJob?.isActive != true) {
             loadingOrdersJob = launch(provider.Main) {
-                DeliveryConfiguration.placeInfo?.let {
+                DeliveryConfiguration.placeInfo.value?.let {
                     Timber.d("Delivery order download started.")
 
                     DeliveryConfiguration.deliveryRepository
-                        ?.loadDeliveryOrders(it.merchantId, it.placeId)
+                        ?.loadDeliveryOrders()
 
                     DeliveryConfiguration.deliveryRepository
                         ?.getNewOrdersFromDb()
@@ -78,11 +78,9 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
 
     suspend fun confirmOrder(order: DeliveryOrder) {
-        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
-
         val result = withContext(provider.IO) {
             DeliveryConfiguration.deliveryRepository
-                ?.acceptDeliveryOrder(merchantId, placeId, order)
+                ?.acceptDeliveryOrder(order)
         }
 
         if (DeliveryRepository.RESULT_OK == result) {
@@ -91,11 +89,9 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     }
 
     suspend fun decline(order: DeliveryOrder) {
-        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
-
         withContext(provider.IO) {
             DeliveryConfiguration.deliveryRepository
-                ?.cancelDeliveryOrder(merchantId, placeId, order, "Unknown desk")
+                ?.cancelDeliveryOrder(order, "Unknown desk")
         }
     }
 

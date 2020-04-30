@@ -3,6 +3,7 @@ package com.storyous.delivery.common
 import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.MutableLiveData
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
@@ -12,7 +13,9 @@ import java.text.DecimalFormat
 object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var deliveryModel: DeliveryModel = DeliveryModel()
     var deliveryRepository: DeliveryRepository? = null
-    var placeInfo: PlaceInfo? = null
+    val placeInfo = MutableLiveData<PlaceInfo>().apply {
+        observeForever { deliveryRepository?.placeInfo?.value = it }
+    }
     var formatter: Formatter = DefaultFormatter()
     var onActivityToolbarCreate: (Toolbar, FragmentManager) -> Unit = { _, _ -> }
     var translate: (deskId: String) -> String = { it }
@@ -22,7 +25,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
         if (deliveryRepository == null) {
             throw ConfigurationInvalidException("Delivery repository must be set before running the activity")
         }
-        if (placeInfo == null) {
+        if (placeInfo.value == null) {
             throw ConfigurationInvalidException("Delivery place info must be set before running the activity")
         }
     }

@@ -24,7 +24,9 @@ open class DeliveryOrder(
     var provider: String,
     var note: String?,
     var lastModifiedAt: Date,
-    var customerId: String?
+    var customerId: String?,
+    var merchantId: String,
+    var placeId: String
 )
 
 @Entity

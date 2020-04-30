@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "0a43cc9d120b5ed4b4123f27d9e68a52",
+    "identityHash": "e86033e9fcc13b74ecf64abfb4e03144",
     "entities": [
       {
         "tableName": "DeliveryOrder",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`orderId` TEXT NOT NULL, `deliveryTime` INTEGER NOT NULL, `deliveryOnTime` INTEGER NOT NULL, `deliveryType` TEXT NOT NULL, `discountWithVat` INTEGER, `deskId` TEXT, `items` TEXT NOT NULL, `state` TEXT NOT NULL, `alreadyPaid` INTEGER NOT NULL, `autoConfirm` INTEGER, `provider` TEXT NOT NULL, `note` TEXT, `lastModifiedAt` INTEGER NOT NULL, `customerId` TEXT, PRIMARY KEY(`orderId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`orderId` TEXT NOT NULL, `deliveryTime` INTEGER NOT NULL, `deliveryOnTime` INTEGER NOT NULL, `deliveryType` TEXT NOT NULL, `discountWithVat` INTEGER, `deskId` TEXT, `items` TEXT NOT NULL, `state` TEXT NOT NULL, `alreadyPaid` INTEGER NOT NULL, `autoConfirm` INTEGER, `provider` TEXT NOT NULL, `note` TEXT, `lastModifiedAt` INTEGER NOT NULL, `customerId` TEXT, `merchantId` TEXT NOT NULL, `placeId` TEXT NOT NULL, PRIMARY KEY(`orderId`))",
         "fields": [
           {
             "fieldPath": "orderId",
@@ -91,6 +91,18 @@
             "columnName": "customerId",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "merchantId",
+            "columnName": "merchantId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "placeId",
+            "columnName": "placeId",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -144,7 +156,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a43cc9d120b5ed4b4123f27d9e68a52')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e86033e9fcc13b74ecf64abfb4e03144')"
     ]
   }
 }
