@@ -28,6 +28,7 @@ open class DeliveryRepository(
 ) : CoroutineScope by CoroutineProviderScope() {
 
     companion object {
+        const val RESULT_NONE = ""
         const val RESULT_OK = "ok"
         const val RESULT_ERR_CONFLICT = "conflict_state"
         const val STATUS_CODE_UNAUTHORIZED = 401
@@ -90,7 +91,7 @@ open class DeliveryRepository(
         placeId: String,
         order: DeliveryOrder
     ): String {
-        var retval = ""
+        var retval = RESULT_NONE
 
         runCatching {
             apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
@@ -118,7 +119,7 @@ open class DeliveryRepository(
         order: DeliveryOrder,
         reason: String
     ): String {
-        var retval = ""
+        var retval = RESULT_NONE
 
         runCatching {
             apiService().declineDeliveryOrderAsync(
@@ -152,7 +153,7 @@ open class DeliveryRepository(
     ): String {
         return order.takeIf { it.provider != "covermanager" }?.let {
             notifyDeliveryOrderDispatched(merchantId, placeId, it.orderId)
-        } ?: ""
+        } ?: RESULT_NONE
     }
 
     fun notifyDeliveryOrderDispatched(
@@ -172,7 +173,7 @@ open class DeliveryRepository(
         placeId: String,
         orderId: String
     ): String {
-        var retval = ""
+        var retval = RESULT_NONE
 
         runCatching {
             apiService().notifyOrderDispatched(merchantId, placeId, orderId)
@@ -210,7 +211,7 @@ open class DeliveryRepository(
         }
         lastMod = null
         confirmedOrdersQueue.clear()
-        confirmedOrders.value = null
-        deliveryError.value = null
+        confirmedOrders.value?.let { confirmedOrders.value = null }
+        deliveryError.value?.let { deliveryError.value = null }
     }
 }
