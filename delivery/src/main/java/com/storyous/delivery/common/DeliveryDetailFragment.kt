@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,17 +30,29 @@ class DeliveryDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getSelectedOrderLive().observe(this, Observer { order -> onOrderSelected(order) })
-        viewModel.loadingOrderAccepting.observe(this, Observer { loading ->
+        viewModel.getSelectedOrderLive().observe(this) { onOrderSelected(it) }
+        viewModel.loadingOrderAccepting.observe(this) { loading ->
             button_accept.showOverlay(loading == true)
-        })
-        viewModel.loadingOrderCancelling.observe(this, Observer { loading ->
+        }
+        viewModel.loadingOrderCancelling.observe(this) { loading ->
             button_cancel.showOverlay(loading == true)
-        })
-        viewModel.loadingOrderDispatching.observe(this, Observer { loading ->
+        }
+        viewModel.loadingOrderDispatching.observe(this) { loading ->
             button_dispatch.showOverlay(loading == true)
-        })
-        viewModel.messagesToShow.observe(this, Observer { messages -> onNewMessages(messages) })
+        }
+        viewModel.messagesToShow.observe(this) { onNewMessages(it) }
+        viewModel.acceptFunction.observe(this) {
+            button_accept.isVisible = it.first
+            button_accept.isEnabled = it.second
+        }
+        viewModel.cancelFunction.observe(this) {
+            button_cancel.isVisible = it.first
+            button_cancel.isEnabled = it.second
+        }
+        viewModel.dispatchFunction.observe(this) {
+            button_dispatch.isVisible = it.first
+            button_dispatch.isEnabled = it.second
+        }
     }
 
     override fun onCreateView(
@@ -129,14 +141,6 @@ class DeliveryDetailFragment : Fragment() {
         order?.let {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
-
-            val isNew = it.state == DeliveryOrder.STATE_NEW
-            button_accept.isVisible = isNew
-            button_accept.isEnabled = isNew
-            button_cancel.isVisible = isNew
-            button_cancel.isEnabled = isNew
-            button_dispatch.isVisible = DeliveryConfiguration.dispatchVisible(order)
-            button_dispatch.isEnabled = DeliveryConfiguration.dispatchEnabled(order)
 
             itemsAdapter.items = order.items
             updateCustomerInfo(it.customer)

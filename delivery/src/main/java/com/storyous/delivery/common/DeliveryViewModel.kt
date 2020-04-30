@@ -45,6 +45,31 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             }
         }
 
+    val acceptFunction = Transformations.switchMap(selectedOrderLive) {
+        MutableLiveData(false to false).apply {
+            if (it != null) {
+                launch {
+                    value = withContext(provider.IO) {
+                        DeliveryConfiguration.acceptVisible(it) to DeliveryConfiguration.acceptEnabled(it)
+                    }
+                }
+            }
+        }
+    }
+    val cancelFunction = Transformations.map(selectedOrderLive) {
+        with(it?.state == DeliveryOrder.STATE_NEW) { this to this }
+    }
+    val dispatchFunction = Transformations.switchMap(selectedOrderLive) {
+        MutableLiveData(false to false).apply {
+            if (it != null) {
+                launch {
+                    value = withContext(provider.IO) {
+                        DeliveryConfiguration.dispatchVisible(it) to DeliveryConfiguration.dispatchEnabled(it)
+                    }
+                }
+            }
+        }
+    }
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
     val loadingOrderDispatching = MutableLiveData(false)
