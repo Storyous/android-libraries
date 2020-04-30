@@ -75,16 +75,26 @@ class DefaultFormatter : Formatter {
 }
 
 interface DeliveryOrderFunctions {
-    var dispatchVisible: (DeliveryOrder) -> Boolean
-    var dispatchEnabled: (DeliveryOrder) -> Boolean
+    var acceptVisible: suspend (DeliveryOrder) -> Boolean
+    var acceptEnabled: suspend (DeliveryOrder) -> Boolean
+    var dispatchVisible: suspend (DeliveryOrder) -> Boolean
+    var dispatchEnabled: suspend (DeliveryOrder) -> Boolean
 }
 
 object DefaultOrderFunctions : DeliveryOrderFunctions {
-    override var dispatchVisible: (DeliveryOrder) -> Boolean = { order ->
+    override var acceptVisible: suspend (DeliveryOrder) -> Boolean = { order ->
+        order.state == DeliveryOrder.STATE_NEW
+    }
+
+    override var acceptEnabled: suspend (DeliveryOrder) -> Boolean = { order ->
+        order.state == DeliveryOrder.STATE_NEW
+    }
+
+    override var dispatchVisible: suspend (DeliveryOrder) -> Boolean = { order ->
         order.state != DeliveryOrder.STATE_NEW
     }
 
-    override var dispatchEnabled: (DeliveryOrder) -> Boolean = { order ->
+    override var dispatchEnabled: suspend (DeliveryOrder) -> Boolean = { order ->
         order.state == DeliveryOrder.STATE_CONFIRMED
     }
 }
