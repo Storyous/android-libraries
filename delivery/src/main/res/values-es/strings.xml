@@ -30,4 +30,5 @@
     <string name="new_delivery">Nuevo pedido</string>
     <string name="customer_detail_header">Detalles del cliente</string>
     <string name="order_note_header">Nota del pedido:</string>
+    <string name="table">Mesa: %s</string>
 </resources>

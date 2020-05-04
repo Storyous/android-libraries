@@ -22,23 +22,21 @@ import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment() {
 
-    private val itemsAdapter by lazy {
-        DeliveryDetailItemsAdapter()
-    }
+    private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.getSelectedOrderLive().observe(this) { onOrderSelected(it) }
-        viewModel.loadingOrderAccepting.observe(this) { loading ->
-            button_accept.showOverlay(loading == true)
+        viewModel.loadingOrderAccepting.observe(this) {
+            button_accept.showOverlay(it == true)
         }
-        viewModel.loadingOrderCancelling.observe(this) { loading ->
-            button_cancel.showOverlay(loading == true)
+        viewModel.loadingOrderCancelling.observe(this) {
+            button_cancel.showOverlay(it == true)
         }
-        viewModel.loadingOrderDispatching.observe(this) { loading ->
-            button_dispatch.showOverlay(loading == true)
+        viewModel.loadingOrderDispatching.observe(this) {
+            button_dispatch.showOverlay(it == true)
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
         viewModel.acceptFunction.observe(this) {
@@ -147,7 +145,7 @@ class DeliveryDetailFragment : Fragment() {
             updatePaymentType(it.alreadyPaid)
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
-        }
+        } ?: repaintNoOrderSelected()
     }
 
     private fun updateOrderNumber(provider: String, orderId: String) {

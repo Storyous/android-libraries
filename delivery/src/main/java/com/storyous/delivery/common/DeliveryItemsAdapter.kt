@@ -13,6 +13,7 @@ import com.storyous.commonutils.adapters.ItemType
 import com.storyous.commonutils.adapters.ItemType.HEADER_DISABLED
 import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
+import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.model.DeliveryOrder
 import java.math.BigDecimal
 import java.util.ArrayList
@@ -149,19 +150,20 @@ class DeliveryItemsAdapter(
                 onClickListener(adapterPosition, deliveryOrder)
             }
 
-            time.text = getDeliveryTime(time.context, deliveryOrder)
+            time.text = getDeliveryTime(deliveryOrder)
             name.text = deliveryOrder.customer.name
             address.text = deliveryOrder.customer.deliveryAddress
+                ?: deliveryOrder.deskId?.let { getString(R.string.table, DeliveryConfiguration.translate(it)) }
             price.text = calcTotalPriceFormatted(deliveryOrder)
             deliveryType.text = getDeliveryType(deliveryType.context, deliveryOrder)
         }
 
-        private fun getDeliveryTime(context: Context, order: DeliveryOrder): String {
+        private fun getDeliveryTime(order: DeliveryOrder): String {
 
             val prefix = if (order.deliveryOnTime) R.string.time_at else R.string.time_till
             val date = DateUtils.HM.format(order.deliveryTime)
 
-            return context.getString(prefix, date)
+            return getString(prefix, date)
         }
 
         private fun getDeliveryType(context: Context, order: DeliveryOrder): String {

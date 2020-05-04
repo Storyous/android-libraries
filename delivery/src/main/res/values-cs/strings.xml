@@ -30,4 +30,5 @@
     <string name="new_delivery">Nová objednávka</string>
     <string name="customer_detail_header">Detail zákazníka</string>
     <string name="order_note_header">Poznámka k objednávce:</string>
+    <string name="table">Stůl: %s</string>
 </resources>
