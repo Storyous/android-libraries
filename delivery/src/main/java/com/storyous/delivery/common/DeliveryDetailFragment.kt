@@ -126,7 +126,7 @@ class DeliveryDetailFragment : Fragment() {
                 if (selectedPosition >= 0) {
                     val reason =
                         resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
-                    viewModel.onCancelOrderClicked(reason)
+                    viewModel.getSelectedOrder()?.let { viewModel.cancelOrder(it, reason) }
                     dialog.dismiss()
                 }
             }

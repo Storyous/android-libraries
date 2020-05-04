@@ -124,29 +124,27 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         }
     }
 
-    fun onCancelOrderClicked(reason: String) {
+    fun cancelOrder(order: DeliveryOrder, reason: String) {
         loadingOrderCancelling.postValue(true)
-        getSelectedOrder()?.let { selected ->
-            launch(provider.Main) {
-                val result = withContext(provider.IO) {
-                    val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                        ?: return@withContext null
-                    DeliveryConfiguration.deliveryRepository
-                        ?.cancelDeliveryOrder(merchantId, placeId, selected, reason)
-                }
-
-                when (result) {
-                    DeliveryRepository.RESULT_OK -> {
-                        addMessageToShow(MESSAGE_OK_DECLINED)
-                    }
-                    DeliveryRepository.RESULT_ERR_CONFLICT -> {
-                        addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
-                    }
-                    else -> addMessageToShow(MESSAGE_ERROR_OTHER)
-                }
-
-                loadingOrderCancelling.postValue(false)
+        launch {
+            val result = withContext(provider.IO) {
+                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+                    ?: return@withContext null
+                DeliveryConfiguration.deliveryRepository
+                    ?.cancelDeliveryOrder(merchantId, placeId, order, reason)
             }
+
+            when (result) {
+                DeliveryRepository.RESULT_OK -> {
+                    addMessageToShow(MESSAGE_OK_DECLINED)
+                }
+                DeliveryRepository.RESULT_ERR_CONFLICT -> {
+                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                }
+                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
+            }
+
+            loadingOrderCancelling.postValue(false)
         }
     }
 
