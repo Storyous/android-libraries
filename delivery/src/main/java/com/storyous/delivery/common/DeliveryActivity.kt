@@ -56,11 +56,11 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (viewModel.getSelectedOrder() == null) {
+        if (getOverlappingDetailFragment()?.isVisible != true) {
             super.onBackPressed()
-        } else {
-            viewModel.deselectOrder()
         }
+
+        viewModel.deselectOrder()
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {

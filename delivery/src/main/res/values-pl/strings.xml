@@ -26,6 +26,7 @@
     <string name="delivery_type_delivery">Dostawa</string>
     <string name="delivery_type_takeaway">Na wynos</string>
     <string name="delivery_type_dispatch">Odbiór kurierem</string>
+    <string name="delivery_type_order_to_table">Zamówienie na stół</string>
     <string name="piece_measure">szt</string>
     <string name="new_delivery">Nowe zamówienie</string>
     <string name="customer_detail_header">Szczegóły klienta</string>
