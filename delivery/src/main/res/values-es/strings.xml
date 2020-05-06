@@ -26,6 +26,7 @@
     <string name="delivery_type_delivery">Envío</string>
     <string name="delivery_type_takeaway">Para llevar</string>
     <string name="delivery_type_dispatch">Recogida de repartidor</string>
+    <string name="delivery_type_order_to_table">Pedir a la mesa</string>
     <string name="piece_measure">uds</string>
     <string name="new_delivery">Nuevo pedido</string>
     <string name="customer_detail_header">Detalles del cliente</string>

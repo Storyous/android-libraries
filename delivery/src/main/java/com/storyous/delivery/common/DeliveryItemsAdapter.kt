@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.DateUtils
 import com.storyous.commonutils.adapters.Header
@@ -150,12 +151,13 @@ class DeliveryItemsAdapter(
                 onClickListener(adapterPosition, deliveryOrder)
             }
 
-            time.text = getDeliveryTime(deliveryOrder)
             name.text = deliveryOrder.customer.name
             address.text = deliveryOrder.customer.deliveryAddress
                 ?: deliveryOrder.deskId?.let { getString(R.string.table, DeliveryConfiguration.translate(it)) }
             price.text = calcTotalPriceFormatted(deliveryOrder)
             deliveryType.text = getDeliveryType(deliveryType.context, deliveryOrder)
+            time.text = getDeliveryTime(deliveryOrder)
+            time.isVisible = deliveryOrder.deliveryType != DeliveryOrder.TYPE_TABLE_ORDER
         }
 
         private fun getDeliveryTime(order: DeliveryOrder): String {
@@ -171,6 +173,7 @@ class DeliveryItemsAdapter(
                 DeliveryOrder.TYPE_DELIVERY -> context.getString(R.string.delivery_type_delivery)
                 DeliveryOrder.TYPE_TAKEAWAY -> context.getString(R.string.delivery_type_takeaway)
                 DeliveryOrder.TYPE_DISPATCH -> context.getString(R.string.delivery_type_dispatch)
+                DeliveryOrder.TYPE_TABLE_ORDER -> context.getString(R.string.delivery_type_order_to_table)
                 else -> ""
             }
         }

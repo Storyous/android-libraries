@@ -30,6 +30,7 @@
     <string name="delivery_type_delivery">Delivery</string>
     <string name="delivery_type_takeaway">Takeaway</string>
     <string name="delivery_type_dispatch">Courier pickup</string>
+    <string name="delivery_type_order_to_table">Order to table</string>
     <string name="piece_measure">pcs</string>
     <string name="new_delivery">New delivery order</string>
     <string name="customer_detail_header">Customer detail</string>
