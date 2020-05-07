@@ -141,7 +141,7 @@ class DeliveryDetailFragment : Fragment() {
             detail.visibility = View.VISIBLE
 
             itemsAdapter.items = order.items
-            updateCustomerInfo(it.customer)
+            updateCustomerInfo(it.customer, it.deskId)
             updatePaymentType(it.alreadyPaid)
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
@@ -179,9 +179,10 @@ class DeliveryDetailFragment : Fragment() {
         order_note_group.visibility = View.GONE
     }
 
-    private fun updateCustomerInfo(customer: Customer) {
+    private fun updateCustomerInfo(customer: Customer, deskId: String?) {
         customer_detail_name.text = customer.name
         customer_detail_phone.text = customer.phoneNumber
-        customer_detail_address.text = customer.deliveryAddress
+        customer_detail_address.text = deskId?.let { getString(R.string.table, DeliveryConfiguration.translate(it)) }
+            ?: customer.deliveryAddress
     }
 }
