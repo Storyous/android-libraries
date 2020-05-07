@@ -4,54 +4,47 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.db.DeliveryOrderWithCustomer
-import com.storyous.delivery.common.db.Customer as CustomerDb
+import com.storyous.delivery.common.api.model.Desk
 import com.storyous.delivery.common.db.DeliveryOrder as DeliveryOrderDb
 
-fun DeliveryOrder.toDb(): DeliveryOrderWithCustomer {
-    val customer = customer.toDb()
-    return DeliveryOrderWithCustomer(
-        DeliveryOrderDb(
-            orderId,
-            deliveryTime,
-            deliveryOnTime,
-            deliveryType,
-            discountWithVat,
-            deskId,
-            items,
-            state,
-            alreadyPaid,
-            autoConfirm,
-            provider,
-            note,
-            lastModifiedAt,
-            customer.id
-        ),
-        customer
-    )
-}
-
-fun Customer.toDb() = CustomerDb(name, deliveryAddress, phoneNumber)
-
-fun DeliveryOrderWithCustomer.toApi() = DeliveryOrder(
-    order.orderId,
-    order.deliveryTime,
-    order.deliveryOnTime,
-    order.deliveryType,
-    order.discountWithVat,
-    customer.toApi(),
-    order.deskId,
-    order.items,
-    order.state,
-    order.alreadyPaid,
-    order.autoConfirm,
-    order.provider,
-    order.note,
-    order.lastModifiedAt
+fun DeliveryOrder.toDb() = DeliveryOrderDb(
+    orderId,
+    deliveryTime,
+    deliveryOnTime,
+    deliveryType,
+    discountWithVat,
+    items,
+    state,
+    alreadyPaid,
+    autoConfirm,
+    provider,
+    note,
+    lastModifiedAt,
+    customer.name,
+    customer.deliveryAddress,
+    customer.phoneNumber,
+    desk?.deskId,
+    desk?.code,
+    desk?.name
 )
 
-fun CustomerDb.toApi() = Customer(name, deliveryAddress, phoneNumber)
+fun DeliveryOrderDb.toApi() = DeliveryOrder(
+    orderId,
+    deliveryTime,
+    deliveryOnTime,
+    deliveryType,
+    discountWithVat,
+    Customer(customerName, customerDeliveryAddress, customerPhoneNumber),
+    deskId?.let { id -> deskCode?.let { code -> Desk(id, code, deskName) } },
+    items,
+    state,
+    alreadyPaid,
+    autoConfirm,
+    provider,
+    note,
+    lastModifiedAt
+)
 
-fun LiveData<List<DeliveryOrderWithCustomer>>.toApi() = Transformations.map(this) {
-    it.map { orderWithCustomer -> orderWithCustomer.toApi() }
+fun LiveData<List<DeliveryOrderDb>>.toApi() = Transformations.map(this) {
+    it.map { order -> order.toApi() }
 }
