@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.delivery.common.api.model.Customer
 import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.model.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 
@@ -141,7 +142,7 @@ class DeliveryDetailFragment : Fragment() {
             detail.visibility = View.VISIBLE
 
             itemsAdapter.items = order.items
-            updateCustomerInfo(it.customer, it.deskId)
+            updateCustomerInfo(it.customer, it.desk)
             updatePaymentType(it.alreadyPaid)
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
@@ -179,10 +180,10 @@ class DeliveryDetailFragment : Fragment() {
         order_note_group.visibility = View.GONE
     }
 
-    private fun updateCustomerInfo(customer: Customer, deskId: String?) {
+    private fun updateCustomerInfo(customer: Customer, desk: Desk?) {
         customer_detail_name.text = customer.name
         customer_detail_phone.text = customer.phoneNumber
-        customer_detail_address.text = deskId?.let { getString(R.string.table, DeliveryConfiguration.translate(it)) }
+        customer_detail_address.text = desk?.name?.let { getString(R.string.table, it) }
             ?: customer.deliveryAddress
     }
 }

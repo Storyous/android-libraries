@@ -18,69 +18,47 @@ abstract class DeliveryDao {
     @Query("DELETE FROM DeliveryOrder")
     abstract suspend fun deleteOrders()
 
-    @Query("DELETE FROM Customer")
-    abstract suspend fun deleteCustomers()
-
     @Delete
     abstract suspend fun deleteOrders(orders: List<DeliveryOrder>)
 
-    @Delete
-    abstract suspend fun deleteCustomers(customers: List<Customer>)
+    @Query("DELETE FROM DeliveryOrder WHERE lastModifiedAt < :date AND deliveryTime < :date")
+    abstract suspend fun deleteOrdersOlderThan(date: Date)
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
-    abstract suspend fun getOrders(): List<DeliveryOrderWithCustomer>
+    abstract suspend fun getOrders(): List<DeliveryOrder>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder ORDER BY deliveryTime DESC")
-    abstract fun getOrdersLive(): LiveData<List<DeliveryOrderWithCustomer>>
+    abstract fun getOrdersLive(): LiveData<List<DeliveryOrder>>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
-    abstract suspend fun getOrders(state: String): List<DeliveryOrderWithCustomer>
+    abstract suspend fun getOrders(state: String): List<DeliveryOrder>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
-    abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
-
-    @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date AND deliveryTime < :date")
-    abstract suspend fun getOldOrders(date: Date): List<DeliveryOrderWithCustomer>
+    abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrder>>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
-    abstract suspend fun getOrder(orderId: String): DeliveryOrderWithCustomer?
+    abstract suspend fun getOrder(orderId: String): DeliveryOrder?
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")
-    abstract fun getOrderLive(orderId: String): LiveData<DeliveryOrderWithCustomer>
+    abstract fun getOrderLive(orderId: String): LiveData<DeliveryOrder>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertOrders(orders: List<DeliveryOrder>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertCustomers(customers: List<Customer>)
-
     @Transaction
     open suspend fun delete() {
-        deleteCustomers()
         deleteOrders()
     }
 
-    @Suppress("ReturnCount")
     @Transaction
-    open suspend fun deleteOrdersOlderThan(date: Date) {
-        val oldOrders = getOldOrders(date)
-            .takeIf { it.isNotEmpty() } ?: return
-
-        deleteOrders(oldOrders.map { it.order })
-        deleteCustomers(oldOrders.map { it.customer })
-    }
-
-    @Transaction
-    open suspend fun update(orders: List<DeliveryOrderWithCustomer>) {
-        insertOrders(orders.map { it.order })
-        insertCustomers(orders.map { it.customer })
+    open suspend fun update(orders: List<DeliveryOrder>) {
+        insertOrders(orders)
         deleteOrdersOlderThan(TimestampUtil.getCalendar().apply { add(Calendar.DATE, -1) }.time)
     }
 }

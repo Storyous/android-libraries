@@ -13,7 +13,7 @@ data class DeliveryOrder(
     @DeliveryType val deliveryType: String,
     val discountWithVat: Int?,
     val customer: Customer,
-    val deskId: String?,
+    val desk: Desk?,
     val items: List<DeliveryItem>,
     @DeliveryState val state: String,
     val alreadyPaid: Boolean,
@@ -22,7 +22,7 @@ data class DeliveryOrder(
     val note: String?,
     @SerializedName("_lastModifiedAt")
     val lastModifiedAt: Date
-) { 
+) {
 
     companion object {
         @Retention(AnnotationRetention.SOURCE)
@@ -101,6 +101,12 @@ data class Customer(
     val name: String,
     val deliveryAddress: String?,
     val phoneNumber: String?
+)
+
+data class Desk(
+    val deskId: String,
+    val code: String,
+    val name: String?
 )
 
 data class RequestDeclineBody(val reason: String)

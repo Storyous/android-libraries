@@ -152,7 +152,7 @@ class DeliveryItemsAdapter(
             }
 
             name.text = deliveryOrder.customer.name
-            address.text = deliveryOrder.deskId?.let { getString(R.string.table, DeliveryConfiguration.translate(it)) }
+            address.text = deliveryOrder.desk?.name?.let { getString(R.string.table, it) }
                 ?: deliveryOrder.customer.deliveryAddress
             price.text = calcTotalPriceFormatted(deliveryOrder)
             deliveryType.text = getDeliveryType(deliveryType.context, deliveryOrder)
