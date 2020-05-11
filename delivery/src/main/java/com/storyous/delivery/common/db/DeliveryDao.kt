@@ -44,7 +44,7 @@ abstract class DeliveryDao {
     abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrderWithCustomer>>
 
     @Transaction
-    @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date OR deliveryTime < :date")
+    @Query("SELECT * FROM DeliveryOrder WHERE lastModifiedAt < :date AND deliveryTime < :date")
     abstract suspend fun getOldOrders(date: Date): List<DeliveryOrderWithCustomer>
 
     @Transaction
