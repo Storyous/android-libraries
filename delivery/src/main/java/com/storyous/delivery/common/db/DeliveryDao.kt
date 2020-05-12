@@ -51,6 +51,9 @@ abstract class DeliveryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertOrders(orders: List<DeliveryOrder>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertOrder(order: DeliveryOrder)
+
     @Transaction
     open suspend fun delete() {
         deleteOrders()

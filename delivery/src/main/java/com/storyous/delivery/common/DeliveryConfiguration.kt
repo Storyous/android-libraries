@@ -3,7 +3,7 @@ package com.storyous.delivery.common
 import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
-import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
 import java.math.RoundingMode

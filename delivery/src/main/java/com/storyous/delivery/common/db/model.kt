@@ -4,7 +4,7 @@ package com.storyous.delivery.common.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.storyous.delivery.common.api.model.DeliveryItem
+import com.storyous.delivery.common.api.DeliveryItem
 import java.util.Date
 
 @Suppress("LongParameterList")

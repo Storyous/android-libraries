@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.recyclerView.ItemsAdapter
 import com.storyous.commonutils.recyclerView.getString
 import com.storyous.commonutils.show
-import com.storyous.delivery.common.api.model.DeliveryAddition
-import com.storyous.delivery.common.api.model.DeliveryItem
+import com.storyous.delivery.common.api.DeliveryAddition
+import com.storyous.delivery.common.api.DeliveryItem
 import kotlinx.android.synthetic.main.list_item_delivery_detail.view.*
 import kotlinx.android.synthetic.main.list_item_delivery_addition.view.*
 import kotlinx.android.synthetic.main.typed_value_layout.view.*

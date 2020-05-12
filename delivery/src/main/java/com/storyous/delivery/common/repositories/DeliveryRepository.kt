@@ -6,17 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
-import com.storyous.delivery.common.DeliveryConfiguration
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
 import com.storyous.delivery.common.api.DeliveryService
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.api.model.OrderProviderInfo
-import com.storyous.delivery.common.api.model.RequestDeclineBody
+import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.RequestDeclineBody
 import com.storyous.delivery.common.db.DeliveryDao
 import com.storyous.delivery.common.toApi
 import com.storyous.delivery.common.toDb
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
@@ -29,9 +26,6 @@ open class DeliveryRepository(
 ) : CoroutineScope by CoroutineProviderScope() {
 
     companion object {
-        const val RESULT_NONE = ""
-        const val RESULT_OK = "ok"
-        const val RESULT_ERR_CONFLICT = "conflict_state"
         const val STATUS_CODE_UNAUTHORIZED = 401
         const val STATUS_CODE_CONFLICT = 409
     }
@@ -61,14 +55,6 @@ open class DeliveryRepository(
         confirmedOrders.value = confirmedOrdersQueue.peek()
     }
 
-    private suspend fun updateOrdersInDb(
-        orders: List<DeliveryOrder>,
-        lastModification: String?
-    ) = withContext(provider.IO) {
-        db.update(orders.map { it.toDb() })
-        lastMod = lastModification
-    }
-
     suspend fun loadDeliveryOrders(
         merchantId: String,
         placeId: String
@@ -76,130 +62,71 @@ open class DeliveryRepository(
         runCatching {
             withContext(provider.IO) {
                 apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
+                    .also { response ->
+                        db.update(response.data.map { it.toDb() })
+                        lastMod = response.lastModificationAt
+                    }
             }
         }.onFailure {
             Timber.e(it, "Fail to load Delivery orders.")
             if (it is HttpException && it.code() == STATUS_CODE_UNAUTHORIZED) {
-                deliveryError.value = DeliveryException(it)
+                deliveryError.value = DeliveryException(cause = it)
             }
-        }.onSuccess {
-            updateOrdersInDb(it.data, it.lastModificationAt)
         }.getOrNull()
     }
 
-    suspend fun acceptDeliveryOrder(
+    @Throws(DeliveryException::class)
+    suspend fun confirmDeliveryOrder(
         merchantId: String,
         placeId: String,
         order: DeliveryOrder
-    ): String {
-        var retval = RESULT_NONE
-
-        runCatching {
-            apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
-        }.onSuccess {
-            retval = RESULT_OK
-        }.getOrElse {
-            val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
-
-            if (error?.code == STATUS_CODE_CONFLICT) {
-                retval = RESULT_ERR_CONFLICT
-            }
-            Timber.e(it, "Fail to confirm order${order.orderId}.")
-
-            error?.order
-        }?.also {
-            updateOrder(it)
-        }
-
-        return retval
+    ) = handleDeliveryCall {
+        apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
     }
 
-    suspend fun cancelDeliveryOrder(
+    @Throws(DeliveryException::class)
+    suspend fun declineDeliveryOrder(
         merchantId: String,
         placeId: String,
         order: DeliveryOrder,
         reason: String
-    ): String {
-        var retval = RESULT_NONE
-
-        runCatching {
-            apiService().declineDeliveryOrderAsync(
-                merchantId,
-                placeId,
-                order.orderId,
-                RequestDeclineBody(reason)
-            )
-        }.onSuccess {
-            retval = RESULT_OK
-        }.getOrElse {
-            val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
-
-            if (error?.code == STATUS_CODE_CONFLICT) {
-                retval = RESULT_ERR_CONFLICT
-            }
-            Timber.e(it, "Fail to decline order${order.orderId}.")
-
-            error?.order
-        }?.also {
-            updateOrder(it)
-        }
-
-        return retval
+    ) = handleDeliveryCall {
+        apiService().declineDeliveryOrderAsync(
+            merchantId,
+            placeId,
+            order.orderId,
+            RequestDeclineBody(reason)
+        )
     }
 
-    suspend fun notifyDeliveryOrderDispatched(
+    @Throws(DeliveryException::class)
+    suspend fun dispatchDeliveryOrder(
         merchantId: String,
         placeId: String,
         order: DeliveryOrder
-    ): String {
-        return order.takeIf { it.provider != "covermanager" }?.let {
-            notifyDeliveryOrderDispatched(merchantId, placeId, it.orderId)
-        } ?: RESULT_NONE
+    ) = handleDeliveryCall {
+        apiService().notifyOrderDispatched(merchantId, placeId, order.orderId)
     }
 
-    fun notifyDeliveryOrderDispatched(
-        merchantId: String,
-        placeId: String,
-        order: OrderProviderInfo?
-    ) {
-        order?.takeIf { it.code != "covermanager" }?.let { providerInfo ->
-            launch {
-                notifyDeliveryOrderDispatched(merchantId, placeId, providerInfo.orderId)
-            }
-        }
-    }
-
-    private suspend fun notifyDeliveryOrderDispatched(
-        merchantId: String,
-        placeId: String,
-        orderId: String
-    ): String {
-        var retval = RESULT_NONE
-
-        runCatching {
-            apiService().notifyOrderDispatched(merchantId, placeId, orderId)
-        }.onSuccess {
-            retval = RESULT_OK
-        }.getOrElse {
+    @Throws(DeliveryException::class)
+    private suspend fun handleDeliveryCall(
+        block: suspend () -> DeliveryOrder
+    ) = runCatching { block() }
+        .onSuccess { db.insertOrder(it.toDb()) }
+        .recoverCatching {
             val error = DeliveryErrorConverterWrapper.INSTANCE?.convertPosError(it)
 
+            error?.order?.run { db.insertOrder(toDb()) }
+
             if (error?.code == STATUS_CODE_CONFLICT) {
-                retval = RESULT_ERR_CONFLICT
+                throw DeliveryException(ERR_CONFLICT)
+            } else {
+                throw DeliveryException(ERR_BASE)
             }
-            Timber.e(it, "Fail to dispatch order $orderId.")
-
-            error?.order
-        }?.also {
-            DeliveryConfiguration.deliveryModel.dispatchedOrderInterceptor(it)
-            updateOrder(it)
         }
+        .getOrThrow()
 
-        return retval
-    }
-
-    private suspend fun updateOrder(order: DeliveryOrder) {
-        updateOrdersInDb(listOf(order), lastMod)
-    }
+    suspend fun getOrder(orderId: String) = db.getOrder(orderId)?.toApi()
 
     fun getOrderLive(orderId: String) = Transformations.map(db.getOrderLive(orderId)) {
         it?.toApi()

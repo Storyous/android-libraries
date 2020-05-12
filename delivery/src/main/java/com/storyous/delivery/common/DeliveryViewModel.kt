@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.storyous.commonutils.CoroutineProviderScope
+import com.storyous.commonutils.castOrNull
 import com.storyous.commonutils.provider
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.repositories.DeliveryRepository
+import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.repositories.DeliveryException
+import com.storyous.delivery.common.repositories.ERR_CONFLICT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,7 +52,9 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             if (it != null) {
                 launch {
                     value = withContext(provider.IO) {
-                        DeliveryConfiguration.acceptVisible(it) to DeliveryConfiguration.acceptEnabled(it)
+                        with(DeliveryConfiguration) {
+                            acceptVisible(it) to acceptEnabled(it)
+                        }
                     }
                 }
             }
@@ -64,7 +68,9 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             if (it != null) {
                 launch {
                     value = withContext(provider.IO) {
-                        DeliveryConfiguration.dispatchVisible(it) to DeliveryConfiguration.dispatchEnabled(it)
+                        DeliveryConfiguration.dispatchVisible(it) to DeliveryConfiguration.dispatchEnabled(
+                            it
+                        )
                     }
                 }
             }
@@ -102,22 +108,15 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         loadingOrderAccepting.postValue(true)
         // hold data of selected order to prevent change data when is selected different order
         launch(provider.Main) {
-
-            val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
-                DeliveryConfiguration.deliveryRepository
-                    ?.acceptDeliveryOrder(merchantId, placeId, order)
-            }
-
-            when (result) {
-                DeliveryRepository.RESULT_OK -> {
-                    DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
+            runCatching {
+                withContext(provider.IO) {
+                    DeliveryConfiguration.deliveryModel.confirm(order)
                 }
-                DeliveryRepository.RESULT_ERR_CONFLICT -> {
-                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+            }.onFailure {
+                when (it.castOrNull<DeliveryException>()?.error) {
+                    ERR_CONFLICT -> addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
-                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
             }
 
             loadingOrderAccepting.postValue(false)
@@ -127,21 +126,17 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     fun cancelOrder(order: DeliveryOrder, reason: String) {
         loadingOrderCancelling.postValue(true)
         launch {
-            val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
-                DeliveryConfiguration.deliveryRepository
-                    ?.cancelDeliveryOrder(merchantId, placeId, order, reason)
-            }
-
-            when (result) {
-                DeliveryRepository.RESULT_OK -> {
-                    addMessageToShow(MESSAGE_OK_DECLINED)
+            runCatching {
+                withContext(provider.IO) {
+                    DeliveryConfiguration.deliveryModel.decline(order, reason)
                 }
-                DeliveryRepository.RESULT_ERR_CONFLICT -> {
-                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+            }.onSuccess {
+                addMessageToShow(MESSAGE_OK_DECLINED)
+            }.onFailure {
+                when (it.castOrNull<DeliveryException>()?.error) {
+                    ERR_CONFLICT -> addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
-                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
             }
 
             loadingOrderCancelling.postValue(false)
@@ -164,22 +159,15 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         loadingOrderDispatching.postValue(true)
         // hold data of selected order to prevent change data when is selected different order
         launch(provider.Main) {
-
-            val result = withContext(provider.IO) {
-                val (placeId, merchantId) = DeliveryConfiguration.placeInfo
-                    ?: return@withContext null
-                DeliveryConfiguration.deliveryRepository
-                    ?.notifyDeliveryOrderDispatched(merchantId, placeId, order)
-            }
-
-            when (result) {
-                DeliveryRepository.RESULT_OK -> {
-                    // do nothing
+            runCatching {
+                withContext(provider.IO) {
+                    DeliveryConfiguration.deliveryModel.dispatch(order)
                 }
-                DeliveryRepository.RESULT_ERR_CONFLICT -> {
-                    addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+            }.onFailure {
+                when (it.castOrNull<DeliveryException>()?.error) {
+                    ERR_CONFLICT -> addMessageToShow(MESSAGE_ERROR_STATE_CONFLICT)
+                    else -> addMessageToShow(MESSAGE_ERROR_OTHER)
                 }
-                else -> addMessageToShow(MESSAGE_ERROR_OTHER)
             }
 
             loadingOrderDispatching.postValue(false)

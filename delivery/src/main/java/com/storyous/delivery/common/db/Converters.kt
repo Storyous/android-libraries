@@ -3,7 +3,7 @@ package com.storyous.delivery.common.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.storyous.delivery.common.api.model.DeliveryItem
+import com.storyous.delivery.common.api.DeliveryItem
 import java.math.BigDecimal
 import java.util.Date
 

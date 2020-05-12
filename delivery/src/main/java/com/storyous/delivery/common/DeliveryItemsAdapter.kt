@@ -15,7 +15,7 @@ import com.storyous.commonutils.adapters.ItemType.HEADER_DISABLED
 import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
 import com.storyous.commonutils.recyclerView.getString
-import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryOrder
 import java.math.BigDecimal
 import java.util.ArrayList
 

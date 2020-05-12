@@ -1,4 +1,4 @@
-package com.storyous.delivery.common.api.model
+package com.storyous.delivery.common.api
 
 import androidx.annotation.StringDef
 import com.google.gson.annotations.SerializedName

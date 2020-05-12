@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryOrder
 import kotlinx.android.synthetic.main.activity_delivery.*
 
 class DeliveryActivity : AppCompatActivity() {

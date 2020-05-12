@@ -1,6 +1,10 @@
 package com.storyous.delivery.common.repositories
 
-class DeliveryException(cause: Throwable) : Exception(cause) {
+internal const val ERR_BASE = "error"
+internal const val ERR_CONFLICT = "conflict"
+internal const val ERR_NO_AUTH = "noAuth"
+
+class DeliveryException(val error: String = ERR_BASE, cause: Throwable? = null) : Exception(cause) {
 
     var consumed = false
         private set
