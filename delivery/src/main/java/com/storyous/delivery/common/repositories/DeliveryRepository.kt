@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
+import com.storyous.delivery.common.DeliveryConfiguration
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
 import com.storyous.delivery.common.api.DeliveryService
 import com.storyous.delivery.common.api.model.DeliveryOrder
@@ -189,6 +190,7 @@ open class DeliveryRepository(
 
             error?.order
         }?.also {
+            DeliveryConfiguration.deliveryModel.dispatchedOrderInterceptor(it)
             updateOrder(it)
         }
 
