@@ -23,6 +23,8 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
         }
     }
 
+    var dispatchedOrderInterceptor: suspend (DeliveryOrder) -> Unit = {}
+
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
             val type = when (provider) {
