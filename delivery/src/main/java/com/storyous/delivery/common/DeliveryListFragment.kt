@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.storyous.delivery.common.api.model.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryOrder
 import kotlinx.android.synthetic.main.fragment_delivery_list.*
 
 /**

@@ -1,8 +1,5 @@
 package com.storyous.delivery.common.api
 
-import com.storyous.delivery.common.api.model.BaseDataResponse
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.api.model.RequestDeclineBody
 import retrofit2.HttpException
 import retrofit2.http.Body
 import retrofit2.http.GET

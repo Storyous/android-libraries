@@ -2,9 +2,9 @@ package com.storyous.delivery.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.storyous.delivery.common.api.model.Customer
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.api.model.Desk
+import com.storyous.delivery.common.api.Customer
+import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.Desk
 import com.storyous.delivery.common.db.DeliveryOrder as DeliveryOrderDb
 
 fun DeliveryOrder.toDb() = DeliveryOrderDb(

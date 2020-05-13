@@ -2,8 +2,9 @@ package com.storyous.delivery.common
 
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.repositories.DeliveryRepository
+import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.repositories.DeliveryException
+import com.storyous.delivery.common.repositories.ERR_NO_AUTH
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
         orders.forEach {
             if (it.autoConfirm == true && DeliveryConfiguration.placeInfo?.autoConfirmEnabled == true) {
-                confirmOrder(it)
+                runCatching { confirm(it) }
             }
         }
     }
@@ -71,33 +72,45 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     DeliveryConfiguration.deliveryRepository
                         ?.getNewOrdersFromDb()
                         ?.also { newOrdersInterceptor(it) }
-
                 } ?: Timber.w("Delivery is not configured to load new orders")
             }
         }
         return loadingOrdersJob
     }
 
+    @Throws(DeliveryException::class)
+    suspend fun confirm(order: DeliveryOrder): DeliveryOrder? {
+        val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+            ?: throw DeliveryException(ERR_NO_AUTH)
 
-    suspend fun confirmOrder(order: DeliveryOrder) {
-        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
-
-        val result = withContext(provider.IO) {
+        return withContext(provider.IO) {
             DeliveryConfiguration.deliveryRepository
-                ?.acceptDeliveryOrder(merchantId, placeId, order)
-        }
-
-        if (DeliveryRepository.RESULT_OK == result) {
-            DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(order)
+                ?.confirmDeliveryOrder(merchantId, placeId, order)
+        }?.also {
+            DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(it)
         }
     }
 
-    suspend fun decline(order: DeliveryOrder) {
-        val (placeId, merchantId) = DeliveryConfiguration.placeInfo ?: return
+    @Throws(DeliveryException::class)
+    suspend fun decline(order: DeliveryOrder, reason: String): DeliveryOrder? {
+        val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+            ?: throw DeliveryException(ERR_NO_AUTH)
 
-        withContext(provider.IO) {
+        return withContext(provider.IO) {
             DeliveryConfiguration.deliveryRepository
-                ?.cancelDeliveryOrder(merchantId, placeId, order, "Unknown desk")
+                ?.declineDeliveryOrder(merchantId, placeId, order, reason)
+        }
+    }
+
+    @Throws(DeliveryException::class)
+    suspend fun dispatch(order: DeliveryOrder): DeliveryOrder? {
+        val (placeId, merchantId) = DeliveryConfiguration.placeInfo
+            ?: throw DeliveryException(ERR_NO_AUTH)
+
+        return withContext(provider.IO) {
+            DeliveryConfiguration.deliveryRepository
+                ?.dispatchDeliveryOrder(merchantId, placeId, order)
+                ?.also { dispatchedOrderInterceptor(it) }
         }
     }
 

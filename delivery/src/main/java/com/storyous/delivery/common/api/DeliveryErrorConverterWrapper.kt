@@ -1,7 +1,6 @@
 package com.storyous.delivery.common.api
 
 import com.storyous.delivery.common.BuildConfig
-import com.storyous.delivery.common.api.model.DeliveryErrorResponse
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException

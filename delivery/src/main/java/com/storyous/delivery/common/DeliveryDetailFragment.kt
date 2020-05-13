@@ -14,9 +14,9 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.storyous.delivery.common.api.model.Customer
-import com.storyous.delivery.common.api.model.DeliveryOrder
-import com.storyous.delivery.common.api.model.Desk
+import com.storyous.delivery.common.api.Customer
+import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 
