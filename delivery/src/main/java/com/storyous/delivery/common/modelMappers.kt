@@ -23,6 +23,7 @@ fun DeliveryOrder.toDb() = DeliveryOrderDb(
     customer.name,
     customer.deliveryAddress,
     customer.phoneNumber,
+    customer.email,
     desk?.deskId,
     desk?.code,
     desk?.name
@@ -34,7 +35,7 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     deliveryOnTime,
     deliveryType,
     discountWithVat,
-    Customer(customerName, customerDeliveryAddress, customerPhoneNumber),
+    Customer(customerName, customerDeliveryAddress, customerPhoneNumber, customerEmail),
     deskId?.let { id -> deskCode?.let { code -> Desk(id, code, deskName) } },
     items,
     state,

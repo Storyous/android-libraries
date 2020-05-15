@@ -100,7 +100,8 @@ class DeliveryAddition(
 data class Customer(
     val name: String,
     val deliveryAddress: String?,
-    val phoneNumber: String?
+    val phoneNumber: String?,
+    var email: String?
 )
 
 data class Desk(
