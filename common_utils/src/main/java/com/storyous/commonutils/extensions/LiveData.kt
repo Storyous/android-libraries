@@ -38,7 +38,7 @@ fun <T> MutableLiveData<T>.notifyObservers() {
     this.postValue(this.value)
 }
 
-fun <T> MutableLiveData<T>.update(block: (T?) -> T) {
+fun <T> MutableLiveData<T>.update(block: (T?) -> T?) {
     value = block(value)
 }
 

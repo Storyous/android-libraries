@@ -7,8 +7,8 @@ import androidx.lifecycle.Transformations
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
-import com.storyous.delivery.common.api.DeliveryService
 import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryService
 import com.storyous.delivery.common.api.RequestDeclineBody
 import com.storyous.delivery.common.db.DeliveryDao
 import com.storyous.delivery.common.toApi
@@ -45,7 +45,7 @@ open class DeliveryRepository(
     fun getConfirmedOrders(): LiveData<DeliveryOrder?> = confirmedOrders
     fun getDeliveryError(): LiveData<DeliveryException?> = deliveryError
 
-    fun addConfirmedOrder(order: DeliveryOrder) {
+    suspend fun addConfirmedOrder(order: DeliveryOrder) = withContext(provider.Main) {
         confirmedOrdersQueue.add(order)
         confirmedOrders.value = confirmedOrdersQueue.peek()
     }
