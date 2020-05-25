@@ -5,6 +5,7 @@ package com.storyous.delivery.common.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.storyous.delivery.common.api.DeliveryItem
+import java.math.BigDecimal
 import java.util.Date
 
 @Suppress("LongParameterList")
@@ -14,7 +15,7 @@ open class DeliveryOrder(
     var deliveryTime: Date,
     var deliveryOnTime: Boolean,
     var deliveryType: String,
-    var discountWithVat: Int?,
+    var discountWithVat: BigDecimal?,
     var items: List<DeliveryItem> = listOf(),
     var state: String,
     var alreadyPaid: Boolean,
