@@ -14,23 +14,23 @@ class Converters {
     }
 
     @TypeConverter
-    fun bigDecimalToString(input: BigDecimal?): String {
-        return input?.toPlainString() ?: ""
+    fun bigDecimalToString(input: BigDecimal?): String? {
+        return input?.toPlainString()
     }
 
     @TypeConverter
-    fun stringToBigDecimal(input: String?): BigDecimal {
-        return input?.takeIf { !it.isBlank() }?.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    fun stringToBigDecimal(input: String?): BigDecimal? {
+        return input?.takeIf { !it.isBlank() }?.toBigDecimalOrNull()
     }
 
     @TypeConverter
-    fun arrayToString(input: Array<String>?): String {
-        return input?.joinToString(ARRAY_DELIMITER) ?: ""
+    fun arrayToString(input: Array<String>?): String? {
+        return input?.joinToString(ARRAY_DELIMITER)
     }
 
     @TypeConverter
-    fun stringToArray(input: String?): Array<String> {
-        return input?.split(ARRAY_DELIMITER)?.toTypedArray() ?: arrayOf()
+    fun stringToArray(input: String?): Array<String>? {
+        return input?.split(ARRAY_DELIMITER)?.toTypedArray()
     }
 
     @TypeConverter

@@ -11,7 +11,7 @@ data class DeliveryOrder(
     val deliveryTime: Date,
     val deliveryOnTime: Boolean,
     @DeliveryType val deliveryType: String,
-    val discountWithVat: Int?,
+    val discountWithVat: BigDecimal?,
     val customer: Customer,
     val desk: Desk?,
     val items: List<DeliveryItem>,
@@ -21,7 +21,8 @@ data class DeliveryOrder(
     val provider: String,
     val note: String?,
     @SerializedName("_lastModifiedAt")
-    val lastModifiedAt: Date
+    val lastModifiedAt: Date,
+    val tipWithVat: BigDecimal?
 ) {
 
     companion object {
