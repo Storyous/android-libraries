@@ -29,5 +29,6 @@ open class DeliveryOrder(
     var customerEmail: String?,
     var deskId: String?,
     var deskCode: String?,
-    var deskName: String?
+    var deskName: String?,
+    var tipWithVat: BigDecimal?
 )

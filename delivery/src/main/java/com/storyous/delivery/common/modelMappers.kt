@@ -26,7 +26,8 @@ fun DeliveryOrder.toDb() = DeliveryOrderDb(
     customer.email,
     desk?.deskId,
     desk?.code,
-    desk?.name
+    desk?.name,
+    tipWithVat
 )
 
 fun DeliveryOrderDb.toApi() = DeliveryOrder(
@@ -43,7 +44,8 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     autoConfirm,
     provider,
     note,
-    lastModifiedAt
+    lastModifiedAt,
+    tipWithVat
 )
 
 fun LiveData<List<DeliveryOrderDb>>.toApi() = Transformations.map(this) {

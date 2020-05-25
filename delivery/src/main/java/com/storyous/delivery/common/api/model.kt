@@ -21,7 +21,8 @@ data class DeliveryOrder(
     val provider: String,
     val note: String?,
     @SerializedName("_lastModifiedAt")
-    val lastModifiedAt: Date
+    val lastModifiedAt: Date,
+    val tipWithVat: BigDecimal?
 ) {
 
     companion object {
