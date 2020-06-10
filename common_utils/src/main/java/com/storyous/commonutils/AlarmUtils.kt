@@ -27,10 +27,19 @@ object AlarmUtils : CoroutineScope by CoroutineProviderScope() {
         context.getSharedPreferences(SP_REPEATING_ALARMS, Activity.MODE_PRIVATE)
 
     fun init(context: Context) {
-        getSP(context).all
-            .filterValues { it is Long && it > 0 }
-            .map { Class.forName(it.key).kotlin as KClass<out BroadcastReceiver> to it.value as Long }
-            .forEach { setRepeatingAlarm(context, it.first, START_NOW, it.second) }
+        launch(provider.IO) {
+            val (editSP, receiversConfig) = with(getSP(context)) { edit() to all }
+            receiversConfig.forEach { (receiverClazzName, interval) ->
+                runCatching {
+                    Class.forName(receiverClazzName).kotlin as KClass<out BroadcastReceiver> to interval as Long
+                }.onFailure {
+                    editSP.remove(receiverClazzName)
+                }.onSuccess {
+                    setRepeatingAlarm(context, it.first, START_NOW, it.second)
+                }
+            }
+            editSP.apply()
+        }
     }
 
     fun doNotKeepWakeUp(context: Context) {
