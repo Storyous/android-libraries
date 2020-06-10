@@ -1,5 +1,9 @@
+@file:Suppress("TooManyFunctions")
+
 package com.storyous.commonutils.extensions
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -99,4 +103,31 @@ fun <T> MediatorLiveData<T>.onChange(sources: Array<LiveData<*>>, onChange: () -
         addSource(it) { value = onChange() }
     }
     return this
+}
+
+fun <T> LiveData<T>.repeat(interval: Long): LiveData<T> = object : MediatorLiveData<T>() {
+    private val handler = Handler(Looper.getMainLooper())
+    private val updateValue: () -> Unit = {
+        if (this@repeat.value != null) {
+            value = this@repeat.value
+        }
+        if (hasActiveObservers()) {
+            handler.postDelayed(runnable, interval)
+        }
+    }
+    private val runnable = Runnable { updateValue() }
+
+    override fun onActive() {
+        super.onActive()
+        handler.postDelayed(runnable, interval)
+    }
+
+    override fun onInactive() {
+        super.onInactive()
+        handler.removeCallbacks(runnable)
+    }
+}.apply {
+    addSource(this@repeat) {
+        value = it
+    }
 }
