@@ -29,22 +29,19 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
             val type = when (provider) {
-                DeliveryViewModel.PROVIDER_DJ -> getString(
-                    R.string.delivery_service_damejidlo,
-                    null
-                )
-                DeliveryViewModel.PROVIDER_UBER_EATS -> getString(
-                    R.string.delivery_service_ubereats,
-                    null
-                )
-                DeliveryViewModel.PROVIDER_DELIVERECT -> getString(
-                    R.string.delivery_service_deliverect,
-                    null
-                )
-                DeliveryViewModel.PROVIDER_PHONE -> getString(R.string.delivery_service_phone, null)
+                DeliveryViewModel.PROVIDER_DJ ->
+                    getString(R.string.delivery_service_damejidlo, null)
+                DeliveryViewModel.PROVIDER_UBER_EATS ->
+                    getString(R.string.delivery_service_ubereats, null)
+                DeliveryViewModel.PROVIDER_DELIVERECT ->
+                    getString(R.string.delivery_service_deliverect, null)
+                DeliveryViewModel.PROVIDER_PHONE ->
+                    getString(R.string.delivery_service_phone, null)
                 DeliveryViewModel.PROVIDER_STORYOUS_TAKEAWAY_WEB,
                 DeliveryViewModel.PROVIDER_STORYOUS_TAKEAWAY_APP ->
                     getString(R.string.delivery_service_storyous_takeaway, null)
+                DeliveryViewModel.PROVIDER_STORYOUS_ONEMENU_QR ->
+                    getString(R.string.delivery_service_onemenu_qr, null)
                 else -> null
             }
             return getString(R.string.delivery_service_info, type)

@@ -15,6 +15,7 @@
     <string name="delivery_service_deliverect" translatable="false">Deliverect</string>
     <string name="delivery_service_phone">phone</string>
     <string name="delivery_service_storyous_takeaway" translatable="false">Storyous Takeaway</string>
+    <string name="delivery_service_onemenu_qr" translatable="false">OneMenu QR</string>
     <string name="delivery_service_info">Ordered via %1$s</string>
     <string name="delivery_service_info_unknown">Order No.:</string>
     <string name="delivery_orders_new">New orders</string>
