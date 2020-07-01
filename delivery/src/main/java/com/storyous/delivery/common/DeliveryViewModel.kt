@@ -26,6 +26,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         const val PROVIDER_PHONE = "phone"
         const val PROVIDER_STORYOUS_TAKEAWAY_WEB = "5e6e9c3f0ab34eb0f646bc05"
         const val PROVIDER_STORYOUS_TAKEAWAY_APP = "5e1eca6a3a6c2907928d392b"
+        const val PROVIDER_STORYOUS_ONEMENU_QR = "5ee74cc2764ce12de93fedaa"
 
         const val MESSAGE_ERROR_STATE_CONFLICT = 1
         const val MESSAGE_ERROR_OTHER = 2
