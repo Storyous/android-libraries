@@ -37,6 +37,7 @@ public enum TimestampUtil {
             mObserver.dispose();
         }
 
+        Timber.i("Start TrueTime init.");
         mObserver = TrueTimeRx.build()
                 .withSharedPreferencesCache(context)
                 .initializeNtp("cz.pool.ntp.org")
@@ -55,7 +56,7 @@ public enum TimestampUtil {
                 Timber.e(ex, "Could not initialize TrueTime");
             }
         }
-        return new Date(System.currentTimeMillis());
+        return new Date();
     }
 
     public static synchronized long getTime() {
@@ -110,7 +111,7 @@ public enum TimestampUtil {
         }
     }
 
-    private class TimeObserver extends DisposableSingleObserver<Date> {
+    private static class TimeObserver extends DisposableSingleObserver<Date> {
         @Override
         public void onSuccess(Date date) {
             Timber.i(
