@@ -83,10 +83,6 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    // commonutils dependencies
-    implementation "com.github.instacart.truetime-android:library:$truetime_version"
-    implementation "com.github.instacart.truetime-android:library-extension-rx:$truetime_version"
-
     // DB persistence
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
