@@ -120,7 +120,7 @@ class DeliveryDetailFragment : Fragment() {
             R.layout.cancel_reason_singlechoice,
             resources.getStringArray(R.array.delivery_cancel_reasons)
         )
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.delivery_cancel_reason_title)
             .setPositiveButton(R.string.confirm) { dialog, _ ->
                 val selectedPosition = (dialog as AlertDialog).listView.checkedItemPosition
