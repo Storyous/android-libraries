@@ -72,7 +72,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    implementation "androidx.recyclerview:recyclerview:$androidx_recyclerview"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
