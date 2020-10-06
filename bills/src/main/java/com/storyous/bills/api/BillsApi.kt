@@ -6,16 +6,16 @@ import retrofit2.http.Query
 
 interface BillsApi {
 
-    @GET("/bills/{merchant}-{placeId}/{billId}")
-    suspend fun loadMenu(
+    @GET("/bills/{merchantId}-{placeId}/{billId}")
+    suspend fun loadBillDetail(
         @Path("merchantId") merchantId: String,
         @Path("placeId") placeId: String,
-        @Query("billId") billId: String
+        @Path("billId") billId: String
     ): BillWithItems
 
     @Suppress("LongParameterList")
-    @GET("/bills/{merchant}-{placeId}")
-    suspend fun loadTimedMenu(
+    @GET("/bills/{merchantId}-{placeId}")
+    suspend fun loadBills(
         @Path("merchantId") merchantId: String,
         @Path("placeId") placeId: String,
         @Query("from") fromDate: String? = null,
