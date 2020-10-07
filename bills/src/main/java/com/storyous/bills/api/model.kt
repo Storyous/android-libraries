@@ -1,56 +1,59 @@
 package com.storyous.bills.api
 
+import java.math.BigDecimal
+import java.util.Date
+
 interface Bill {
     val billId: String
-    val createdAt: String
+    val createdAt: Date
     val createdBy: Person
     val currencyCode: String
-    val customerId: Any
-    val deskId: Any
-    val discount: String
-    val finalPrice: String
-    val finalPriceWithoutTax: String
+    val customerId: String
+    val deskId: String
+    val discount: BigDecimal
+    val finalPrice: BigDecimal
+    val finalPriceWithoutTax: BigDecimal
     val fiscalData: FiscalData
-    val fiscalizedAt: String
+    val fiscalizedAt: Date
     val invoiceData: Any
     val issuedAsVatPayer: Boolean
     val orderProvider: OrderProvider
-    val paidAt: String
+    val paidAt: Date
     val paidBy: Person
     val paymentMethod: String
     val personCount: Int
     val refunded: Boolean
-    val rounding: String
-    val sessionCreated: String
-    val taxSummaries: Map<String, String>
-    val tips: String
+    val rounding: BigDecimal
+    val sessionCreated: Date
+    val taxSummaries: Map<String, BigDecimal>
+    val tips: BigDecimal
 }
 
 data class BillWithItems(
     override val billId: String,
-    override val createdAt: String,
+    override val createdAt: Date,
     override val createdBy: Person,
     override val currencyCode: String,
-    override val customerId: Any,
-    override val deskId: Any,
-    override val discount: String,
-    override val finalPrice: String,
-    override val finalPriceWithoutTax: String,
+    override val customerId: String,
+    override val deskId: String,
+    override val discount: BigDecimal,
+    override val finalPrice: BigDecimal,
+    override val finalPriceWithoutTax: BigDecimal,
     override val fiscalData: FiscalData,
-    override val fiscalizedAt: String,
+    override val fiscalizedAt: Date,
     override val invoiceData: Any,
     override val issuedAsVatPayer: Boolean,
     override val orderProvider: OrderProvider,
-    override val paidAt: String,
+    override val paidAt: Date,
     override val paidBy: Person,
     override val paymentMethod: String,
     override val personCount: Int,
     override val refunded: Boolean,
-    override val rounding: String,
-    override val sessionCreated: String,
-    override val taxSummaries: Map<String, String>,
-    override val tips: String,
-    val items: List<Item>
+    override val rounding: BigDecimal,
+    override val sessionCreated: Date,
+    override val taxSummaries: Map<String, BigDecimal>,
+    override val tips: BigDecimal,
+    val items: List<BillItem>
 ) : Bill
 
 data class Person(
@@ -68,14 +71,15 @@ data class FiscalData(
     val pkp: String
 )
 
-data class Item(
+data class BillItem(
     val amount: Double,
     val categoryId: String,
-    val id: Int,
+    val id: String,
     val measure: String,
     val name: String,
-    val price: Int,
+    val price: BigDecimal,
     val productId: String,
+    val vatId: Int,
     val vatRate: Double
 )
 
