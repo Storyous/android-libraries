@@ -1,6 +1,5 @@
 package com.storyous.contacts
 
-import com.storyous.storyouspay.contacts.MockFirestore
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before

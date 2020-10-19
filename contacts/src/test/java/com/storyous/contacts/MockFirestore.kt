@@ -1,11 +1,11 @@
-package com.storyous.storyouspay.contacts
+package com.storyous.contacts
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.nongmsauth.FirebaseRestAuth
+import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithCustomTokenResponse
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
@@ -15,7 +15,6 @@ import org.mockito.ArgumentMatchers
 class MockFirestore<T>(private val clazz: Class<T>) {
 
     var nextException: Exception? = null
-    var authException: Exception? = null
     var authenticated = true
     val state = mutableMapOf<String, T>()
 
@@ -72,15 +71,15 @@ class MockFirestore<T>(private val clazz: Class<T>) {
         on { collection(ArgumentMatchers.anyString()) } doReturn collection
     }
 
-    private val authResult = mock<AuthResult> {}
+    private val authResult = SignInWithCustomTokenResponse()
 
-    private val authTask = mock<Task<AuthResult>> {
+    private val authTask = mock<Task<SignInWithCustomTokenResponse>> {
         on { isComplete } doReturn true
         on { result } doReturn authResult
         on { exception } doAnswer { nextException }
     }
 
-    val auth = mock<FirebaseAuth> {
+    val auth = mock<FirebaseRestAuth> {
         on { currentUser } doAnswer {
             if (authenticated) mock {} else null
         }

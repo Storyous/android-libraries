@@ -39,9 +39,12 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 
     // Firestore
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.7.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+    
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"

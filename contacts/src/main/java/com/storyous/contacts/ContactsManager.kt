@@ -1,7 +1,8 @@
 package com.storyous.contacts
 
 import com.auth0.android.jwt.DecodeException
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.FirebaseApp
+import com.google.firebase.nongmsauth.FirebaseRestAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -10,19 +11,18 @@ import timber.log.Timber
 
 class ContactsManager(
     private val repository: ContactsRepository = ContactsRepository(),
-    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseRestAuth = FirebaseRestAuth.getInstance(FirebaseApp.getInstance())
 ) {
     companion object {
         const val FIREBASE_TIMEOUT = 20000L
     }
 
-    private val autStateListener = FirebaseAuth.AuthStateListener {}
     private var merchantId: String? = null
     private var placeId: String? = null
 
     init {
         runCatching {
-            firebaseAuth.currentUser?.getIdToken(false)?.result?.token?.let {
+            firebaseAuth.currentUser?.idToken?.let {
                 val (merchantId, placeId) = decodeToken(it)
 
                 this.merchantId = merchantId
@@ -68,12 +68,6 @@ class ContactsManager(
             requireNotNull(placeId)
         )
     }
-
-    fun setAuthListener(listener: (Boolean) -> Unit) = firebaseAuth.addAuthStateListener {
-        listener(it.currentUser != null)
-    }
-
-    fun removeAuthListener() = firebaseAuth.removeAuthStateListener(autStateListener)
 
     fun isAuthenticated() = firebaseAuth.currentUser != null
 
