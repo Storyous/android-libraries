@@ -82,9 +82,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     val loadingOrderDispatching = MutableLiveData(false)
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
-    fun loadOrders() {
-        DeliveryConfiguration.deliveryModel.loadOrders()
-    }
+    fun loadOrders() = DeliveryConfiguration.deliveryModel.loadOrders()
 
     fun deselectOrder() {
         selectedOrderIdLive.value = null
@@ -106,7 +104,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     fun getDeliveryOrdersLive() = deliveryOrdersLive
 
     fun acceptOrder(order: DeliveryOrder) {
-        loadingOrderAccepting.postValue(true)
+        loadingOrderAccepting.value = true
         // hold data of selected order to prevent change data when is selected different order
         launch(provider.Main) {
             runCatching {
@@ -120,7 +118,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
                 }
             }
 
-            loadingOrderAccepting.postValue(false)
+            loadingOrderAccepting.value = false
         }
     }
 

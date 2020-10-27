@@ -17,9 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
-import java.util.concurrent.ConcurrentLinkedQueue
 
-@Suppress("TooManyFunctions")
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
     private val db: DeliveryDao
@@ -30,8 +28,6 @@ open class DeliveryRepository(
         const val STATUS_CODE_CONFLICT = 409
     }
 
-    private val confirmedOrdersQueue = ConcurrentLinkedQueue<DeliveryOrder>()
-    private val confirmedOrders = MutableLiveData<DeliveryOrder?>()
     val newOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_NEW).toApi()
     val dispatchedOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_DISPATCHED).toApi()
     val deliveryOrdersLive = db.getOrdersLive().toApi()
@@ -42,45 +38,33 @@ open class DeliveryRepository(
         addSource(newOrdersLive) { value = it.isNotEmpty() }
     }
 
-    fun getConfirmedOrders(): LiveData<DeliveryOrder?> = confirmedOrders
     fun getDeliveryError(): LiveData<DeliveryException?> = deliveryError
-
-    suspend fun addConfirmedOrder(order: DeliveryOrder) = withContext(provider.Main) {
-        confirmedOrdersQueue.add(order)
-        confirmedOrders.value = confirmedOrdersQueue.peek()
-    }
-
-    fun removeConfirmedOrder(order: DeliveryOrder) {
-        confirmedOrdersQueue.remove(order)
-        confirmedOrders.value = confirmedOrdersQueue.peek()
-    }
 
     suspend fun loadDeliveryOrders(
         merchantId: String,
         placeId: String
-    ) = withContext(provider.Main) {
+    ) = withContext(provider.IO) {
         runCatching {
-            withContext(provider.IO) {
-                apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
-                    .also { response ->
-                        db.update(response.data.map { it.toDb() })
-                        lastMod = response.lastModificationAt
-                    }
-            }
-        }.onFailure {
-            Timber.e(it, "Fail to load Delivery orders.")
-            if (it is HttpException && it.code() == STATUS_CODE_UNAUTHORIZED) {
-                deliveryError.value = DeliveryException(cause = it)
-            }
-        }.getOrNull()
-    }
+            apiService().getDeliveryOrdersAsync(merchantId, placeId, lastMod)
+                .also { response ->
+                    db.update(response.data.map { it.toDb() })
+                    lastMod = response.lastModificationAt
+                }
+        }
+    }.onFailure {
+        Timber.e(it, "Fail to load Delivery orders.")
+        if (it is HttpException && it.code() == STATUS_CODE_UNAUTHORIZED) {
+            deliveryError.value = DeliveryException(cause = it)
+        }
+    }.getOrNull()
+
 
     @Throws(DeliveryException::class)
     suspend fun confirmDeliveryOrder(
         merchantId: String,
         placeId: String,
         order: DeliveryOrder
-    ) = handleDeliveryCall {
+    ) = handleOrderUpdate {
         apiService().confirmDeliveryOrderAsync(merchantId, placeId, order.orderId)
     }
 
@@ -90,7 +74,7 @@ open class DeliveryRepository(
         placeId: String,
         order: DeliveryOrder,
         reason: String
-    ) = handleDeliveryCall {
+    ) = handleOrderUpdate {
         apiService().declineDeliveryOrderAsync(
             merchantId,
             placeId,
@@ -104,12 +88,12 @@ open class DeliveryRepository(
         merchantId: String,
         placeId: String,
         order: DeliveryOrder
-    ) = handleDeliveryCall {
+    ) = handleOrderUpdate {
         apiService().notifyOrderDispatched(merchantId, placeId, order.orderId)
     }
 
     @Throws(DeliveryException::class)
-    private suspend fun handleDeliveryCall(
+    private suspend fun handleOrderUpdate(
         block: suspend () -> DeliveryOrder
     ) = runCatching { block() }
         .onSuccess { db.insertOrder(it.toDb()) }
@@ -134,13 +118,13 @@ open class DeliveryRepository(
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
 
+    suspend fun getConfirmedOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_CONFIRMED).map { it.toApi() }
+
     suspend fun clear() {
         withContext(provider.IO) {
             db.delete()
         }
         lastMod = null
-        confirmedOrdersQueue.clear()
-        confirmedOrders.value?.let { confirmedOrders.value = null }
         deliveryError.value?.let { deliveryError.value = null }
     }
 }
