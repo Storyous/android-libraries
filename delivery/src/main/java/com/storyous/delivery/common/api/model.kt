@@ -139,7 +139,7 @@ data class DeliveryTiming(
 ) {
     companion object {
         @Retention(AnnotationRetention.SOURCE)
-        @IntDef(DeliveryTiming.SHOW_ESTIMATED_PICKUP, SHOW_REQUESTED_PICKUP, SHOW_MEAL_READY,
+        @IntDef(SHOW_ESTIMATED_PICKUP, SHOW_REQUESTED_PICKUP, SHOW_MEAL_READY,
             SHOW_ESTIMATED_DELIVERY, SHOW_REQUESTED_DELIVERY, SHOW_ASAP, SHOW_NOTHING)
         annotation class TimeDisplayType
 
