@@ -26,6 +26,8 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     var dispatchedOrderInterceptor: suspend (DeliveryOrder) -> Unit = {}
 
+    var confirmedOrderInterceptor: suspend (DeliveryOrder) -> Unit = {}
+
     companion object {
         fun getOrderInfo(provider: String, getString: (Int, String?) -> String): String {
             val type = when (provider) {
@@ -57,22 +59,34 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
         }
     }
 
-    fun loadOrders(): Job? {
+    fun loadOrders(): Job {
         if (loadingOrdersJob?.isActive != true) {
             loadingOrdersJob = launch(provider.Main) {
-                DeliveryConfiguration.placeInfo?.let {
-                    Timber.d("Delivery order download started.")
+                val (placeId, merchantId, autoConfirmEnabled) = DeliveryConfiguration.placeInfo.also {
+                    if (it == null) Timber.w("Delivery is not configured to load new orders")
+                } ?: return@launch
 
-                    DeliveryConfiguration.deliveryRepository
-                        ?.loadDeliveryOrders(it.merchantId, it.placeId)
+                Timber.d("Delivery order download started.")
 
-                    DeliveryConfiguration.deliveryRepository
-                        ?.getNewOrdersFromDb()
-                        ?.also { newOrdersInterceptor(it) }
-                } ?: Timber.w("Delivery is not configured to load new orders")
+                val alreadyConfirmedOrderIds = DeliveryConfiguration.deliveryRepository
+                    .takeIf { autoConfirmEnabled }
+                    ?.getConfirmedOrdersFromDb()
+                    ?.map { it.orderId }
+
+                DeliveryConfiguration.deliveryRepository
+                    ?.loadDeliveryOrders(merchantId, placeId)
+                    ?.takeIf { autoConfirmEnabled }
+                    ?.data?.filter {
+                        it.state == DeliveryOrder.STATE_CONFIRMED &&
+                            alreadyConfirmedOrderIds?.contains(it.orderId) != true
+                    }?.forEach { confirmedOrderInterceptor(it) }
+
+                DeliveryConfiguration.deliveryRepository
+                    ?.getNewOrdersFromDb()
+                    ?.also { newOrdersInterceptor(it) }
             }
         }
-        return loadingOrdersJob
+        return loadingOrdersJob!!
     }
 
     @Throws(DeliveryException::class)
@@ -84,7 +98,9 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
             DeliveryConfiguration.deliveryRepository
                 ?.confirmDeliveryOrder(merchantId, placeId, order)
         }?.also {
-            DeliveryConfiguration.deliveryRepository?.addConfirmedOrder(it)
+            if (it.state == DeliveryOrder.STATE_CONFIRMED) {
+                confirmedOrderInterceptor(it)
+            }
         }
     }
 
