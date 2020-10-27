@@ -15,6 +15,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var placeInfo: PlaceInfo? = null
     var formatter: Formatter = DefaultFormatter()
     var onActivityToolbarCreate: (Toolbar, FragmentManager) -> Unit = { _, _ -> }
+    var useOrderTimingField = true
 
     @Throws(ConfigurationInvalidException::class)
     fun checkValid() {

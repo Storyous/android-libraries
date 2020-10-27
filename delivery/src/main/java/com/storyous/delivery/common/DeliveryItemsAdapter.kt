@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.annotations.SerializedName
 import com.storyous.commonutils.DateUtils
 import com.storyous.commonutils.adapters.Header
 import com.storyous.commonutils.adapters.Item
@@ -15,9 +16,22 @@ import com.storyous.commonutils.adapters.ItemType.HEADER_DISABLED
 import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
 import com.storyous.commonutils.recyclerView.getString
+import com.storyous.delivery.common.api.Customer
+import com.storyous.delivery.common.api.DeliveryDateRange
+import com.storyous.delivery.common.api.DeliveryItem
 import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryTiming
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_ASAP
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_ESTIMATED_DELIVERY
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_ESTIMATED_PICKUP
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_MEAL_READY
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_NOTHING
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_REQUESTED_DELIVERY
+import com.storyous.delivery.common.api.DeliveryTiming.Companion.SHOW_REQUESTED_PICKUP
+import com.storyous.delivery.common.api.Desk
 import java.math.BigDecimal
 import java.util.ArrayList
+import java.util.Date
 
 class DeliveryItemsAdapter(
     private val onClickListener: (DeliveryOrder) -> Unit
@@ -139,7 +153,8 @@ class DeliveryItemsAdapter(
         private val onClickListener: (Int, DeliveryOrder) -> Unit
     ) : DeliveryViewHolder(itemView) {
 
-        val time: TextView = itemView.findViewById(R.id.text_item_delivery_time)
+        val timeFrom: TextView = itemView.findViewById(R.id.text_item_delivery_time_from)
+        val timeTo: TextView = itemView.findViewById(R.id.text_item_delivery_time_to)
         val name: TextView = itemView.findViewById(R.id.text_item_delivery_customer)
         val address: TextView = itemView.findViewById(R.id.text_item_delivery_address)
         val price: TextView = itemView.findViewById(R.id.text_item_delivery_price)
@@ -156,24 +171,60 @@ class DeliveryItemsAdapter(
                 ?: deliveryOrder.customer.deliveryAddress
             price.text = calcTotalPriceFormatted(deliveryOrder)
             deliveryType.text = getDeliveryType(deliveryType.context, deliveryOrder)
-            time.text = getDeliveryTime(deliveryOrder)
-            time.isVisible = deliveryOrder.deliveryType != DeliveryOrder.TYPE_TABLE_ORDER
+            getDeliveryTime(deliveryOrder).let {
+                timeFrom.text = it.first
+                timeFrom.isVisible = it.first.isNotEmpty()
+                timeTo.text = it.second
+                timeTo.isVisible = it.second.isNotEmpty()
+            }
         }
 
-        private fun getDeliveryTime(order: DeliveryOrder): String {
+        private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {
+            return if (!DeliveryConfiguration.useOrderTimingField) {
+                getLegacyDeliveryTime(order)
+            } else when (order.timing?.showTime()) {
+                SHOW_ESTIMATED_PICKUP -> getRangeOrSingleTime(order.timing.estimatedPickupTime)
+                SHOW_REQUESTED_PICKUP -> getRangeOrSingleTime(order.timing.requestedPickupTime)
+                SHOW_MEAL_READY -> getString(R.string.time_till, DateUtils.HM.format(order.timing.estimatedMealReadyTime)) to ""
+                SHOW_ESTIMATED_DELIVERY -> getRangeOrSingleTime(order.timing.estimatedDeliveryTime)
+                SHOW_REQUESTED_DELIVERY -> getRangeOrSingleTime(order.timing.requestedDeliveryTime)
+                SHOW_ASAP -> "" to getString(R.string.delivery_asap)
+                SHOW_NOTHING -> "" to ""
+                else -> if (order.deliveryType == DeliveryOrder.TYPE_TABLE_ORDER) {
+                    "" to ""
+                } else {
+                    getLegacyDeliveryTime(order)
+                }
+            }
+        }
 
-            val prefix = if (order.deliveryOnTime) R.string.time_at else R.string.time_till
+        private fun getLegacyDeliveryTime(order: DeliveryOrder): Pair<String, String> {
+            val prefix = if (order.deliveryOnTime == true) R.string.time_at else R.string.time_till
             val date = DateUtils.HM.format(order.deliveryTime)
+            return getString(prefix, date) to ""
+        }
 
-            return getString(prefix, date)
+        private fun getRangeOrSingleTime(range: DeliveryDateRange?): Pair<String, String> {
+            return if (range == null) {
+                "" to ""
+            } else {
+                val from = DateUtils.HM.format(range.from)
+                val till = DateUtils.HM.format(range.to)
+                getString(if (from == till) R.string.time_at else R.string.time_from, from) to
+                    (if (from == till) "" else getString(R.string.time_till, till))
+            }
         }
 
         private fun getDeliveryType(context: Context, order: DeliveryOrder): String {
-            return when (order.deliveryType) {
-                DeliveryOrder.TYPE_DELIVERY -> context.getString(R.string.delivery_type_delivery)
-                DeliveryOrder.TYPE_TAKEAWAY -> context.getString(R.string.delivery_type_takeaway)
-                DeliveryOrder.TYPE_DISPATCH -> context.getString(R.string.delivery_type_dispatch)
-                DeliveryOrder.TYPE_TABLE_ORDER -> context.getString(R.string.delivery_type_order_to_table)
+            return when {
+                DeliveryConfiguration.useOrderTimingField && order.timing?.showTime() == SHOW_MEAL_READY ->
+                    context.getString(R.string.delivery_meal_ready)
+                DeliveryConfiguration.useOrderTimingField && order.timing?.showTime() == SHOW_ASAP ->
+                    context.getString(R.string.delivery_meal_ready)
+                order.deliveryType == DeliveryOrder.TYPE_DELIVERY -> context.getString(R.string.delivery_type_delivery)
+                order.deliveryType == DeliveryOrder.TYPE_TAKEAWAY -> context.getString(R.string.delivery_type_takeaway)
+                order.deliveryType == DeliveryOrder.TYPE_DISPATCH -> context.getString(R.string.delivery_type_dispatch)
+                order.deliveryType == DeliveryOrder.TYPE_TABLE_ORDER -> context.getString(R.string.delivery_type_order_to_table)
                 else -> ""
             }
         }

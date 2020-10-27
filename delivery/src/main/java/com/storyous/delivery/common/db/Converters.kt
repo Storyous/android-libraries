@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.storyous.delivery.common.api.DeliveryItem
+import com.storyous.delivery.common.api.DeliveryTiming
 import java.math.BigDecimal
 import java.util.Date
 
@@ -51,5 +52,15 @@ class Converters {
     @TypeConverter
     fun jsonToDeliveryItems(value: String?): List<DeliveryItem>? {
         return Gson().fromJson(value, object : TypeToken<List<DeliveryItem>>() {}.type)
+    }
+
+    @TypeConverter
+    fun deliveryTimingToJson(timing: DeliveryTiming?): String? {
+        return Gson().toJson(timing)
+    }
+
+    @TypeConverter
+    fun jsonToDeliveryTiming(value: String?): DeliveryTiming? {
+        return Gson().fromJson(value, object : TypeToken<DeliveryTiming>() {}.type)
     }
 }

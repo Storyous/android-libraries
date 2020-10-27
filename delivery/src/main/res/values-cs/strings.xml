@@ -27,9 +27,22 @@
     <string name="delivery_type_takeaway">Zákazník vyzvedne</string>
     <string name="delivery_type_dispatch">Kurýr vyzvedne</string>
     <string name="delivery_type_order_to_table">Objednávka na stůl</string>
+    <string name="delivery_meal_ready">Připravit</string>
     <string name="piece_measure">ks</string>
     <string name="new_delivery">Nová objednávka</string>
     <string name="customer_detail_header">Detail zákazníka</string>
     <string name="order_note_header">Poznámka k objednávce:</string>
     <string name="table">Stůl: %s</string>
+    <string name="delivery_asap">ihned</string>
+    <string name="time_from">od %s</string>
+    <string name="delivery_time_asap">Připravit co nejdříve</string>
+    <string name="delivery_time_estimated_pickup">Odhadované vyzvednutí:</string>
+    <string name="delivery_time_requested_pickup">Požadované vyzvednutí:</string>
+    <string name="delivery_time_estimated_pickup_by">Odhadované vyzvednutí %s:</string>
+    <string name="delivery_time_requested_pickup_by">Požadované vyzvednutí %s:</string>
+    <string name="delivery_time_meal_ready">Odhadované dokončení jídla:</string>
+    <string name="delivery_time_estimated_delivery">Odhadované doručení:</string>
+    <string name="delivery_time_requested_delivery">Požadované doručení:</string>
+    <string name="delivery_time_courier">kurýrem</string>
+    <string name="delivery_time_customer">zákazníkem</string>
 </resources>

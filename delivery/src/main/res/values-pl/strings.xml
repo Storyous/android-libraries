@@ -32,4 +32,7 @@
     <string name="customer_detail_header">Szczegóły klienta</string>
     <string name="order_note_header">Notatka do zamówienia:</string>
     <string name="table">Stolik: %s</string>
+    <string name="delivery_meal_ready">Gotowe</string>
+    <string name="delivery_asap">teraz</string>
+    <string name="time_from">od %s</string>
 </resources>
