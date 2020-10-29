@@ -28,14 +28,25 @@ fun DeliveryOrder.getLegacyDeliveryTime(provider: StringResProvider): String {
 }
 
 fun DeliveryOrder.getDeliveryTypeTranslation(provider: StringResProvider): String {
-    return when {
-        DeliveryConfiguration.useOrderTimingField &&
-            (timing?.showTime() == DeliveryTiming.SHOW_MEAL_READY || timing?.showTime() == DeliveryTiming.SHOW_ASAP) ->
+    return if (!DeliveryConfiguration.useOrderTimingField) {
+        return getLegacyDeliveryTypeTranslation(provider)
+    } else when (timing?.showTime()) {
+        DeliveryTiming.SHOW_ESTIMATED_PICKUP, DeliveryTiming.SHOW_REQUESTED_PICKUP ->
+            getLegacyDeliveryTypeTranslation(provider)
+        DeliveryTiming.SHOW_ESTIMATED_DELIVERY, DeliveryTiming.SHOW_REQUESTED_DELIVERY ->
+            provider.getString(R.string.delivery_type_delivery)
+        DeliveryTiming.SHOW_MEAL_READY, DeliveryTiming.SHOW_ASAP ->
             provider.getString(R.string.delivery_meal_ready)
-        deliveryType == DeliveryOrder.TYPE_DELIVERY -> provider.getString(R.string.delivery_type_delivery)
-        deliveryType == DeliveryOrder.TYPE_TAKEAWAY -> provider.getString(R.string.delivery_type_takeaway)
-        deliveryType == DeliveryOrder.TYPE_DISPATCH -> provider.getString(R.string.delivery_type_dispatch)
-        deliveryType == DeliveryOrder.TYPE_TABLE_ORDER -> provider.getString(R.string.delivery_type_order_to_table)
+        else -> ""
+    }
+}
+
+fun DeliveryOrder.getLegacyDeliveryTypeTranslation(provider: StringResProvider): String {
+    return when (deliveryType) {
+        DeliveryOrder.TYPE_DELIVERY -> provider.getString(R.string.delivery_type_delivery)
+        DeliveryOrder.TYPE_TAKEAWAY -> provider.getString(R.string.delivery_type_takeaway)
+        DeliveryOrder.TYPE_DISPATCH -> provider.getString(R.string.delivery_type_dispatch)
+        DeliveryOrder.TYPE_TABLE_ORDER -> provider.getString(R.string.delivery_type_order_to_table)
         else -> ""
     }
 }
