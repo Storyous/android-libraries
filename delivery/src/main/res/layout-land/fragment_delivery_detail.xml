@@ -7,7 +7,7 @@
     android:background="@color/grey_light"
     android:forceHasOverlappingRendering="false"
     tools:context="com.storyous.delivery.common.DeliveryDetailFragment">
-    
+
     <TextView
         android:id="@+id/deliver_items_header"
         style="@style/DeliveryItemDetailHeader"
@@ -36,158 +36,173 @@
         tools:itemCount="5"
         tools:listitem="@layout/list_item_delivery_detail" />
 
-
-    <TextView
-        android:id="@+id/customer_detail_header"
-        style="@style/DeliveryItemDetailHeader"
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/customer_detail_header"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/customer_detail_name"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/centerGuideline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/customer_detail_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Medium"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/customer_detail_address"
-        app:layout_constraintEnd_toStartOf="@+id/customer_detail_phone"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/customer_detail_header"
-        tools:text="Marian Kadlec" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
-    <TextView
-        android:id="@+id/customer_detail_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toEndOf="@id/customer_detail_name"
-        app:layout_constraintTop_toTopOf="@id/customer_detail_name"
-        tools:text="+420 123 456 789" />
+            <TextView
+                android:id="@+id/customer_detail_header"
+                style="@style/DeliveryItemDetailHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_detail_header"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toTopOf="@id/customer_detail_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/customer_detail_address"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/delivery_payment_type_header"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/customer_detail_name"
-        tools:text="Rohanské nábřeží 330, Praha 8" />
+            <TextView
+                android:id="@+id/customer_detail_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/customer_detail_address"
+                app:layout_constraintEnd_toStartOf="@+id/customer_detail_phone"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/customer_detail_header"
+                tools:text="Marian Kadlec" />
 
-    <TextView
-        android:id="@+id/delivery_payment_type_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/delivery_payment_type_header"
-        android:textAppearance="@style/TextAppearance.Medium"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/delivery_payment_type"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/customer_detail_address"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Payment type:" />
+            <TextView
+                android:id="@+id/customer_detail_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toEndOf="@id/customer_detail_name"
+                app:layout_constraintTop_toTopOf="@id/customer_detail_name"
+                tools:text="+420 123 456 789" />
 
-    <TextView
-        android:id="@+id/delivery_payment_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/delivery_dates"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_header"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="already paid" />
+            <TextView
+                android:id="@+id/customer_detail_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toTopOf="@id/delivery_payment_type_header"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/customer_detail_name"
+                tools:text="Rohanské nábřeží 330, Praha 8" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/delivery_dates"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/order_note_header"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:itemCount="1"
-        tools:listitem="@layout/delivery_detail_date" />
+            <TextView
+                android:id="@+id/delivery_payment_type_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/delivery_payment_type_header"
+                android:textAppearance="@style/TextAppearance.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/delivery_payment_type"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/customer_detail_address"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Payment type:" />
 
-    <TextView
-        android:id="@+id/order_note_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/order_note_header"
-        android:textAppearance="@style/TextAppearance.Medium"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/order_note"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/delivery_dates"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed" />
+            <TextView
+                android:id="@+id/delivery_payment_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toTopOf="@id/delivery_dates"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_header"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="already paid" />
 
-    <TextView
-        android:id="@+id/order_note"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/order_number"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/order_note_header"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Rohlík namazat nutellou, prosím" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/delivery_dates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/order_note_header"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:itemCount="1"
+                tools:listitem="@layout/delivery_detail_date" />
 
-    <TextView
-        android:id="@+id/order_number"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/button_cancel"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/order_note"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="Objednávka z Dáme jídlo č. 12345" />
+            <TextView
+                android:id="@+id/order_note_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/order_note_header"
+                android:textAppearance="@style/TextAppearance.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/order_note"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/delivery_dates"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:gravity="center"
-        android:text="@string/scheduling_delivery_info"
-        android:textColor="@color/white"
-        android:padding="@dimen/offset_4dp"
-        android:visibility="gone"
-        android:layout_marginBottom="25dp"
-        app:drawableLeftCompat="@drawable/ic_baseline_info_24"
-        app:drawableStartCompat="@drawable/ic_baseline_info_24"
-        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
-        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        tools:visibility="visible" />
+            <TextView
+                android:id="@+id/order_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toTopOf="@id/order_number"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/order_note_header"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Rohlík namazat nutellou, prosím" />
+
+            <TextView
+                android:id="@+id/order_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toBottomOf="@id/order_note"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Objednávka z Dáme jídlo č. 12345" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:background="@color/red"
+                android:gravity="center"
+                android:padding="@dimen/offset_4dp"
+                android:text="@string/scheduling_delivery_info"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:drawableLeftCompat="@drawable/ic_baseline_info_24"
+                app:drawableStartCompat="@drawable/ic_baseline_info_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/buttonBarrier"
