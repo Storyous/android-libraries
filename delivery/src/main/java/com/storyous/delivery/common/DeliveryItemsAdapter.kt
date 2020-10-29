@@ -15,18 +15,18 @@ import com.storyous.commonutils.adapters.ListItem
 import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
+import kotlinx.android.synthetic.main.list_item_delivery.view.*
 import java.math.BigDecimal
-import java.util.ArrayList
 
 class DeliveryItemsAdapter(
     private val onClickListener: (DeliveryOrder) -> Unit
 ) : RecyclerView.Adapter<DeliveryItemsAdapter.DeliveryViewHolder>() {
 
-    private val ordersNew = ArrayList<DeliveryOrder>()
-    private val ordersWaiting = ArrayList<DeliveryOrder>()
-    private val ordersProcessed = ArrayList<DeliveryOrder>()
-    private val ordersDeclined = ArrayList<DeliveryOrder>()
-    private val data = ArrayList<ListItem<DeliveryOrder>>()
+    private var ordersNew = listOf<DeliveryOrder>()
+    private var ordersWaiting = listOf<DeliveryOrder>()
+    private var ordersProcessed = listOf<DeliveryOrder>()
+    private var ordersDeclined = listOf<DeliveryOrder>()
+    private val data = mutableListOf<ListItem<DeliveryOrder>>()
 
     private var textHeaderNew = ""
     private var textHeaderWaiting = ""
@@ -58,15 +58,12 @@ class DeliveryItemsAdapter(
     }
 
     fun setOrders(items: List<DeliveryOrder>) {
-        ordersNew.clear()
-        ordersWaiting.clear()
-        ordersProcessed.clear()
-        ordersDeclined.clear()
-
-        ordersNew.addAll(items.filter { it.state == DeliveryOrder.STATE_NEW })
-        ordersWaiting.addAll(items.filter { it.state == DeliveryOrder.STATE_CONFIRMED })
-        ordersProcessed.addAll(items.filter { it.state == DeliveryOrder.STATE_DISPATCHED })
-        ordersDeclined.addAll(items.filter { it.state == DeliveryOrder.STATE_DECLINED })
+        ordersNew = items.filter {
+            it.state == DeliveryOrder.STATE_NEW || it.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+        }
+        ordersWaiting = items.filter { it.state == DeliveryOrder.STATE_CONFIRMED }
+        ordersProcessed = items.filter { it.state == DeliveryOrder.STATE_DISPATCHED }
+        ordersDeclined = items.filter { it.state == DeliveryOrder.STATE_DECLINED }
 
         resetItems()
     }
@@ -138,13 +135,13 @@ class DeliveryItemsAdapter(
         private val onClickListener: (Int, DeliveryOrder) -> Unit
     ) : DeliveryViewHolder(itemView) {
 
-        private val provider = ContextStringResProvider(itemView.context.applicationContext)
-        val timeFrom: TextView = itemView.findViewById(R.id.text_item_delivery_time_from)
-        val timeTo: TextView = itemView.findViewById(R.id.text_item_delivery_time_to)
-        val name: TextView = itemView.findViewById(R.id.text_item_delivery_customer)
-        val address: TextView = itemView.findViewById(R.id.text_item_delivery_address)
-        val price: TextView = itemView.findViewById(R.id.text_item_delivery_price)
-        val deliveryType: TextView = itemView.findViewById(R.id.text_item_delivery_type)
+        private val provider = ContextStringResProvider(itemView.context)
+        val timeFrom: TextView = itemView.text_item_delivery_time_from
+        val timeTo: TextView = itemView.text_item_delivery_time_to
+        val name: TextView = itemView.text_item_delivery_customer
+        val address: TextView = itemView.text_item_delivery_address
+        val price: TextView = itemView.text_item_delivery_price
+        val deliveryType: TextView = itemView.text_item_delivery_type
 
         override fun bind(listItem: ListItem<DeliveryOrder>) {
             val deliveryOrder = (listItem as Item).itemValue
@@ -163,6 +160,7 @@ class DeliveryItemsAdapter(
                 timeTo.text = it.second
                 timeTo.isVisible = it.second.isNotEmpty()
             }
+            itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
         }
 
         private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {

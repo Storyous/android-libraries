@@ -45,4 +45,5 @@
     <string name="delivery_time_asap">As soon as possible</string>
     <string name="delivery_time_courier">courier</string>
     <string name="delivery_time_customer">customer</string>
+    <string name="scheduling_delivery_info">Requesting courier pickup</string>
 </resources>

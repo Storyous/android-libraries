@@ -45,4 +45,5 @@
     <string name="delivery_time_asap">Připravit co nejdříve</string>
     <string name="delivery_time_courier">kurýrem</string>
     <string name="delivery_time_customer">zákazníkem</string>
+    <string name="scheduling_delivery_info">Kontaktujeme řidiče rozvozu</string>
 </resources>

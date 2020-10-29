@@ -165,13 +165,31 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
+        app:layout_constraintBottom_toTopOf="@id/info"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
         app:layout_constraintTop_toBottomOf="@id/order_note"
         app:layout_constraintVertical_bias="100.0"
         tools:text="Objednávka z Dáme jídlo č. 12345" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:gravity="center"
+        android:text="@string/scheduling_delivery_info"
+        android:textColor="@color/white"
+        android:padding="@dimen/offset_4dp"
+        android:visibility="gone"
+        android:layout_marginBottom="25dp"
+        app:drawableLeftCompat="@drawable/ic_baseline_info_24"
+        app:drawableStartCompat="@drawable/ic_baseline_info_24"
+        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        tools:visibility="visible" />
+    
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/buttonBarrier"
         android:layout_width="match_parent"

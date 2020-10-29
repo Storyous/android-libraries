@@ -45,4 +45,5 @@
     <string name="delivery_time_asap">Jak najszybciej</string>
     <string name="delivery_time_courier">kurierem</string>
     <string name="delivery_time_customer">klientem</string>
+    <string name="scheduling_delivery_info">"Kontaktujemy kierowce dostawy "</string>
 </resources>
