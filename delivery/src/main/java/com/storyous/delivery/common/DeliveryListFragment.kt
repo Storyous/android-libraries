@@ -39,10 +39,10 @@ class DeliveryListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         deliveryItemsAdapter.setStringValues(
-            context?.getString(R.string.delivery_orders_new) ?: "",
-            context?.getString(R.string.delivery_orders_waiting) ?: "",
-            context?.getString(R.string.delivery_orders_processed) ?: "",
-            context?.getString(R.string.delivery_orders_declined) ?: ""
+            getString(R.string.delivery_orders_new),
+            getString(R.string.delivery_orders_waiting),
+            getString(R.string.delivery_orders_processed),
+            getString(R.string.delivery_orders_declined)
         )
 
         list_deliveries.adapter = deliveryItemsAdapter

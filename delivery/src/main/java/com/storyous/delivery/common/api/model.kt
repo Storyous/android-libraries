@@ -38,10 +38,11 @@ data class DeliveryOrder(
         const val TYPE_TABLE_ORDER = "orderToTable"
 
         @Retention(AnnotationRetention.SOURCE)
-        @StringDef(STATE_NEW, STATE_CONFIRMED, STATE_DISPATCHED, STATE_DECLINED)
+        @StringDef(STATE_NEW, STATE_SCHEDULING_DELIVERY, STATE_CONFIRMED, STATE_DISPATCHED, STATE_DECLINED)
         annotation class DeliveryState
 
         const val STATE_NEW = "NEW"
+        const val STATE_SCHEDULING_DELIVERY = "SCHEDULING_DELIVERY"
         const val STATE_CONFIRMED = "CONFIRMED"
         const val STATE_DISPATCHED = "DISPATCHED"
         const val STATE_DECLINED = "DECLINED"

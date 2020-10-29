@@ -150,6 +150,7 @@ class DeliveryDetailFragment : Fragment() {
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
             updateDates(it)
+            info.isVisible = order.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
         } ?: repaintNoOrderSelected()
     }
 

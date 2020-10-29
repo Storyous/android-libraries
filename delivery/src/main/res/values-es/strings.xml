@@ -45,4 +45,5 @@
     <string name="delivery_time_asap">Lo antes posible</string>
     <string name="delivery_time_courier">repartidor</string>
     <string name="delivery_time_customer">cliente</string>
+    <string name="scheduling_delivery_info">Solicitando la recogida por el repartidor</string>
 </resources>
