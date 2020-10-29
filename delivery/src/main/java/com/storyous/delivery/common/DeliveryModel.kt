@@ -46,7 +46,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     getString(R.string.delivery_service_onemenu_qr, null)
                 else -> null
             }
-            return getString(R.string.delivery_service_info, type)
+            return type?.let { getString(R.string.delivery_service_info, it) } ?: ""
 
             /* we will use only provider name until we have correct order number.
                Then we will add "No.:" to string delivery_service_info and this:

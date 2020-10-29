@@ -32,4 +32,17 @@
     <string name="customer_detail_header">Detalles del cliente</string>
     <string name="order_note_header">Nota del pedido:</string>
     <string name="table">Mesa: %s</string>
+    <string name="time_from">desde %s</string>
+    <string name="delivery_meal_ready">Preparar</string>
+    <string name="delivery_asap">ahora</string>
+    <string name="delivery_time_estimated_pickup">Recogida estimada:</string>
+    <string name="delivery_time_requested_pickup">Recogida solicitada:</string>
+    <string name="delivery_time_estimated_pickup_by">Recogida estimada por %s:</string>
+    <string name="delivery_time_requested_pickup_by">Recogida pedida por %s:</string>
+    <string name="delivery_time_meal_ready">Tiempo estimado de preparación del plato:</string>
+    <string name="delivery_time_estimated_delivery">Entrega estimada:</string>
+    <string name="delivery_time_requested_delivery">Entrega solicitada:</string>
+    <string name="delivery_time_asap">Lo antes posible</string>
+    <string name="delivery_time_courier">repartidor</string>
+    <string name="delivery_time_customer">cliente</string>
 </resources>

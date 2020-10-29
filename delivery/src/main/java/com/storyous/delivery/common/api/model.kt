@@ -1,5 +1,6 @@
 package com.storyous.delivery.common.api
 
+import androidx.annotation.IntDef
 import androidx.annotation.StringDef
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
@@ -8,8 +9,8 @@ import java.util.Date
 @SuppressWarnings("ConstructorParameterNaming")
 data class DeliveryOrder(
     val orderId: String,
-    val deliveryTime: Date,
-    val deliveryOnTime: Boolean,
+    val deliveryTime: Date?,
+    val deliveryOnTime: Boolean?,
     @DeliveryType val deliveryType: String,
     val discountWithVat: BigDecimal?,
     val customer: Customer,
@@ -22,7 +23,8 @@ data class DeliveryOrder(
     val note: String?,
     @SerializedName("_lastModifiedAt")
     val lastModifiedAt: Date,
-    val tipWithVat: BigDecimal?
+    val tipWithVat: BigDecimal?,
+    val timing: DeliveryTiming?
 ) {
 
     companion object {
@@ -126,3 +128,47 @@ data class DeliveryErrorResponse(
 }
 
 data class BaseDataResponse<T>(val data: T, val lastModificationAt: String? = null)
+
+data class DeliveryTiming(
+    val asSoonAsPossible: Boolean,
+    val requestedDeliveryTime: DeliveryDateRange?,
+    val requestedPickupTime: DeliveryDateRange?,
+    val estimatedMealReadyTime: Date?,
+    val estimatedPickupTime: DeliveryDateRange?,
+    val estimatedDeliveryTime: DeliveryDateRange?
+) {
+    companion object {
+        @Retention(AnnotationRetention.SOURCE)
+        @IntDef(
+            SHOW_ESTIMATED_PICKUP, SHOW_REQUESTED_PICKUP, SHOW_MEAL_READY,
+            SHOW_ESTIMATED_DELIVERY, SHOW_REQUESTED_DELIVERY, SHOW_ASAP, SHOW_NOTHING
+        )
+        annotation class TimeDisplayType
+
+        const val SHOW_ESTIMATED_PICKUP = 0
+        const val SHOW_REQUESTED_PICKUP = 1
+        const val SHOW_MEAL_READY = 2
+        const val SHOW_ESTIMATED_DELIVERY = 3
+        const val SHOW_REQUESTED_DELIVERY = 4
+        const val SHOW_ASAP = 5
+        const val SHOW_NOTHING = 6
+    }
+
+    @TimeDisplayType
+    fun showTime(): Int {
+        return when {
+            estimatedPickupTime != null -> SHOW_ESTIMATED_PICKUP
+            requestedPickupTime != null -> SHOW_REQUESTED_PICKUP
+            estimatedMealReadyTime != null -> SHOW_MEAL_READY
+            estimatedDeliveryTime != null -> SHOW_ESTIMATED_DELIVERY
+            requestedDeliveryTime != null -> SHOW_REQUESTED_DELIVERY
+            asSoonAsPossible -> SHOW_ASAP
+            else -> SHOW_NOTHING
+        }
+    }
+}
+
+data class DeliveryDateRange(
+    val from: Date,
+    val to: Date
+)

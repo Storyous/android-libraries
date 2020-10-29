@@ -14,6 +14,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.storyous.commonutils.DateUtils
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 class DeliveryDetailFragment : Fragment() {
 
     private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
+    private val timesAdapter by lazy { DeliveryTimesAdapter() }
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +96,7 @@ class DeliveryDetailFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
         }
+        delivery_dates.adapter = timesAdapter
     }
 
     private fun onNewMessages(messages: List<Int>?) {
@@ -146,13 +149,26 @@ class DeliveryDetailFragment : Fragment() {
             updatePaymentType(it.alreadyPaid)
             updateOrderNote(it.note)
             updateOrderNumber(it.provider, it.orderId)
+            updateDates(it)
         } ?: repaintNoOrderSelected()
+    }
+
+    private fun updateDates(order: DeliveryOrder) {
+        val times = mutableListOf<Pair<String, String>>()
+        val provider = ContextStringResProvider(requireContext().applicationContext)
+        if (DeliveryConfiguration.useOrderTimingField && order.timing != null) {
+            times.addAll(order.getTimingTranslations(provider))
+        } else {
+            times.add(order.getDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
+        }
+        timesAdapter.items = times
     }
 
     private fun updateOrderNumber(provider: String, orderId: String) {
         order_number.text = DeliveryModel.getOrderInfo(provider) { resId, param ->
             getString(resId, "$param")
         }
+        order_number.isVisible = order_number.text.isNotEmpty()
         /* we will use only provider name until we have correct order number. then we will add:
          + "\n$orderId"
          */

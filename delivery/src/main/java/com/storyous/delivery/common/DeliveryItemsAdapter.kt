@@ -1,13 +1,11 @@
 package com.storyous.delivery.common
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.storyous.commonutils.DateUtils
 import com.storyous.commonutils.adapters.Header
 import com.storyous.commonutils.adapters.Item
 import com.storyous.commonutils.adapters.ItemType
@@ -16,6 +14,7 @@ import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
 import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.DeliveryOrder
+import com.storyous.delivery.common.api.DeliveryTiming
 import java.math.BigDecimal
 import java.util.ArrayList
 
@@ -139,7 +138,9 @@ class DeliveryItemsAdapter(
         private val onClickListener: (Int, DeliveryOrder) -> Unit
     ) : DeliveryViewHolder(itemView) {
 
-        val time: TextView = itemView.findViewById(R.id.text_item_delivery_time)
+        private val provider = ContextStringResProvider(itemView.context.applicationContext)
+        val timeFrom: TextView = itemView.findViewById(R.id.text_item_delivery_time_from)
+        val timeTo: TextView = itemView.findViewById(R.id.text_item_delivery_time_to)
         val name: TextView = itemView.findViewById(R.id.text_item_delivery_customer)
         val address: TextView = itemView.findViewById(R.id.text_item_delivery_address)
         val price: TextView = itemView.findViewById(R.id.text_item_delivery_price)
@@ -155,26 +156,24 @@ class DeliveryItemsAdapter(
             address.text = deliveryOrder.desk?.name?.let { getString(R.string.table, it) }
                 ?: deliveryOrder.customer.deliveryAddress
             price.text = calcTotalPriceFormatted(deliveryOrder)
-            deliveryType.text = getDeliveryType(deliveryType.context, deliveryOrder)
-            time.text = getDeliveryTime(deliveryOrder)
-            time.isVisible = deliveryOrder.deliveryType != DeliveryOrder.TYPE_TABLE_ORDER
+            deliveryType.text = deliveryOrder.getDeliveryTypeTranslation(provider)
+            getDeliveryTime(deliveryOrder).let {
+                timeFrom.text = it.first
+                timeFrom.isVisible = it.first.isNotEmpty()
+                timeTo.text = it.second
+                timeTo.isVisible = it.second.isNotEmpty()
+            }
         }
 
-        private fun getDeliveryTime(order: DeliveryOrder): String {
-
-            val prefix = if (order.deliveryOnTime) R.string.time_at else R.string.time_till
-            val date = DateUtils.HM.format(order.deliveryTime)
-
-            return getString(prefix, date)
-        }
-
-        private fun getDeliveryType(context: Context, order: DeliveryOrder): String {
-            return when (order.deliveryType) {
-                DeliveryOrder.TYPE_DELIVERY -> context.getString(R.string.delivery_type_delivery)
-                DeliveryOrder.TYPE_TAKEAWAY -> context.getString(R.string.delivery_type_takeaway)
-                DeliveryOrder.TYPE_DISPATCH -> context.getString(R.string.delivery_type_dispatch)
-                DeliveryOrder.TYPE_TABLE_ORDER -> context.getString(R.string.delivery_type_order_to_table)
-                else -> ""
+        private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {
+            return if (!DeliveryConfiguration.useOrderTimingField || order.timing == null) {
+                order.getLegacyDeliveryTime(provider) to ""
+            } else if (order.timing.showTime() == DeliveryTiming.SHOW_ASAP) {
+                provider.getString(R.string.delivery_asap) to ""
+            } else {
+                order.getImportantTimingTranslation(provider)?.let { timing ->
+                    timing.second?.getTranslation(provider) ?: (timing.first to "")
+                } ?: "" to ""
             }
         }
 

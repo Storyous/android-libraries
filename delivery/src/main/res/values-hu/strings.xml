@@ -32,4 +32,17 @@
     <string name="customer_detail_header">Customer detail</string>
     <string name="order_note_header">Order note:</string>
     <string name="table">Asztal: %s</string>
+    <string name="time_from">from %s</string>
+    <string name="delivery_meal_ready">Prepare</string>
+    <string name="delivery_asap">ASAP</string>
+    <string name="delivery_time_estimated_pickup">Estimated pickup:</string>
+    <string name="delivery_time_requested_pickup">Requested pickup:</string>
+    <string name="delivery_time_estimated_pickup_by">Estimated pickup by %s:</string>
+    <string name="delivery_time_requested_pickup_by">Requested pickup by %s:</string>
+    <string name="delivery_time_meal_ready">Estimated meal ready time:</string>
+    <string name="delivery_time_estimated_delivery">Estimated delivery:</string>
+    <string name="delivery_time_requested_delivery">Requested delivery:</string>
+    <string name="delivery_time_asap">As soon as possible</string>
+    <string name="delivery_time_courier">courier</string>
+    <string name="delivery_time_customer">customer</string>
 </resources>

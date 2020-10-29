@@ -5,6 +5,7 @@ package com.storyous.delivery.common.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.storyous.delivery.common.api.DeliveryItem
+import com.storyous.delivery.common.api.DeliveryTiming
 import java.math.BigDecimal
 import java.util.Date
 
@@ -12,8 +13,8 @@ import java.util.Date
 @Entity
 open class DeliveryOrder(
     @PrimaryKey var orderId: String,
-    var deliveryTime: Date,
-    var deliveryOnTime: Boolean,
+    var deliveryTime: Date?,
+    var deliveryOnTime: Boolean?,
     var deliveryType: String,
     var discountWithVat: BigDecimal?,
     var items: List<DeliveryItem> = listOf(),
@@ -30,5 +31,6 @@ open class DeliveryOrder(
     var deskId: String?,
     var deskCode: String?,
     var deskName: String?,
-    var tipWithVat: BigDecimal?
+    var tipWithVat: BigDecimal?,
+    var timing: DeliveryTiming?
 )

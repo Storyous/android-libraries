@@ -109,13 +109,28 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/order_note_header"
+        app:layout_constraintBottom_toTopOf="@id/delivery_dates"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
         app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_header"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="already paid" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/delivery_dates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/order_note_header"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:itemCount="1"
+        tools:listitem="@layout/delivery_detail_date" />
 
     <TextView
         android:id="@+id/order_note_header"
@@ -127,7 +142,7 @@
         app:layout_constraintBottom_toTopOf="@id/order_note"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
+        app:layout_constraintTop_toBottomOf="@id/delivery_dates"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -150,12 +165,19 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/button_cancel"
+        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
         app:layout_constraintTop_toBottomOf="@id/order_note"
         app:layout_constraintVertical_bias="100.0"
         tools:text="Objednávka z Dáme jídlo č. 12345" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/buttonBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch" />
 
     <include layout="@layout/delivery_detail_buttons" />
 

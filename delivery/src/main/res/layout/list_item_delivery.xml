@@ -25,7 +25,7 @@
         android:layout_marginRight="@dimen/offset_8dp"
         android:gravity="center"
         android:textColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time"
+        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_from"
         app:layout_constraintEnd_toStartOf="@id/guideline_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +33,7 @@
         tools:text="Kurýr vyzvedne" />
 
     <TextView
-        android:id="@+id/text_item_delivery_time"
+        android:id="@+id/text_item_delivery_time_from"
         style="@style/TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,11 +44,27 @@
         android:maxLines="1"
         android:textColor="@color/red"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_item_delivery_type"
-        tools:text="ve 2:59" />
+        tools:text="od 2:59" />
+
+    <TextView
+        android:id="@+id/text_item_delivery_time_to"
+        style="@style/TextAppearance.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/offset_8dp"
+        android:layout_marginRight="@dimen/offset_8dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_item_delivery_time_from"
+        tools:text="do 3:00" />
 
     <TextView
         android:id="@+id/text_item_delivery_price"
