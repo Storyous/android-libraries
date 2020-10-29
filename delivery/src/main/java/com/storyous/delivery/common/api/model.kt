@@ -4,7 +4,7 @@ import androidx.annotation.IntDef
 import androidx.annotation.StringDef
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
-import java.util.*
+import java.util.Date
 
 @SuppressWarnings("ConstructorParameterNaming")
 data class DeliveryOrder(
@@ -156,12 +156,15 @@ data class DeliveryTiming(
 
     @TimeDisplayType
     fun showTime(): Int {
-        estimatedPickupTime?.let { return SHOW_ESTIMATED_PICKUP }
-        requestedPickupTime?.let { return SHOW_REQUESTED_PICKUP }
-        estimatedMealReadyTime?.let { return SHOW_MEAL_READY }
-        estimatedDeliveryTime?.let { return SHOW_ESTIMATED_DELIVERY }
-        requestedDeliveryTime?.let { return SHOW_REQUESTED_DELIVERY }
-        return if (asSoonAsPossible) SHOW_ASAP else SHOW_NOTHING
+        return when {
+            estimatedPickupTime != null -> SHOW_ESTIMATED_PICKUP
+            requestedPickupTime != null -> SHOW_REQUESTED_PICKUP
+            estimatedMealReadyTime != null -> SHOW_MEAL_READY
+            estimatedDeliveryTime != null -> SHOW_ESTIMATED_DELIVERY
+            requestedDeliveryTime != null -> SHOW_REQUESTED_DELIVERY
+            asSoonAsPossible -> SHOW_ASAP
+            else -> SHOW_NOTHING
+        }
     }
 }
 

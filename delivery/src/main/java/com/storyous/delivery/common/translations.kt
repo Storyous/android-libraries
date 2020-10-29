@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.storyous.delivery.common
 
 import android.content.Context
@@ -12,7 +14,7 @@ interface StringResProvider {
     fun getString(@StringRes resId: Int, vararg formatArgs: Any?): String
 }
 
-@Suppress("FunctionName")
+@Suppress("FunctionName", "SpreadOperator")
 fun ContextStringResProvider(context: Context) = object : StringResProvider {
     override fun getString(resId: Int, vararg formatArgs: Any?): String {
         return context.getString(resId, *formatArgs)
@@ -38,35 +40,38 @@ fun DeliveryOrder.getDeliveryTypeTranslation(provider: StringResProvider): Strin
     }
 }
 
-fun DeliveryOrder.getImportantTimingTranslation(provider: StringResProvider): Pair<String, String>? {
+fun DeliveryOrder.getImportantTimingTranslation(provider: StringResProvider): Pair<String, DeliveryDateRange?>? {
     return getTimingTranslation(provider, timing?.showTime() ?: DeliveryTiming.SHOW_NOTHING)
 }
 
-fun DeliveryOrder.getTimingTranslation(provider: StringResProvider, @TimeDisplayType type: Int): Pair<String, String>? {
+@Suppress("ComplexMethod")
+fun DeliveryOrder.getTimingTranslation(
+    provider: StringResProvider, @TimeDisplayType type: Int
+): Pair<String, DeliveryDateRange?>? {
     return when (type) {
         DeliveryTiming.SHOW_ESTIMATED_PICKUP ->
             timing?.estimatedPickupTime?.let {
-                provider.getString(R.string.delivery_time_estimated_pickup_by, getDeliveryPerson(provider)) to it.getTranslation(provider).join()
+                provider.getString(R.string.delivery_time_estimated_pickup_by, getDeliveryPerson(provider)) to it
             }
         DeliveryTiming.SHOW_REQUESTED_PICKUP ->
             timing?.requestedPickupTime?.let {
-                provider.getString(R.string.delivery_time_requested_pickup_by, getDeliveryPerson(provider)) to it.getTranslation(provider).join()
+                provider.getString(R.string.delivery_time_requested_pickup_by, getDeliveryPerson(provider)) to it
             }
         DeliveryTiming.SHOW_MEAL_READY ->
             timing?.estimatedMealReadyTime?.let {
-                provider.getString(R.string.delivery_time_meal_ready) to DeliveryDateRange(it, it).getTranslation(provider).join()
+                provider.getString(R.string.delivery_time_meal_ready) to DeliveryDateRange(it, it)
             }
         DeliveryTiming.SHOW_ESTIMATED_DELIVERY ->
             timing?.estimatedDeliveryTime?.let {
-                provider.getString(R.string.delivery_time_estimated_delivery) to it.getTranslation(provider).join()
+                provider.getString(R.string.delivery_time_estimated_delivery) to it
             }
         DeliveryTiming.SHOW_REQUESTED_DELIVERY ->
             timing?.requestedDeliveryTime?.let {
-                provider.getString(R.string.delivery_time_requested_delivery) to it.getTranslation(provider).join()
+                provider.getString(R.string.delivery_time_requested_delivery) to it
             }
         DeliveryTiming.SHOW_ASAP ->
             timing?.asSoonAsPossible?.takeIf { it }?.let {
-                provider.getString(R.string.delivery_time_asap) to ""
+                provider.getString(R.string.delivery_time_asap) to null
             }
         DeliveryTiming.SHOW_NOTHING -> null
         else -> null
@@ -81,7 +86,7 @@ fun DeliveryOrder.getTimingTranslations(provider: StringResProvider): List<Pair<
         getTimingTranslation(provider, DeliveryTiming.SHOW_ESTIMATED_DELIVERY),
         getTimingTranslation(provider, DeliveryTiming.SHOW_REQUESTED_DELIVERY),
         getTimingTranslation(provider, DeliveryTiming.SHOW_ASAP)
-    )
+    ).map { it.first to (it.second?.getTranslation(provider)?.join() ?: "") }
 }
 
 fun Pair<String, String>.join() = "$first $second".trim()

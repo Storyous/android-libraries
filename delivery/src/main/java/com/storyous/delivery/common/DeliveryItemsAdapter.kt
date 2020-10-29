@@ -16,7 +16,7 @@ import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
 import java.math.BigDecimal
-import java.util.*
+import java.util.ArrayList
 
 class DeliveryItemsAdapter(
     private val onClickListener: (DeliveryOrder) -> Unit
@@ -171,8 +171,8 @@ class DeliveryItemsAdapter(
             } else if (order.timing.showTime() == DeliveryTiming.SHOW_ASAP) {
                 provider.getString(R.string.delivery_asap) to ""
             } else {
-                order.getImportantTimingTranslation(provider)?.let {
-                    (it.second.takeIf { it.isNotEmpty() } ?: it.first) to ""
+                order.getImportantTimingTranslation(provider)?.let { timing ->
+                    timing.second?.getTranslation(provider) ?: (timing.first to "")
                 } ?: "" to ""
             }
         }
