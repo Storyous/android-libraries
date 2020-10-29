@@ -4,7 +4,7 @@ import androidx.annotation.IntDef
 import androidx.annotation.StringDef
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
-import java.util.Date
+import java.util.*
 
 @SuppressWarnings("ConstructorParameterNaming")
 data class DeliveryOrder(
@@ -139,8 +139,10 @@ data class DeliveryTiming(
 ) {
     companion object {
         @Retention(AnnotationRetention.SOURCE)
-        @IntDef(SHOW_ESTIMATED_PICKUP, SHOW_REQUESTED_PICKUP, SHOW_MEAL_READY,
-            SHOW_ESTIMATED_DELIVERY, SHOW_REQUESTED_DELIVERY, SHOW_ASAP, SHOW_NOTHING)
+        @IntDef(
+            SHOW_ESTIMATED_PICKUP, SHOW_REQUESTED_PICKUP, SHOW_MEAL_READY,
+            SHOW_ESTIMATED_DELIVERY, SHOW_REQUESTED_DELIVERY, SHOW_ASAP, SHOW_NOTHING
+        )
         annotation class TimeDisplayType
 
         const val SHOW_ESTIMATED_PICKUP = 0
@@ -152,7 +154,8 @@ data class DeliveryTiming(
         const val SHOW_NOTHING = 6
     }
 
-    @TimeDisplayType fun showTime(): Int {
+    @TimeDisplayType
+    fun showTime(): Int {
         estimatedPickupTime?.let { return SHOW_ESTIMATED_PICKUP }
         requestedPickupTime?.let { return SHOW_REQUESTED_PICKUP }
         estimatedMealReadyTime?.let { return SHOW_MEAL_READY }

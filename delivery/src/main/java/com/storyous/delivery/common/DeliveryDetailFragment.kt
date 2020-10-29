@@ -16,9 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.commonutils.DateUtils
 import com.storyous.delivery.common.api.Customer
-import com.storyous.delivery.common.api.DeliveryDateRange
 import com.storyous.delivery.common.api.DeliveryOrder
-import com.storyous.delivery.common.api.DeliveryTiming
 import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
@@ -157,64 +155,13 @@ class DeliveryDetailFragment : Fragment() {
 
     private fun updateDates(order: DeliveryOrder) {
         val times = mutableListOf<Pair<String, String>>()
+        val provider = ContextStringResProvider(requireContext())
         if (DeliveryConfiguration.useOrderTimingField && order.timing != null) {
-            order.timing.estimatedPickupTime?.let {
-                times.add(getString(R.string.delivery_time_estimated_pickup_by, getDeliveryPerson(order)) to getRangeOrSingleTime(it))
-            }
-            order.timing.requestedPickupTime?.let {
-                times.add(getString(R.string.delivery_time_requested_pickup_by, getDeliveryPerson(order)) to getRangeOrSingleTime(it))
-            }
-            order.timing.estimatedMealReadyTime?.let {
-                times.add(getString(R.string.delivery_time_meal_ready) to getRangeOrSingleTime(DeliveryDateRange(it, it)))
-            }
-            order.timing.estimatedDeliveryTime?.let {
-                times.add(getString(R.string.delivery_time_estimated_delivery) to getRangeOrSingleTime(it))
-            }
-            order.timing.requestedDeliveryTime?.let {
-                times.add(getString(R.string.delivery_time_requested_delivery) to getRangeOrSingleTime(it))
-            }
-            order.timing.asSoonAsPossible.takeIf { it }?.let {
-                times.add(getString(R.string.delivery_time_asap) to "")
-            }
+            times.addAll(order.getTimingTranslations(provider))
         } else {
-            val prefix = if (order.deliveryOnTime == true) R.string.time_at else R.string.time_till
-            val date = DateUtils.HM.format(order.deliveryTime)
-            times.add(getDeliveryType(order) to getString(prefix, date))
+            times.add(order.getDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
         }
         timesAdapter.items = times
-    }
-
-    private fun getDeliveryPerson(order: DeliveryOrder): String {
-        return getString(
-            if (order.deliveryType == DeliveryOrder.TYPE_TAKEAWAY) {
-                R.string.delivery_time_customer
-            } else {
-                R.string.delivery_time_courier
-            }
-        )
-    }
-
-    private fun getDeliveryType(order: DeliveryOrder): String {
-        return when {
-            order.timing?.showTime() == DeliveryTiming.SHOW_MEAL_READY -> getString(R.string.delivery_meal_ready)
-            order.timing?.showTime() == DeliveryTiming.SHOW_ASAP -> getString(R.string.delivery_meal_ready)
-            order.deliveryType == DeliveryOrder.TYPE_DELIVERY -> getString(R.string.delivery_type_delivery)
-            order.deliveryType == DeliveryOrder.TYPE_TAKEAWAY -> getString(R.string.delivery_type_takeaway)
-            order.deliveryType == DeliveryOrder.TYPE_DISPATCH -> getString(R.string.delivery_type_dispatch)
-            order.deliveryType == DeliveryOrder.TYPE_TABLE_ORDER -> getString(R.string.delivery_type_order_to_table)
-            else -> ""
-        }
-    }
-
-    private fun getRangeOrSingleTime(range: DeliveryDateRange): String {
-        val from = DateUtils.HM.format(range.from)
-        val till = DateUtils.HM.format(range.to)
-
-        return if (from == till) {
-            getString(R.string.time_at, from)
-        } else {
-            getString(R.string.time_from, from) + " " + getString(R.string.time_till, till)
-        }
     }
 
     private fun updateOrderNumber(provider: String, orderId: String) {
