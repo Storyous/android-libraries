@@ -160,7 +160,7 @@ class DeliveryDetailFragment : Fragment() {
         if (DeliveryConfiguration.useOrderTimingField && order.timing != null) {
             times.addAll(order.getTimingTranslations(provider))
         } else {
-            times.add(order.getDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
+            times.add(order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
         }
         timesAdapter.items = times
     }
