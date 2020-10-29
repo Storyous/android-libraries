@@ -155,7 +155,7 @@ class DeliveryDetailFragment : Fragment() {
 
     private fun updateDates(order: DeliveryOrder) {
         val times = mutableListOf<Pair<String, String>>()
-        val provider = ContextStringResProvider(requireContext())
+        val provider = ContextStringResProvider(requireContext().applicationContext)
         if (DeliveryConfiguration.useOrderTimingField && order.timing != null) {
             times.addAll(order.getTimingTranslations(provider))
         } else {

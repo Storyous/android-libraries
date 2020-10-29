@@ -138,7 +138,7 @@ class DeliveryItemsAdapter(
         private val onClickListener: (Int, DeliveryOrder) -> Unit
     ) : DeliveryViewHolder(itemView) {
 
-        private val provider = ContextStringResProvider(itemView.context)
+        private val provider = ContextStringResProvider(itemView.context.applicationContext)
         val timeFrom: TextView = itemView.findViewById(R.id.text_item_delivery_time_from)
         val timeTo: TextView = itemView.findViewById(R.id.text_item_delivery_time_to)
         val name: TextView = itemView.findViewById(R.id.text_item_delivery_customer)

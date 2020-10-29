@@ -27,9 +27,8 @@ fun DeliveryOrder.getLegacyDeliveryTime(provider: StringResProvider): String {
 
 fun DeliveryOrder.getDeliveryTypeTranslation(provider: StringResProvider): String {
     return when {
-        DeliveryConfiguration.useOrderTimingField && timing?.showTime() == DeliveryTiming.SHOW_MEAL_READY ->
-            provider.getString(R.string.delivery_meal_ready)
-        DeliveryConfiguration.useOrderTimingField && timing?.showTime() == DeliveryTiming.SHOW_ASAP ->
+        DeliveryConfiguration.useOrderTimingField &&
+            (timing?.showTime() == DeliveryTiming.SHOW_MEAL_READY || timing?.showTime() == DeliveryTiming.SHOW_ASAP) ->
             provider.getString(R.string.delivery_meal_ready)
         deliveryType == DeliveryOrder.TYPE_DELIVERY -> provider.getString(R.string.delivery_type_delivery)
         deliveryType == DeliveryOrder.TYPE_TAKEAWAY -> provider.getString(R.string.delivery_type_takeaway)
@@ -40,7 +39,7 @@ fun DeliveryOrder.getDeliveryTypeTranslation(provider: StringResProvider): Strin
 }
 
 fun DeliveryOrder.getImportantTimingTranslation(provider: StringResProvider): Pair<String, String>? {
-    return getTimingTranslation(provider, timing?.showTime()?: DeliveryTiming.SHOW_NOTHING)
+    return getTimingTranslation(provider, timing?.showTime() ?: DeliveryTiming.SHOW_NOTHING)
 }
 
 fun DeliveryOrder.getTimingTranslation(provider: StringResProvider, @TimeDisplayType type: Int): Pair<String, String>? {
