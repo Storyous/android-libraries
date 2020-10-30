@@ -182,7 +182,7 @@
         android:textColor="@color/white"
         android:padding="@dimen/offset_4dp"
         android:visibility="gone"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="15dp"
         app:drawableLeftCompat="@drawable/ic_baseline_info_24"
         app:drawableStartCompat="@drawable/ic_baseline_info_24"
         app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
