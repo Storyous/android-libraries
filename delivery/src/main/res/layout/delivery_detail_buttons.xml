@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
     <com.storyous.commonutils.widgets.LoadingButton
         android:id="@+id/button_cancel"
         style="@style/Button.Primary.Contextual.Dark"
@@ -31,5 +34,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/centerGuideline" />
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        tools:visibility="visible" />
 </merge>
