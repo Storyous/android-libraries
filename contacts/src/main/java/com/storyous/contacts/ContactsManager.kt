@@ -3,9 +3,7 @@ package com.storyous.contacts
 import com.auth0.android.jwt.DecodeException
 import com.google.firebase.FirebaseApp
 import com.google.firebase.nongmsauth.FirebaseRestAuth
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import timber.log.Timber
 
@@ -72,7 +70,7 @@ class ContactsManager(
     fun isAuthenticated() = firebaseAuth.currentUser != null
 
     @Throws(IllegalStateException::class)
-    suspend fun authenticate(token: String) = withContext(Dispatchers.IO) {
+    suspend fun authenticate(token: String) {
         val (merchantId, placeId) = decodeToken(token)
 
         runCatching {
