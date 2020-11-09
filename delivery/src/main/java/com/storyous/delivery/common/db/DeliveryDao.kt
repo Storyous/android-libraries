@@ -37,6 +37,10 @@ abstract class DeliveryDao {
     abstract suspend fun getOrders(state: String): List<DeliveryOrder>
 
     @Transaction
+    @Query("SELECT * FROM DeliveryOrder WHERE state IN (:states)")
+    abstract suspend fun getOrders(states: List<String>): List<DeliveryOrder>
+
+    @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
     abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrder>>
 

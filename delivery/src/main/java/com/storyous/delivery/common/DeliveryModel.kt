@@ -4,6 +4,7 @@ import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryException
+import com.storyous.delivery.common.repositories.DeliveryRepository
 import com.storyous.delivery.common.repositories.ERR_NO_AUTH
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -77,7 +78,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     ?.loadDeliveryOrders(merchantId, placeId)
                     ?.takeIf { autoConfirmEnabled }
                     ?.data?.filter {
-                        it.state == DeliveryOrder.STATE_CONFIRMED &&
+                        DeliveryRepository.confirmedOrderStates.contains(it.state) &&
                             alreadyConfirmedOrderIds?.contains(it.orderId) != true
                     }?.forEach { confirmedOrderInterceptor(it) }
 

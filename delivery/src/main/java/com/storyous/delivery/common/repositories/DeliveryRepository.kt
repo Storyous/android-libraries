@@ -26,6 +26,11 @@ open class DeliveryRepository(
     companion object {
         const val STATUS_CODE_UNAUTHORIZED = 401
         const val STATUS_CODE_CONFLICT = 409
+
+        val confirmedOrderStates = listOf(
+            DeliveryOrder.STATE_CONFIRMED,
+            DeliveryOrder.STATE_DISPATCHED
+        )
     }
 
     val newOrdersLive = db.getOrdersLive(DeliveryOrder.STATE_NEW).toApi()
@@ -118,7 +123,7 @@ open class DeliveryRepository(
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
 
-    suspend fun getConfirmedOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_CONFIRMED).map { it.toApi() }
+    suspend fun getConfirmedOrdersFromDb() = db.getOrders(confirmedOrderStates).map { it.toApi() }
 
     suspend fun clear() {
         withContext(provider.IO) {
