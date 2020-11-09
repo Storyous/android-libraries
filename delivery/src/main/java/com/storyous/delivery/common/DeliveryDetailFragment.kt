@@ -10,16 +10,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.storyous.commonutils.DateUtils
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment() {
@@ -51,8 +50,11 @@ class DeliveryDetailFragment : Fragment() {
             button_cancel.isEnabled = it.second
         }
         viewModel.dispatchFunction.observe(this) {
+            val globallyOff = DeliveryConfiguration.globalDispatchDisabled.first
             button_dispatch.isVisible = it.first
-            button_dispatch.isEnabled = it.second
+            button_dispatch.isEnabled = it.second && !globallyOff
+            warning.text = DeliveryConfiguration.globalDispatchDisabled.second
+            warning.isVisible = globallyOff && it.second && warning.text.isNotEmpty()
         }
     }
 
@@ -80,6 +82,7 @@ class DeliveryDetailFragment : Fragment() {
         detail.visibility = View.GONE
 
         button_accept.setOnClickListener {
+            Timber.i("Confirm order")
             viewModel.getSelectedOrderLive().value?.also { viewModel.acceptOrder(it) }
                 ?: Toast.makeText(
                     context,
@@ -87,8 +90,12 @@ class DeliveryDetailFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        button_cancel.setOnClickListener { onOrderCancelClicked() }
+        button_cancel.setOnClickListener {
+            Timber.i("Cancel order")
+            onOrderCancelClicked()
+        }
         button_dispatch.setOnClickListener {
+            Timber.i("Dispatch order")
             viewModel.getSelectedOrderLive().value?.also { viewModel.dispatchOrder(it) }
                 ?: Toast.makeText(
                     context,
@@ -131,6 +138,7 @@ class DeliveryDetailFragment : Fragment() {
                     val reason =
                         resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
                     viewModel.getSelectedOrder()?.let { viewModel.cancelOrder(it, reason) }
+                    Timber.i("Order cancelled with reason: $reason")
                     dialog.dismiss()
                 }
             }
@@ -194,7 +202,8 @@ class DeliveryDetailFragment : Fragment() {
     private fun repaintNoOrderSelected() {
         noDetail.visibility = View.VISIBLE
         detail.visibility = View.GONE
-        order_note_group.visibility = View.GONE
+        order_note_header.isVisible = false
+        order_note_group.isVisible = false
     }
 
     private fun updateCustomerInfo(customer: Customer, desk: Desk?) {

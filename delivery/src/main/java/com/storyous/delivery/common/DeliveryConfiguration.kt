@@ -16,6 +16,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var formatter: Formatter = DefaultFormatter()
     var onActivityToolbarCreate: (Toolbar, FragmentManager) -> Unit = { _, _ -> }
     var useOrderTimingField = true
+    var globalDispatchDisabled = false to ""
 
     @Throws(ConfigurationInvalidException::class)
     fun checkValid() {

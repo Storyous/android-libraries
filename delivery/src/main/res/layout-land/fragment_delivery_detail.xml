@@ -204,10 +204,30 @@
         android:visibility="gone"
         app:drawableLeftCompat="@drawable/ic_baseline_info_24"
         app:drawableStartCompat="@drawable/ic_baseline_info_24"
-        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
+        app:layout_constraintBottom_toTopOf="@id/warning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuideline"
         tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/warning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/yellow"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:padding="@dimen/offset_4dp"
+        android:visibility="gone"
+        app:drawableLeftCompat="@drawable/ic_warning_24"
+        app:drawableStartCompat="@drawable/ic_warning_24"
+        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/centerGuideline"
+        tools:visibility="visible"
+        tools:text="Order dispatching is available only on master." />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/buttonBarrier"
@@ -241,7 +261,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="order_items,button_accept,deliver_items_header,customer_detail_header,button_cancel,customer_detail_name,customer_detail_phone,customer_detail_address,delivery_payment_type"
+        app:constraint_referenced_ids="delivery_payment_type_header,order_items,button_accept,deliver_items_header,customer_detail_header,button_cancel,customer_detail_name,customer_detail_phone,customer_detail_address,delivery_payment_type"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

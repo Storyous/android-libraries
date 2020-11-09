@@ -34,7 +34,6 @@
         layout="@layout/typed_value_layout"
         android:layout_width="@dimen/price_indicator_size"
         android:layout_height="@dimen/price_indicator_size"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_title"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="count_square,item_title,price_square" />
+        app:constraint_referenced_ids="item_title,price_square" />
 
     <LinearLayout
         android:id="@+id/subitems"
