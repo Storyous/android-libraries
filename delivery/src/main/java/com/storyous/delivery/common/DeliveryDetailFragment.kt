@@ -10,11 +10,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.storyous.commonutils.DateUtils
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
@@ -51,8 +49,11 @@ class DeliveryDetailFragment : Fragment() {
             button_cancel.isEnabled = it.second
         }
         viewModel.dispatchFunction.observe(this) {
+            val globallyOff = DeliveryConfiguration.globalDispatchDisabled.first
             button_dispatch.isVisible = it.first
-            button_dispatch.isEnabled = it.second
+            button_dispatch.isEnabled = it.second && !globallyOff
+            warning.text = DeliveryConfiguration.globalDispatchDisabled.second
+            warning.isVisible = globallyOff && it.second && warning.text.isNotEmpty()
         }
     }
 
@@ -194,7 +195,8 @@ class DeliveryDetailFragment : Fragment() {
     private fun repaintNoOrderSelected() {
         noDetail.visibility = View.VISIBLE
         detail.visibility = View.GONE
-        order_note_group.visibility = View.GONE
+        order_note_header.isVisible = false
+        order_note_group.isVisible = false
     }
 
     private fun updateCustomerInfo(customer: Customer, desk: Desk?) {

@@ -14,6 +14,7 @@
     <color name="grey_darker">#999</color>
     <color name="grey_text">#535658</color>
     <color name="white_overlay">#99ffffff</color>
+    <color name="yellow">#e4a050</color>
 
     <color name="menu_item_price_text">@color/white</color>
     <color name="button_background_disabled">@color/grey_dark</color>
