@@ -18,6 +18,7 @@ import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment() {
@@ -81,6 +82,7 @@ class DeliveryDetailFragment : Fragment() {
         detail.visibility = View.GONE
 
         button_accept.setOnClickListener {
+            Timber.i("Confirm order")
             viewModel.getSelectedOrderLive().value?.also { viewModel.acceptOrder(it) }
                 ?: Toast.makeText(
                     context,
@@ -88,8 +90,12 @@ class DeliveryDetailFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        button_cancel.setOnClickListener { onOrderCancelClicked() }
+        button_cancel.setOnClickListener {
+            Timber.i("Cancel order")
+            onOrderCancelClicked()
+        }
         button_dispatch.setOnClickListener {
+            Timber.i("Dispatch order")
             viewModel.getSelectedOrderLive().value?.also { viewModel.dispatchOrder(it) }
                 ?: Toast.makeText(
                     context,
@@ -132,6 +138,7 @@ class DeliveryDetailFragment : Fragment() {
                     val reason =
                         resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
                     viewModel.getSelectedOrder()?.let { viewModel.cancelOrder(it, reason) }
+                    Timber.i("Order cancelled with reason: $reason")
                     dialog.dismiss()
                 }
             }
