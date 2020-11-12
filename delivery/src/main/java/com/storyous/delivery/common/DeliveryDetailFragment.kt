@@ -1,9 +1,7 @@
 package com.storyous.delivery.common
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -21,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-class DeliveryDetailFragment : Fragment() {
+class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
     private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
     private val timesAdapter by lazy { DeliveryTimesAdapter() }
@@ -56,14 +54,6 @@ class DeliveryDetailFragment : Fragment() {
             warning.text = DeliveryConfiguration.globalDispatchDisabled.second
             warning.isVisible = globallyOff && it.second && warning.text.isNotEmpty()
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_delivery_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

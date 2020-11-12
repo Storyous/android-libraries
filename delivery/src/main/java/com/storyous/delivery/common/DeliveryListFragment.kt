@@ -1,9 +1,7 @@
 package com.storyous.delivery.common
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_list.*
 /**
  * A placeholder fragment containing a simple view.
  */
-class DeliveryListFragment : Fragment() {
+class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
     private val deliveryItemsAdapter by lazy {
@@ -25,14 +23,6 @@ class DeliveryListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getDeliveryOrdersLive().observe(this, Observer { orders -> showOrders(orders) })
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_delivery_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
