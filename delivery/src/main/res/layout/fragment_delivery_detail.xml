@@ -41,6 +41,7 @@
         tools:listitem="@layout/list_item_delivery_detail" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/order_detail_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -259,7 +260,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="order_items,button_accept,deliver_items_header,customer_detail_header,button_cancel,customer_detail_name,customer_detail_phone,customer_detail_address,delivery_payment_type"
+        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
