@@ -202,7 +202,6 @@ class DeliveryDetailFragment : Fragment() {
     private fun repaintNoOrderSelected() {
         noDetail.visibility = View.VISIBLE
         detail.visibility = View.GONE
-        order_note_header.isVisible = false
         order_note_group.isVisible = false
     }
 

@@ -28,6 +28,7 @@
         android:id="@+id/order_items"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
         app:layout_constraintHorizontal_bias="0.0"
@@ -37,9 +38,9 @@
         tools:listitem="@layout/list_item_delivery_detail" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/order_detail_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/centerGuideline"
@@ -49,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:paddingBottom="50dp">
+            android:paddingBottom="90dp">
 
             <TextView
                 android:id="@+id/customer_detail_header"
@@ -261,7 +262,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="delivery_payment_type_header,order_items,button_accept,deliver_items_header,customer_detail_header,button_cancel,customer_detail_name,customer_detail_phone,customer_detail_address,delivery_payment_type"
+        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
