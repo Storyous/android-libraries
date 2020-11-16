@@ -68,6 +68,7 @@ class DeliveryActivity : AppCompatActivity() {
             constraintSet.applyTo(root)
             settingsFragment.toggle()
         }
+        fragment_delivery_settings.isVisible = DeliveryConfiguration.showSettingsBar
     }
 
     override fun onBackPressed() {

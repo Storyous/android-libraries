@@ -46,4 +46,12 @@
     <string name="delivery_time_courier">courier</string>
     <string name="delivery_time_customer">customer</string>
     <string name="scheduling_delivery_info">Requesting courier pickup</string>
+    <string name="settings_yes">yes</string>
+    <string name="settings_no">no</string>
+    <string name="settings_ask">ask</string>
+    <string name="settings_accept_new_orders">New orders:</string>
+    <string name="settings_meal_preparation_time">Meal preparation time:</string>
+    <string name="settings_integrated_dispatch">Integrated dispatch:</string>
+    <string name="settings_minutes">%d min.</string>
+    <string name="settings_choose_preparation_time">Choose preparation time</string>
 </resources>
