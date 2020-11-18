@@ -15,6 +15,7 @@ import timber.log.Timber
 open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     private var loadingOrdersJob: Job? = null
+    private var alreadyConfirmedOrderIds: List<String>? = null
 
     var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
         orders.forEach {
@@ -68,7 +69,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
                 Timber.d("Delivery order download started.")
 
-                val alreadyConfirmedOrderIds = DeliveryConfiguration.deliveryRepository
+                alreadyConfirmedOrderIds = DeliveryConfiguration.deliveryRepository
                     .takeIf { autoConfirmEnabled }
                     ?.getConfirmedOrdersFromDb()
                     ?.map { it.orderId }
@@ -99,6 +100,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                 ?.confirmDeliveryOrder(merchantId, placeId, order)
         }?.also {
             if (it.state == DeliveryOrder.STATE_CONFIRMED) {
+                alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId)
                 confirmedOrderInterceptor(it)
             }
         }
