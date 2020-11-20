@@ -1,5 +1,6 @@
 package com.storyous.delivery.common
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.storyous.commonutils.DateUtils
@@ -69,4 +70,22 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
 
 fun LiveData<List<DeliveryOrderDb>>.toApi() = Transformations.map(this) {
     it.map { order -> order.toApi() }
+}
+
+enum class IntegratedDispatch(val apiKey: String, val resId: Int) {
+    ENABLED("enabled", R.string.settings_yes),
+    ASK("ask", R.string.settings_ask),
+    DISABLED("disabled", R.string.settings_no);
+
+    companion object {
+        fun valueFromApiKey(apiKey: String, context: Context): String {
+            return values().firstOrNull { it.apiKey == apiKey }?.resId?.let { context.getString(it) }
+                ?: context.getString(DISABLED.resId)
+        }
+
+        fun apiKeyFromValue(value: String, context: Context): String {
+            return values().firstOrNull { context.getString(it.resId) == value }?.apiKey
+                ?: DISABLED.apiKey
+        }
+    }
 }

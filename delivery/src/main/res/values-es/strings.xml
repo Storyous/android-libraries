@@ -46,4 +46,12 @@
     <string name="delivery_time_courier">repartidor</string>
     <string name="delivery_time_customer">cliente</string>
     <string name="scheduling_delivery_info">Solicitando la recogida por el repartidor</string>
+    <string name="settings_yes">sí</string>
+    <string name="settings_no">no</string>
+    <string name="settings_ask">preguntar</string>
+    <string name="settings_accept_new_orders">Pedidos nuevos:</string>
+    <string name="settings_meal_preparation_time">Tiempo de preparación de comida:</string>
+    <string name="settings_integrated_dispatch">Llamar al mensajero:</string>
+    <string name="settings_minutes">%d min.</string>
+    <string name="settings_choose_preparation_time">Elige el tiempo de preparación</string>
 </resources>

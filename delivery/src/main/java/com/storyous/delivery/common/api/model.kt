@@ -173,3 +173,20 @@ data class DeliveryDateRange(
     val from: Date,
     val to: Date
 )
+
+class DeliverySettings(
+    var acceptNewOrders: Boolean,
+    var mealPrepTime: Int,
+    @DispatchValue var integratedDispatch: String
+) {
+    companion object {
+        @Retention(AnnotationRetention.SOURCE)
+        @StringDef(VALUE_ENABLED, VALUE_ASK, VALUE_DISABLED)
+        annotation class DispatchValue
+
+        const val VALUE_ENABLED = "enabled"
+        const val VALUE_ASK = "ask"
+        const val VALUE_DISABLED = "disabled"
+
+    }
+}

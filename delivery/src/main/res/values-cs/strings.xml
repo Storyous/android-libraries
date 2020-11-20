@@ -46,4 +46,12 @@
     <string name="delivery_time_courier">kurýrem</string>
     <string name="delivery_time_customer">zákazníkem</string>
     <string name="scheduling_delivery_info">Kontaktujeme řidiče rozvozu</string>
+    <string name="settings_yes">ano</string>
+    <string name="settings_no">ne</string>
+    <string name="settings_ask">zeptat se s objednávkou</string>
+    <string name="settings_accept_new_orders">Objednávky:</string>
+    <string name="settings_meal_preparation_time">Doba přípravy objednávky:</string>
+    <string name="settings_integrated_dispatch">Zavolat rozvoz:</string>
+    <string name="settings_minutes">%d min.</string>
+    <string name="settings_choose_preparation_time">Zadejte dobu přípravy objednávky</string>
 </resources>

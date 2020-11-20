@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.storyous.delivery.common.api.DeliveryOrder
 import kotlinx.android.synthetic.main.activity_delivery.*
 
@@ -33,6 +35,12 @@ class DeliveryActivity : AppCompatActivity() {
             }
     }
 
+    private val overlappingDetailFragment
+        get() = supportFragmentManager.findFragmentByTag("overlappingDetail")
+
+    private val settingsFragment
+        get() = supportFragmentManager.findFragmentById(R.id.fragment_delivery_settings) as DeliverySettingsFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivery)
@@ -53,10 +61,18 @@ class DeliveryActivity : AppCompatActivity() {
 
         viewModel.setSelectOrder(intent.getStringExtra(ARG_ORDER_ID))
         viewModel.loadOrders()
+
+        val constraintSet = ConstraintSet().apply { clone(root) }
+        fragment_delivery_settings.setOnClickListener {
+            TransitionManager.beginDelayedTransition(root, AutoTransition())
+            constraintSet.applyTo(root)
+            settingsFragment.toggle()
+        }
+        fragment_delivery_settings.isVisible = DeliveryConfiguration.showSettingsBar
     }
 
     override fun onBackPressed() {
-        if (getOverlappingDetailFragment()?.isVisible != true) {
+        if (overlappingDetailFragment?.isVisible != true) {
             super.onBackPressed()
         }
 
@@ -64,10 +80,6 @@ class DeliveryActivity : AppCompatActivity() {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        getOverlappingDetailFragment()?.view?.isVisible = order != null
-    }
-
-    private fun getOverlappingDetailFragment(): Fragment? {
-        return supportFragmentManager.findFragmentByTag("overlappingDetail")
+        overlappingDetailFragment?.view?.isVisible = order != null
     }
 }
