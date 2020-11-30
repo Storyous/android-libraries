@@ -3,6 +3,7 @@ package com.storyous.delivery.common
 import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import com.google.gson.GsonBuilder
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
@@ -18,6 +19,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var useOrderTimingField = true
     var globalDispatchDisabled = false to ""
     var showSettingsBar = false
+    var gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
 
     @Throws(ConfigurationInvalidException::class)
     fun checkValid() {

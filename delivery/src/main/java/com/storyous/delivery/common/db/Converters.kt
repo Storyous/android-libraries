@@ -3,8 +3,10 @@ package com.storyous.delivery.common.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.storyous.delivery.common.DeliveryConfiguration
 import com.storyous.delivery.common.api.DeliveryItem
 import com.storyous.delivery.common.api.DeliveryTiming
+import timber.log.Timber
 import java.math.BigDecimal
 import java.util.Date
 
@@ -21,7 +23,7 @@ class Converters {
 
     @TypeConverter
     fun stringToBigDecimal(input: String?): BigDecimal? {
-        return input?.takeIf { !it.isBlank() }?.toBigDecimalOrNull()
+        return input?.takeIf { it.isNotBlank() }?.toBigDecimalOrNull()
     }
 
     @TypeConverter
@@ -46,21 +48,41 @@ class Converters {
 
     @TypeConverter
     fun deliveryItemsToJson(items: List<DeliveryItem>?): String? {
-        return Gson().toJson(items)
+        return DeliveryConfiguration.gson.toJson(items)
     }
 
     @TypeConverter
     fun jsonToDeliveryItems(value: String?): List<DeliveryItem>? {
-        return Gson().fromJson(value, object : TypeToken<List<DeliveryItem>>() {}.type)
+        return runCatching {
+            DeliveryConfiguration.gson.fromJson<List<DeliveryItem>>(
+                value, object : TypeToken<List<DeliveryItem>>() {}.type
+            )
+        }.onFailure {
+            Timber.e(it, "Failed convert of $value")
+        }.recoverCatching {
+            Gson().fromJson(value, object : TypeToken<List<DeliveryItem>>() {}.type)
+        }.onFailure {
+            Timber.e(it, "Failed convert of $value")
+        }.getOrNull()
     }
 
     @TypeConverter
     fun deliveryTimingToJson(timing: DeliveryTiming?): String? {
-        return Gson().toJson(timing)
+        return DeliveryConfiguration.gson.toJson(timing)
     }
 
     @TypeConverter
     fun jsonToDeliveryTiming(value: String?): DeliveryTiming? {
-        return Gson().fromJson(value, object : TypeToken<DeliveryTiming>() {}.type)
+        return runCatching {
+            DeliveryConfiguration.gson.fromJson<DeliveryTiming>(
+                value, object : TypeToken<DeliveryTiming>() {}.type
+            )
+        }.onFailure {
+            Timber.e(it, "Failed convert of $value")
+        }.recoverCatching {
+            Gson().fromJson(value, object : TypeToken<DeliveryTiming>() {}.type)
+        }.onFailure {
+            Timber.e(it, "Failed convert of $value")
+        }.getOrNull()
     }
 }
