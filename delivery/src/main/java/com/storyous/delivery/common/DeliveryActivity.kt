@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.storyous.delivery.common.api.DeliveryOrder
@@ -26,13 +25,14 @@ class DeliveryActivity : AppCompatActivity() {
             context.startActivity(createLaunchIntent(context))
         }
 
+        @Suppress("MemberVisibilityCanBePrivate")
         fun createLaunchIntent(
             context: Context,
             orderId: String? = null
-        ) = Intent(context, DeliveryActivity::class.java)
-            .putExtra(ARG_ORDER_ID, orderId).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
+        ) = Intent(context, DeliveryActivity::class.java).apply {
+            putExtra(ARG_ORDER_ID, orderId)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
     }
 
     private val overlappingDetailFragment
