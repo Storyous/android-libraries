@@ -1,5 +1,7 @@
 package com.storyous.contacts
 
+import com.storyous.firebase.StoryousFirebaseAuth
+import com.storyous.firebase.JWTWrapper
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -25,7 +27,7 @@ class ContactsManagerTest {
 
         contactsManager = ContactsManager(
             ContactsRepository(firestoreMock.firestore),
-            firestoreMock.auth
+            StoryousFirebaseAuth(firestoreMock.auth)
         )
 
         runBlocking {

@@ -1,6 +1,7 @@
 package com.storyous.contacts
 
 import com.auth0.jwt.JWT
+import com.storyous.firebase.JWTClaims
 
 fun JWTDecoder(): (String) -> JWTClaims = { token ->
 

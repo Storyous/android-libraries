@@ -27,6 +27,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':firebase')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
@@ -38,18 +40,15 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 
-    // Firestore
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.7.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
-    
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.0.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+
     // JWT
-    implementation 'com.auth0.android:jwtdecode:2.0.0'
     testImplementation 'com.auth0:java-jwt:3.10.2'
 }
