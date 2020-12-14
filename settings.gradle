@@ -1,3 +1,4 @@
+include ':firebase'
 include ':bills'
 rootProject.name='Android libraries'
 include ':app', ':common_utils', ':delivery', ':contacts'

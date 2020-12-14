@@ -1,30 +1,5 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>ConstructorParameterNaming:ExchangeTokenRequest.kt$ExchangeTokenRequest$var grant_type: String</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenRequest.kt$ExchangeTokenRequest$var refresh_token: String</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var expires_in: String = ""</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var id_token: String = ""</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var project_id: String = ""</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var refresh_token: String = ""</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var token_type: String = ""</ID>
-    <ID>ConstructorParameterNaming:ExchangeTokenResponse.kt$ExchangeTokenResponse$var user_id: String = ""</ID>
-    <ID>ForbiddenComment:RestAuthProvider.kt$RestAuthProvider$// TODO: What if the persisted user is expired?</ID>
-    <ID>MagicNumber:ExpirationUtils.kt$ExpirationUtils.Companion$1000</ID>
-    <ID>MagicNumber:FirebaseTokenRefresher.kt$FirebaseTokenRefresher.&lt;no name provided&gt;$1000</ID>
-    <ID>MaxLineLength:RestAuthProvider.kt$RestAuthProvider : FirebaseRestAuth</ID>
-    <ID>NewLineAtEndOfFile:RestAuthProvider.kt$com.google.firebase.nongmsauth.internal.RestAuthProvider.kt</ID>
-    <ID>NewLineAtEndOfFile:SignInAnonymouslyResponse.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInAnonymouslyResponse.kt</ID>
-    <ID>NewLineAtEndOfFile:SignInWithCustomTokenRequest.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithCustomTokenRequest.kt</ID>
-    <ID>NewLineAtEndOfFile:SignInWithCustomTokenResponse.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithCustomTokenResponse.kt</ID>
-    <ID>NewLineAtEndOfFile:SignInWithEmailRequest.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithEmailRequest.kt</ID>
-    <ID>NewLineAtEndOfFile:SignInWithEmailResponse.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithEmailResponse.kt</ID>
-    <ID>NewLineAtEndOfFile:SignUpWithEmailResponse.kt$com.google.firebase.nongmsauth.api.types.identitytoolkit.SignUpWithEmailResponse.kt</ID>
-    <ID>TooGenericExceptionCaught:IdTokenParser.kt$IdTokenParser.Companion$e: Exception</ID>
-    <ID>TooGenericExceptionThrown:RestAuthProvider.kt$RestAuthProvider$throw Exception("Can't refresh token, current user has no refresh token")</ID>
-    <ID>UtilityClassWithPublicConstructor:ExpirationUtils.kt$ExpirationUtils</ID>
-    <ID>UtilityClassWithPublicConstructor:IdTokenParser.kt$IdTokenParser</ID>
-    <ID>UtilityClassWithPublicConstructor:RetrofitUtils.kt$RetrofitUtils</ID>
-  </CurrentIssues>
+  <CurrentIssues></CurrentIssues>
 </SmellBaseline>
