@@ -131,3 +131,20 @@ fun <T> LiveData<T>.repeat(interval: Long): LiveData<T> = object : MediatorLiveD
         value = it
     }
 }
+
+fun <T> LiveData<T>.debounce(time: Long): LiveData<T> = MediatorLiveData<T>().apply {
+    val handler = Handler(Looper.getMainLooper())
+
+    val runnable = Runnable {
+        value = this@debounce.value
+    }
+
+    addSource(this@debounce) {
+        handler.removeCallbacks(runnable)
+        if (value == null) {
+            handler.post(runnable)
+        } else {
+            handler.postDelayed(runnable, time)
+        }
+    }
+}
