@@ -16,7 +16,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.resume
 
-fun <T> LiveData<T>.getDistinct(): LiveData<T> {
+@JvmOverloads
+fun <T> LiveData<T>.getDistinct(compareInstances: Boolean = false): LiveData<T> {
 
     return MediatorLiveData<T>().also {
         it.addSource(this, object : Observer<T> {
@@ -29,7 +30,7 @@ fun <T> LiveData<T>.getDistinct(): LiveData<T> {
                     initialized = true
                     lastObj = obj
                     it.postValue(lastObj)
-                } else if ((obj == null && lastObj != null) || obj != lastObj) {
+                } else if ((compareInstances && obj !== lastObj) || obj != lastObj) {
                     lastObj = obj
                     it.postValue(lastObj)
                 }
@@ -129,5 +130,22 @@ fun <T> LiveData<T>.repeat(interval: Long): LiveData<T> = object : MediatorLiveD
 }.apply {
     addSource(this@repeat) {
         value = it
+    }
+}
+
+fun <T> LiveData<T>.debounce(time: Long): LiveData<T> = MediatorLiveData<T>().apply {
+    val handler = Handler(Looper.getMainLooper())
+
+    val runnable = Runnable {
+        value = this@debounce.value
+    }
+
+    addSource(this@debounce) {
+        handler.removeCallbacks(runnable)
+        if (value == null) {
+            handler.post(runnable)
+        } else {
+            handler.postDelayed(runnable, time)
+        }
     }
 }
