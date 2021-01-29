@@ -96,7 +96,7 @@ object DefaultOrderFunctions : DeliveryOrderFunctions {
     }
 
     override var dispatchVisible: suspend (DeliveryOrder) -> Boolean = { order ->
-        order.state != DeliveryOrder.STATE_NEW
+        order.state == DeliveryOrder.STATE_CONFIRMED
     }
 
     override var dispatchEnabled: suspend (DeliveryOrder) -> Boolean = { order ->
