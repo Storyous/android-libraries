@@ -8,6 +8,8 @@ import com.storyous.delivery.common.repositories.ERR_NO_AUTH
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -16,6 +18,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     private var loadingOrdersJob: Job? = null
     private var alreadyConfirmedOrderIds: List<String>? = null
+    private val confirmedOrdersLock = Semaphore(1)
 
     var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
         orders.forEach {
@@ -69,18 +72,23 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
                 Timber.d("Delivery order download started.")
 
-                alreadyConfirmedOrderIds = DeliveryConfiguration.deliveryRepository
-                    .takeIf { autoConfirmEnabled }
-                    ?.getConfirmedOrdersFromDb()
-                    ?.map { it.orderId }
+                confirmedOrdersLock.withPermit {
+                    alreadyConfirmedOrderIds = DeliveryConfiguration.deliveryRepository
+                        .takeIf { autoConfirmEnabled }
+                        ?.getConfirmedOrdersFromDb()
+                        ?.map { it.orderId }
 
-                DeliveryConfiguration.deliveryRepository
-                    ?.loadDeliveryOrders(merchantId, placeId)
-                    ?.takeIf { autoConfirmEnabled }
-                    ?.data?.filter {
-                        it.state == DeliveryOrder.STATE_CONFIRMED &&
-                            alreadyConfirmedOrderIds?.contains(it.orderId) != true
-                    }?.forEach { confirmedOrderInterceptor(it) }
+                    DeliveryConfiguration.deliveryRepository
+                        ?.loadDeliveryOrders(merchantId, placeId)
+                        ?.takeIf { autoConfirmEnabled }
+                        ?.data?.filter {
+                            it.state == DeliveryOrder.STATE_CONFIRMED &&
+                                alreadyConfirmedOrderIds?.contains(it.orderId) != true
+                        }?.forEach {
+                            alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId)
+                            confirmedOrderInterceptor(it)
+                        }
+                }
 
                 DeliveryConfiguration.deliveryRepository
                     ?.getNewOrdersFromDb()
@@ -95,13 +103,16 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
         val (placeId, merchantId) = DeliveryConfiguration.placeInfo
             ?: throw DeliveryException(ERR_NO_AUTH)
 
-        return withContext(provider.IO) {
-            DeliveryConfiguration.deliveryRepository
-                ?.confirmDeliveryOrder(merchantId, placeId, order)
-        }?.also {
-            if (it.state == DeliveryOrder.STATE_CONFIRMED) {
-                alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId)
-                confirmedOrderInterceptor(it)
+        return confirmedOrdersLock.withPermit {
+            withContext(provider.IO) {
+                DeliveryConfiguration.deliveryRepository
+                    ?.confirmDeliveryOrder(merchantId, placeId, order)
+            }?.also {
+                if (it.state == DeliveryOrder.STATE_CONFIRMED
+                        && alreadyConfirmedOrderIds?.contains(it.orderId) == false) {
+                    alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId)
+                    confirmedOrderInterceptor(it)
+                }
             }
         }
     }
