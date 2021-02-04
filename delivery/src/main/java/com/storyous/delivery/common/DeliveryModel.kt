@@ -141,6 +141,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     }
 
     fun clear() = launch {
+        alreadyConfirmedOrderIds = null
         DeliveryConfiguration.deliveryRepository?.clear()
     }
 }
