@@ -109,8 +109,8 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     ?.confirmDeliveryOrder(merchantId, placeId, order)
             }?.also {
                 if (it.state == DeliveryOrder.STATE_CONFIRMED
-                        && alreadyConfirmedOrderIds?.contains(it.orderId) == false) {
-                    alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId)
+                        && alreadyConfirmedOrderIds?.contains(it.orderId) != true) {
+                    alreadyConfirmedOrderIds = alreadyConfirmedOrderIds?.plus(it.orderId) ?: listOf(it.orderId)
                     confirmedOrderInterceptor(it)
                 }
             }
