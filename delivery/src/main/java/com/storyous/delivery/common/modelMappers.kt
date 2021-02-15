@@ -3,9 +3,9 @@ package com.storyous.delivery.common
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.storyous.commonutils.DateUtils
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.delivery.common.api.Customer
+import com.storyous.delivery.common.api.DeliveryAddressParts
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
 import com.storyous.delivery.common.api.Desk
@@ -27,6 +27,8 @@ fun DeliveryOrder.toDb() = DeliveryOrderDb(
     lastModifiedAt,
     customer.name,
     customer.deliveryAddress,
+    customer.deliveryAddressParts?.latitude,
+    customer.deliveryAddressParts?.longitude,
     customer.phoneNumber,
     customer.email,
     desk?.deskId,
@@ -55,7 +57,13 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     deliveryOnTime,
     deliveryType,
     discountWithVat,
-    Customer(customerName, customerDeliveryAddress, customerPhoneNumber, customerEmail),
+    Customer(
+        customerName,
+        customerDeliveryAddress,
+        DeliveryAddressParts(customerDeliveryAddressLat, customerDeliveryAddressLong),
+        customerPhoneNumber,
+        customerEmail
+    ),
     deskId?.let { id -> deskCode?.let { code -> Desk(id, code, deskName) } },
     items,
     state,

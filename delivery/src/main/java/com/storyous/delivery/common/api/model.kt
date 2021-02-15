@@ -104,8 +104,14 @@ class DeliveryAddition(
 data class Customer(
     val name: String,
     val deliveryAddress: String?,
+    val deliveryAddressParts: DeliveryAddressParts?,
     val phoneNumber: String?,
     var email: String?
+)
+
+data class DeliveryAddressParts(
+    val latitude: Double?,
+    val longitude: Double?
 )
 
 data class Desk(
