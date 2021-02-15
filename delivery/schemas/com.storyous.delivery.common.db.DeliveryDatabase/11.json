@@ -1,0 +1,166 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 11,
+    "identityHash": "1e2f2290c272d627de95af66f25ee414",
+    "entities": [
+      {
+        "tableName": "DeliveryOrder",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`orderId` TEXT NOT NULL, `deliveryTime` INTEGER, `deliveryOnTime` INTEGER, `deliveryType` TEXT NOT NULL, `discountWithVat` TEXT, `items` TEXT NOT NULL, `state` TEXT NOT NULL, `alreadyPaid` INTEGER NOT NULL, `autoConfirm` INTEGER, `provider` TEXT NOT NULL, `note` TEXT, `lastModifiedAt` INTEGER NOT NULL, `customerName` TEXT NOT NULL, `customerDeliveryAddress` TEXT, `customerDeliveryAddressLat` REAL, `customerDeliveryAddressLong` REAL, `customerPhoneNumber` TEXT, `customerEmail` TEXT, `deskId` TEXT, `deskCode` TEXT, `deskName` TEXT, `tipWithVat` TEXT, `timing` TEXT, PRIMARY KEY(`orderId`))",
+        "fields": [
+          {
+            "fieldPath": "orderId",
+            "columnName": "orderId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deliveryTime",
+            "columnName": "deliveryTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveryOnTime",
+            "columnName": "deliveryOnTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deliveryType",
+            "columnName": "deliveryType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "discountWithVat",
+            "columnName": "discountWithVat",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "items",
+            "columnName": "items",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alreadyPaid",
+            "columnName": "alreadyPaid",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoConfirm",
+            "columnName": "autoConfirm",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "provider",
+            "columnName": "provider",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastModifiedAt",
+            "columnName": "lastModifiedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerName",
+            "columnName": "customerName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerDeliveryAddress",
+            "columnName": "customerDeliveryAddress",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerDeliveryAddressLat",
+            "columnName": "customerDeliveryAddressLat",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerDeliveryAddressLong",
+            "columnName": "customerDeliveryAddressLong",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerPhoneNumber",
+            "columnName": "customerPhoneNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customerEmail",
+            "columnName": "customerEmail",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deskId",
+            "columnName": "deskId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deskCode",
+            "columnName": "deskCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deskName",
+            "columnName": "deskName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tipWithVat",
+            "columnName": "tipWithVat",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timing",
+            "columnName": "timing",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "orderId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1e2f2290c272d627de95af66f25ee414')"
+    ]
+  }
+}

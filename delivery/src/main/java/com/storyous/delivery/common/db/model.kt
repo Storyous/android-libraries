@@ -26,6 +26,8 @@ open class DeliveryOrder(
     var lastModifiedAt: Date,
     var customerName: String,
     var customerDeliveryAddress: String?,
+    var customerDeliveryAddressLat: Double?,
+    var customerDeliveryAddressLong: Double?,
     var customerPhoneNumber: String?,
     var customerEmail: String?,
     var deskId: String?,
