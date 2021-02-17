@@ -20,6 +20,7 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var globalDispatchDisabled = false to ""
     var showSettingsBar = false
     var gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
+    var printBillBy: suspend (orderId: String) -> Unit = {}
 
     @Throws(ConfigurationInvalidException::class)
     fun checkValid() {
@@ -84,22 +85,28 @@ interface DeliveryOrderFunctions {
     var acceptEnabled: suspend (DeliveryOrder) -> Boolean
     var dispatchVisible: suspend (DeliveryOrder) -> Boolean
     var dispatchEnabled: suspend (DeliveryOrder) -> Boolean
+    var printBillVisible: suspend (DeliveryOrder) -> Boolean
+    var printBillEnabled: suspend (DeliveryOrder) -> Boolean
 }
 
 object DefaultOrderFunctions : DeliveryOrderFunctions {
-    override var acceptVisible: suspend (DeliveryOrder) -> Boolean = { order ->
-        order.state == DeliveryOrder.STATE_NEW
+    override var acceptVisible: suspend (DeliveryOrder) -> Boolean = {
+        it.state == DeliveryOrder.STATE_NEW
     }
 
-    override var acceptEnabled: suspend (DeliveryOrder) -> Boolean = { order ->
-        order.state == DeliveryOrder.STATE_NEW
+    override var acceptEnabled: suspend (DeliveryOrder) -> Boolean = {
+        it.state == DeliveryOrder.STATE_NEW
     }
 
-    override var dispatchVisible: suspend (DeliveryOrder) -> Boolean = { order ->
-        order.state == DeliveryOrder.STATE_CONFIRMED
+    override var dispatchVisible: suspend (DeliveryOrder) -> Boolean = {
+        it.state == DeliveryOrder.STATE_CONFIRMED
     }
 
-    override var dispatchEnabled: suspend (DeliveryOrder) -> Boolean = { order ->
-        order.state == DeliveryOrder.STATE_CONFIRMED
+    override var dispatchEnabled: suspend (DeliveryOrder) -> Boolean = {
+        it.state == DeliveryOrder.STATE_CONFIRMED
     }
+
+    override var printBillVisible: suspend (DeliveryOrder) -> Boolean = { false }
+
+    override var printBillEnabled: suspend (DeliveryOrder) -> Boolean = { false }
 }

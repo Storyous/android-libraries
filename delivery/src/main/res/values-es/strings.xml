@@ -22,6 +22,7 @@
     <string name="accept_order">Aceptar pedido</string>
     <string name="delivery_orders_declined">Pedidos rechazados</string>
     <string name="time_at">A las %s</string>
+    <string name="print_delivery_order_bill">Imprimir copia</string>
     <string name="time_till">Hasta las %s</string>
     <string name="delivery_type_delivery">Envío</string>
     <string name="delivery_type_takeaway">Para llevar</string>

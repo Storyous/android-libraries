@@ -5,8 +5,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
 import com.storyous.commonutils.CoroutineProviderScope
+import com.storyous.commonutils.Result
 import com.storyous.commonutils.castOrNull
+import com.storyous.commonutils.toResult
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryException
@@ -34,15 +38,22 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         const val MESSAGE_OK_DECLINED = 3
     }
 
-    private val selectedOrderIdLive = MutableLiveData<String>(null)
-    private val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
+    private val selectedOrderIdLive = MutableLiveData<String?>(null)
+    var selectedOrderId: String?
+        get() = selectedOrderIdLive.value
+        set(value) {
+            selectedOrderIdLive.value = value
+            Timber.i("Delivery order selected $value")
+        }
+    val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
         it?.let { DeliveryConfiguration.deliveryRepository?.getOrderLive(it) }
             ?: MutableLiveData<DeliveryOrder>(null)
     }
+    val selectedOrder: DeliveryOrder? get() = selectedOrderLive.value
     private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
         MediatorLiveData<List<DeliveryOrder>>().apply {
             addSource(DeliveryConfiguration.deliveryRepository!!.deliveryOrdersLive) { orders ->
-                if (getSelectedOrder()?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
+                if (selectedOrder?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
                     deselectOrder()
                 }
                 value = orders
@@ -70,17 +81,27 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             if (it != null) {
                 launch {
                     value = withContext(provider.IO) {
-                        DeliveryConfiguration.dispatchVisible(it) to DeliveryConfiguration.dispatchEnabled(
-                            it
-                        )
+                        with(DeliveryConfiguration) {
+                            dispatchVisible(it) to dispatchEnabled(it)
+                        }
                     }
                 }
             }
         }
     }
+    val printBillFunction = selectedOrderLive.switchMap { order ->
+        liveData<Pair<Boolean, Boolean>> {
+            order?.let {
+                withContext(provider.IO) {
+                    with(DeliveryConfiguration) { dispatchVisible(it) to dispatchEnabled(it) }
+                }
+            } ?: false to false
+        }
+    }
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
     val loadingOrderDispatching = MutableLiveData(false)
+    val printOrderBillState = MutableLiveData<Result<Any>?>()
     val messagesToShow = MutableLiveData(mutableListOf<Int>())
 
     fun loadOrders() = DeliveryConfiguration.deliveryModel.loadOrders()
@@ -88,19 +109,6 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     fun deselectOrder() {
         selectedOrderIdLive.value = null
     }
-
-    fun setSelectOrder(orderId: String?) {
-        selectedOrderIdLive.value = orderId
-        Timber.i("Delivery order selected $orderId")
-    }
-
-    fun setSelectOrder(order: DeliveryOrder) {
-        setSelectOrder(order.orderId)
-    }
-
-    fun getSelectedOrder() = selectedOrderLive.value
-
-    fun getSelectedOrderLive() = selectedOrderLive
 
     fun getDeliveryOrdersLive() = deliveryOrdersLive
 
@@ -171,6 +179,17 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             }
 
             loadingOrderDispatching.postValue(false)
+        }
+    }
+
+    fun printBill(order: DeliveryOrder) {
+        launch {
+            printOrderBillState.value = Result.loading()
+            printOrderBillState.value = withContext(provider.IO) {
+                runCatching {
+                    DeliveryConfiguration.printBillBy(order.orderId)
+                }
+            }.toResult()
         }
     }
 }

@@ -17,7 +17,7 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
     private val deliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter { viewModel.setSelectOrder(it) }
+        DeliveryItemsAdapter { viewModel.selectedOrderId = it.orderId }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

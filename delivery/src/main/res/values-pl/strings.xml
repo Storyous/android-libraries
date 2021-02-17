@@ -23,6 +23,7 @@
     <string name="delivery_orders_declined">Odrzucone zamówienia</string>
     <string name="time_at">na %s</string>
     <string name="time_till">do %s</string>
+    <string name="print_delivery_order_bill">Wydrukować kopię</string>
     <string name="delivery_type_delivery">Dostawa</string>
     <string name="delivery_type_takeaway">Na wynos</string>
     <string name="delivery_type_dispatch">Odbiór kurierem</string>

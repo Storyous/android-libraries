@@ -36,4 +36,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/centerGuideline"
         tools:visibility="visible" />
+
+    <com.storyous.commonutils.widgets.LoadingButton
+        android:id="@+id/button_print_bill"
+        style="@style/Button.Primary.Contextual.Dark"
+        android:layout_width="0dp"
+        android:text="@string/print_delivery_order_bill"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        tools:visibility="visible" />
 </merge>

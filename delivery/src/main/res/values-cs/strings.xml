@@ -27,6 +27,7 @@
     <string name="delivery_type_takeaway">Zákazník vyzvedne</string>
     <string name="delivery_type_dispatch">Kurýr vyzvedne</string>
     <string name="delivery_type_order_to_table">Objednávka na stůl</string>
+    <string name="print_delivery_order_bill">Print copy</string>
     <string name="piece_measure">ks</string>
     <string name="new_delivery">Nová objednávka</string>
     <string name="customer_detail_header">Detail zákazníka</string>

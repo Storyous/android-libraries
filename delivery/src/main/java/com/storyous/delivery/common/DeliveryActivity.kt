@@ -49,7 +49,7 @@ class DeliveryActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { onBackPressed() }
 
         viewModel.stopRinging()
-        viewModel.getSelectedOrderLive().observe(this) { onOrderSelected(it) }
+        viewModel.selectedOrderLive.observe(this) { onOrderSelected(it) }
 
         DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
 
@@ -60,7 +60,7 @@ class DeliveryActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.setSelectOrder(intent.getStringExtra(ARG_ORDER_ID))
+        viewModel.selectedOrderId = intent.getStringExtra(ARG_ORDER_ID)
         viewModel.loadOrders()
 
         val constraintSet = ConstraintSet().apply { clone(root) }
