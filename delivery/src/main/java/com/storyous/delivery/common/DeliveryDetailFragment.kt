@@ -41,13 +41,13 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         viewModel.printOrderBillState.observe(this) {
             button_print_bill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
-                Toast.makeText(requireContext(), "Failed to print bill", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.print_delivery_copy_failed, Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
         viewModel.acceptFunction.observe(this) {
-            button_accept.isVisible = it.first
-            button_accept.isEnabled = it.second
+            button_accept.isVisible = it?.first == true
+            button_accept.isEnabled = it?.second == true
         }
         viewModel.cancelFunction.observe(this) {
             button_cancel.isVisible = it.first
@@ -55,14 +55,14 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         }
         viewModel.dispatchFunction.observe(this) {
             val globallyOff = DeliveryConfiguration.globalDispatchDisabled.first
-            button_dispatch.isVisible = it.first
-            button_dispatch.isEnabled = it.second && !globallyOff
+            button_dispatch.isVisible = it?.first == true
+            button_dispatch.isEnabled = it?.second == true && !globallyOff
             warning.text = DeliveryConfiguration.globalDispatchDisabled.second
-            warning.isVisible = globallyOff && it.second && warning.text.isNotEmpty()
+            warning.isVisible = globallyOff && it?.second == true && warning.text.isNotEmpty()
         }
         viewModel.printBillFunction.observe(this) {
-            button_print_bill.isVisible = it.first
-            button_print_bill.isEnabled = it.second
+            button_print_bill.isVisible = it?.first == true
+            button_print_bill.isEnabled = it?.second == true
         }
     }
 

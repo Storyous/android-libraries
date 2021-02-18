@@ -62,4 +62,5 @@
     <string name="settings_integrated_dispatch">Integrated dispatch:</string>
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Choose preparation time</string>
+    <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
 </resources>

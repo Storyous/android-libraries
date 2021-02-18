@@ -55,4 +55,5 @@
     <string name="settings_integrated_dispatch">Połączenie z dowozem:</string>
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Wybierz czas przygotowania</string>
+    <string name="print_delivery_copy_failed">Wystąpił błąd podczas drukowania, proszę skorzystać z przeglądu rachunków, aby wydrukować duplikat.</string>
 </resources>

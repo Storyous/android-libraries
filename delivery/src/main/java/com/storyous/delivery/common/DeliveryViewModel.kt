@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.Result
 import com.storyous.commonutils.castOrNull
-import com.storyous.commonutils.toResult
 import com.storyous.commonutils.provider
+import com.storyous.commonutils.toResult
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryException
 import com.storyous.delivery.common.repositories.ERR_CONFLICT
@@ -60,42 +61,43 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             }
         }
 
-    val acceptFunction = Transformations.switchMap(selectedOrderLive) {
-        MutableLiveData(false to false).apply {
-            if (it != null) {
-                launch {
-                    value = withContext(provider.IO) {
-                        with(DeliveryConfiguration) {
-                            acceptVisible(it) to acceptEnabled(it)
-                        }
-                    }
+    val acceptFunction = selectedOrderLive.switchMap { order ->
+        liveData {
+            emit(false to false)
+            order?.runCatching {
+                with(DeliveryConfiguration) {
+                    acceptVisible(this@runCatching) to acceptEnabled(this@runCatching)
                 }
+            }?.getOrNull().also {
+                emit(it)
             }
         }
     }
-    val cancelFunction = Transformations.map(selectedOrderLive) {
+    val cancelFunction = selectedOrderLive.map {
         with(it?.state == DeliveryOrder.STATE_NEW) { this to this }
     }
-    val dispatchFunction = Transformations.switchMap(selectedOrderLive) {
-        MutableLiveData(false to false).apply {
-            if (it != null) {
-                launch {
-                    value = withContext(provider.IO) {
-                        with(DeliveryConfiguration) {
-                            dispatchVisible(it) to dispatchEnabled(it)
-                        }
-                    }
+    val dispatchFunction = selectedOrderLive.switchMap { order ->
+        liveData {
+            emit(false to false)
+            order?.runCatching {
+                with(DeliveryConfiguration) {
+                    dispatchVisible(this@runCatching) to dispatchEnabled(this@runCatching)
                 }
+            }?.getOrNull().also {
+                emit(it)
             }
         }
     }
     val printBillFunction = selectedOrderLive.switchMap { order ->
-        liveData<Pair<Boolean, Boolean>> {
-            order?.let {
-                withContext(provider.IO) {
-                    with(DeliveryConfiguration) { dispatchVisible(it) to dispatchEnabled(it) }
+        liveData {
+            emit(false to false)
+            order?.runCatching {
+                with(DeliveryConfiguration) {
+                    printBillVisible(this@runCatching) to printBillEnabled(this@runCatching)
                 }
-            } ?: false to false
+            }?.getOrNull().also {
+                emit(it)
+            }
         }
     }
     val loadingOrderAccepting = MutableLiveData(false)
@@ -189,6 +191,8 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
                 runCatching {
                     DeliveryConfiguration.printBillBy(order.orderId)
                 }
+            }.onFailure { 
+                Timber.e(it)
             }.toResult()
         }
     }
