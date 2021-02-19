@@ -21,6 +21,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
 
     companion object {
         const val PROVIDER_DJ = "dj"
+        const val PROVIDER_WOLT = "wolt"
         const val PROVIDER_UBER_EATS = "ubereats"
         const val PROVIDER_DELIVERECT = "deliverect"
         const val PROVIDER_PHONE = "phone"

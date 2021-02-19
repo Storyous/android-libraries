@@ -37,6 +37,8 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
             val type = when (provider) {
                 DeliveryViewModel.PROVIDER_DJ ->
                     getString(R.string.delivery_service_damejidlo, null)
+                DeliveryViewModel.PROVIDER_WOLT ->
+                    getString(R.string.delivery_service_wolt, null)
                 DeliveryViewModel.PROVIDER_UBER_EATS ->
                     getString(R.string.delivery_service_ubereats, null)
                 DeliveryViewModel.PROVIDER_DELIVERECT ->
