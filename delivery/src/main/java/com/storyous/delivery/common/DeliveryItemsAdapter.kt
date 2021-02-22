@@ -1,9 +1,11 @@
 package com.storyous.delivery.common
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.adapters.Header
@@ -126,8 +128,14 @@ class DeliveryItemsAdapter(
         }
     }
 
+    override fun onViewRecycled(holder: DeliveryViewHolder) {
+        super.onViewRecycled(holder)
+        holder.recycle()
+    }
+
     abstract class DeliveryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(listItem: ListItem<DeliveryOrder>)
+        open fun recycle() = Unit
     }
 
     class DeliveryItemViewHolder(
@@ -142,6 +150,9 @@ class DeliveryItemsAdapter(
         val address: TextView = itemView.text_item_delivery_address
         val price: TextView = itemView.text_item_delivery_price
         val deliveryType: TextView = itemView.text_item_delivery_type
+        val autodeclineCountdown: Group = itemView.autodecline_countdown
+        val autodeclineText: TextView = itemView.autodecline_countdown_text
+        var autodeclineTimer: CountDownTimer? = null
 
         override fun bind(listItem: ListItem<DeliveryOrder>) {
             val deliveryOrder = (listItem as Item).itemValue
@@ -161,6 +172,11 @@ class DeliveryItemsAdapter(
                 timeTo.isVisible = it.second.isNotEmpty()
             }
             itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+            autodeclineTimer = AutodeclineCountdown.init(deliveryOrder, autodeclineCountdown, autodeclineText)
+        }
+
+        override fun recycle() {
+            autodeclineTimer?.cancel()
         }
 
         private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {

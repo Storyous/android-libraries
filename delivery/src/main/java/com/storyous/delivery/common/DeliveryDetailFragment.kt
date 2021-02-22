@@ -1,6 +1,7 @@
 package com.storyous.delivery.common
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -24,6 +25,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
     private val timesAdapter by lazy { DeliveryTimesAdapter() }
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
+    private var autodeclineTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +112,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         delivery_dates.adapter = timesAdapter
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        autodeclineTimer?.cancel()
+    }
+
     private fun onNewMessages(messages: List<Int>?) {
         messages?.forEach { messageId ->
             val message = when (messageId) {
@@ -162,6 +169,8 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             updateOrderNumber(it.provider, it.orderId)
             updateDates(it)
             info.isVisible = order.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+            autodeclineTimer?.cancel()
+            autodeclineTimer = AutodeclineCountdown.init(order, autodecline_countdown, autodecline_countdown_text)
         } ?: repaintNoOrderSelected()
     }
 

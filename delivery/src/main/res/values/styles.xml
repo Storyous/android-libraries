@@ -56,6 +56,11 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <style name="DeliveryItemDetailCountdown">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="Button" parent="android:Widget.Holo.Button">
         <item name="android:textAppearance">?android:textAppearance</item>
         <item name="android:textColor">@color/white</item>

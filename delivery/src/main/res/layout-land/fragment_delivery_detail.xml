@@ -53,6 +53,40 @@
             android:paddingBottom="90dp">
 
             <TextView
+                android:id="@+id/autodecline_countdown_info"
+                style="@style/DeliveryItemDetailCountdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/autodecline_info"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBottom_toTopOf="@+id/customer_detail_header"
+                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+                app:layout_constraintTop_toTopOf="@+id/autodecline_countdown_text"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/autodecline_countdown_text"
+                style="@style/DeliveryItemDetailCountdown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/offset_4dp"
+                android:layout_marginLeft="@dimen/offset_4dp"
+                android:textAppearance="@style/TextAppearance.Medium"
+                app:layout_constraintBaseline_toBaselineOf="@+id/autodecline_countdown_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/autodecline_countdown_info"
+                tools:text="0:08" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/autodecline_countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="autodecline_countdown_info,autodecline_countdown_text" />
+
+            <TextView
                 android:id="@+id/customer_detail_header"
                 style="@style/DeliveryItemDetailHeader"
                 android:layout_width="0dp"
@@ -63,7 +97,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/autodecline_countdown_text"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -219,16 +253,16 @@
         android:layout_marginBottom="15dp"
         android:background="@color/yellow"
         android:gravity="center"
-        android:textColor="@color/white"
         android:padding="@dimen/offset_4dp"
+        android:textColor="@color/white"
         android:visibility="gone"
         app:drawableLeftCompat="@drawable/ic_warning_24"
         app:drawableStartCompat="@drawable/ic_warning_24"
         app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuideline"
-        tools:visibility="visible"
-        tools:text="Order dispatching is available only on master." />
+        tools:text="Order dispatching is available only on master."
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/buttonBarrier"
@@ -262,7 +296,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel"
+        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel,,autodecline_countdown_info,autodecline_countdown_text"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

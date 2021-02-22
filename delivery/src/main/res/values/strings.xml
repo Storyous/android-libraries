@@ -63,4 +63,7 @@
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Choose preparation time</string>
     <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
+    <string name="autodecline_hours" translatable="false">%sh %sm</string>
+    <string name="autodecline_minutes" translatable="false">%s:%s</string>
+    <string name="autodecline_info" translatable="false">Přijměte objednávku nejpozději za:</string>
 </resources>

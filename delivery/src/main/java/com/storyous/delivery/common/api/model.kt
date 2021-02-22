@@ -142,7 +142,8 @@ data class DeliveryTiming(
     val requestedPickupTime: DeliveryDateRange?,
     val estimatedMealReadyTime: Date?,
     val estimatedPickupTime: DeliveryDateRange?,
-    val estimatedDeliveryTime: DeliveryDateRange?
+    val estimatedDeliveryTime: DeliveryDateRange?,
+    val autoDeclineAfter: Date?
 ) {
     companion object {
         @Retention(AnnotationRetention.SOURCE)

@@ -57,7 +57,6 @@
         android:layout_marginEnd="@dimen/offset_8dp"
         android:layout_marginRight="@dimen/offset_8dp"
         android:layout_marginBottom="@dimen/offset_8dp"
-        app:layout_goneMarginBottom="@dimen/offset_0dp"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/red"
@@ -66,6 +65,7 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_item_delivery_time_from"
+        app:layout_goneMarginBottom="@dimen/offset_0dp"
         tools:text="do 3:00" />
 
     <TextView
@@ -73,10 +73,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/info"
+        app:layout_constraintBottom_toTopOf="@id/autodecline_countdown_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/price_barrier"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="876.00 Kc" />
+        tools:text="6.00 Kč" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/autodecline_countdown_icon"
+        android:layout_width="@dimen/offset_16dp"
+        android:layout_height="@dimen/offset_16dp"
+        android:src="@drawable/ic_hourglass"
+        app:layout_constraintBottom_toBottomOf="@+id/autodecline_countdown_text"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/price_barrier"
+        app:layout_constraintTop_toTopOf="@+id/autodecline_countdown_text"
+        app:layout_constraintEnd_toStartOf="@+id/autodecline_countdown_text"
+        />
+
+    <TextView
+        android:id="@+id/autodecline_countdown_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:08"
+        android:layout_marginStart="@dimen/offset_4dp"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/autodecline_countdown_icon"
+        app:layout_constraintTop_toBottomOf="@+id/text_item_delivery_price"
+        tools:text="0:08" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/price_barrier"
+        android:layout_width="@dimen/offset_0dp"
+        android:layout_height="match_parent"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown_icon" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/autodecline_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="autodecline_countdown_text,autodecline_countdown_icon" />
 
     <TextView
         android:id="@+id/text_item_delivery_customer"
@@ -89,7 +128,7 @@
         android:textAppearance="@style/TextAppearance.Medium"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_address"
-        app:layout_constraintEnd_toStartOf="@id/text_item_delivery_price"
+        app:layout_constraintEnd_toStartOf="@id/price_barrier"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guideline_name"
         app:layout_constraintTop_toTopOf="parent"
@@ -105,23 +144,23 @@
         android:layout_marginEnd="@dimen/offset_8dp"
         android:layout_marginRight="@dimen/offset_8dp"
         android:layout_marginBottom="@dimen/offset_8dp"
-        app:layout_goneMarginBottom="@dimen/offset_0dp"
         app:layout_constraintBottom_toTopOf="@id/info"
-        app:layout_constraintEnd_toStartOf="@id/text_item_delivery_price"
+        app:layout_constraintEnd_toStartOf="@id/price_barrier"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guideline_name"
         app:layout_constraintTop_toBottomOf="@id/text_item_delivery_customer"
+        app:layout_goneMarginBottom="@dimen/offset_0dp"
         tools:text="Evergreen Terrace 476, Springfield khgs kiu hfuvhfs uvhrh ihviu  vi rih iefbvi bhib ihfbv ifbvi biv biberivber ibfihv beiv br ibweri rir" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/red"
         android:gravity="center"
+        android:padding="@dimen/offset_4dp"
         android:text="@string/scheduling_delivery_info"
         android:textColor="@color/white"
-        android:padding="@dimen/offset_4dp"
         android:visibility="gone"
         app:drawableLeftCompat="@drawable/ic_baseline_info_24"
         app:drawableStartCompat="@drawable/ic_baseline_info_24"
