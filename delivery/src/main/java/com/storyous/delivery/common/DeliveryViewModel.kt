@@ -61,44 +61,29 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             }
         }
 
-    val acceptFunction = selectedOrderLive.switchMap { order ->
-        liveData {
-            emit(false to false)
-            order?.runCatching {
-                with(DeliveryConfiguration) {
-                    acceptVisible(this@runCatching) to acceptEnabled(this@runCatching)
-                }
-            }?.getOrNull().also {
-                emit(it)
-            }
+    private fun functionsToLive(
+        order: DeliveryOrder?,
+        block: suspend DeliveryConfiguration.(order: DeliveryOrder) ->
+        Pair<Boolean, Boolean>
+    ): LiveData<Pair<Boolean, Boolean>> {
+        return liveData {
+            order?.also {
+                runCatching { DeliveryConfiguration.block(it) }.onSuccess { emit(it) }
+            } ?: emit(false to false)
         }
+    }
+
+    val acceptFunction = selectedOrderLive.switchMap { order ->
+        functionsToLive(order) { acceptVisible(it) to acceptEnabled(it) }
     }
     val cancelFunction = selectedOrderLive.map {
         with(it?.state == DeliveryOrder.STATE_NEW) { this to this }
     }
     val dispatchFunction = selectedOrderLive.switchMap { order ->
-        liveData {
-            emit(false to false)
-            order?.runCatching {
-                with(DeliveryConfiguration) {
-                    dispatchVisible(this@runCatching) to dispatchEnabled(this@runCatching)
-                }
-            }?.getOrNull().also {
-                emit(it)
-            }
-        }
+        functionsToLive(order) { dispatchVisible(it) to dispatchEnabled(it) }
     }
     val printBillFunction = selectedOrderLive.switchMap { order ->
-        liveData {
-            emit(false to false)
-            order?.runCatching {
-                with(DeliveryConfiguration) {
-                    printBillVisible(this@runCatching) to printBillEnabled(this@runCatching)
-                }
-            }?.getOrNull().also {
-                emit(it)
-            }
-        }
+        functionsToLive(order) { printBillVisible(it) to printBillEnabled(it) }
     }
     val loadingOrderAccepting = MutableLiveData(false)
     val loadingOrderCancelling = MutableLiveData(false)
@@ -184,16 +169,14 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         }
     }
 
-    fun printBill(order: DeliveryOrder) {
-        launch {
-            printOrderBillState.value = Result.loading()
-            printOrderBillState.value = withContext(provider.IO) {
-                runCatching {
-                    DeliveryConfiguration.printBillBy(order.orderId)
-                }
-            }.onFailure { 
-                Timber.e(it)
-            }.toResult()
-        }
+    fun printBill(order: DeliveryOrder) = launch {
+        printOrderBillState.value = Result.loading()
+        printOrderBillState.value = withContext(provider.IO) {
+            runCatching {
+                DeliveryConfiguration.printBillBy(order.orderId)
+            }
+        }.onFailure {
+            Timber.e(it)
+        }.toResult()
     }
 }
