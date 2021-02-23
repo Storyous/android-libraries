@@ -67,9 +67,8 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         Pair<Boolean, Boolean>
     ): LiveData<Pair<Boolean, Boolean>> {
         return liveData {
-            order?.also {
-                runCatching { DeliveryConfiguration.block(it) }.onSuccess { emit(it) }
-            } ?: emit(false to false)
+            emit(false to false)
+            order?.runCatching { DeliveryConfiguration.block(this) }?.onSuccess { emit(it) }
         }
     }
 
