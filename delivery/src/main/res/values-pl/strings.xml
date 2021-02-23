@@ -23,6 +23,7 @@
     <string name="delivery_orders_declined">Odrzucone zamówienia</string>
     <string name="time_at">na %s</string>
     <string name="time_till">do %s</string>
+    <string name="print_delivery_order_bill">Wydrukować kopię</string>
     <string name="delivery_type_delivery">Dostawa</string>
     <string name="delivery_type_takeaway">Na wynos</string>
     <string name="delivery_type_dispatch">Odbiór kurierem</string>
@@ -54,4 +55,5 @@
     <string name="settings_integrated_dispatch">Połączenie z dowozem:</string>
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Wybierz czas przygotowania</string>
+    <string name="print_delivery_copy_failed">Wystąpił błąd podczas drukowania, proszę skorzystać z przeglądu rachunków, aby wydrukować duplikat.</string>
 </resources>

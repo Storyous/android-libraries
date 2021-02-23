@@ -28,20 +28,26 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getSelectedOrderLive().observe(this) { onOrderSelected(it) }
+        viewModel.selectedOrderLive.observe(this) { onOrderSelected(it) }
         viewModel.loadingOrderAccepting.observe(this) {
-            button_accept.showOverlay(it == true)
+            button_accept.showOverlay(it)
         }
         viewModel.loadingOrderCancelling.observe(this) {
-            button_cancel.showOverlay(it == true)
+            button_cancel.showOverlay(it)
         }
         viewModel.loadingOrderDispatching.observe(this) {
-            button_dispatch.showOverlay(it == true)
+            button_dispatch.showOverlay(it)
+        }
+        viewModel.printOrderBillState.observe(this) {
+            button_print_bill.showOverlay(it?.isLoading() == true)
+            if (it?.isError() == true) {
+                Toast.makeText(requireContext(), R.string.print_delivery_copy_failed, Toast.LENGTH_SHORT).show()
+            }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
         viewModel.acceptFunction.observe(this) {
-            button_accept.isVisible = it.first
-            button_accept.isEnabled = it.second
+            button_accept.isVisible = it?.first == true
+            button_accept.isEnabled = it?.second == true
         }
         viewModel.cancelFunction.observe(this) {
             button_cancel.isVisible = it.first
@@ -49,10 +55,14 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         }
         viewModel.dispatchFunction.observe(this) {
             val globallyOff = DeliveryConfiguration.globalDispatchDisabled.first
-            button_dispatch.isVisible = it.first
-            button_dispatch.isEnabled = it.second && !globallyOff
+            button_dispatch.isVisible = it?.first == true
+            button_dispatch.isEnabled = it?.second == true && !globallyOff
             warning.text = DeliveryConfiguration.globalDispatchDisabled.second
-            warning.isVisible = globallyOff && it.second && warning.text.isNotEmpty()
+            warning.isVisible = globallyOff && it?.second == true && warning.text.isNotEmpty()
+        }
+        viewModel.printBillFunction.observe(this) {
+            button_print_bill.isVisible = it?.first == true
+            button_print_bill.isEnabled = it?.second == true
         }
     }
 
@@ -73,7 +83,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
         button_accept.setOnClickListener {
             Timber.i("Confirm order")
-            viewModel.getSelectedOrderLive().value?.also { viewModel.acceptOrder(it) }
+            viewModel.selectedOrder?.also { viewModel.acceptOrder(it) }
                 ?: Toast.makeText(
                     context,
                     R.string.delivery_confirm_error_other,
@@ -86,12 +96,16 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         }
         button_dispatch.setOnClickListener {
             Timber.i("Dispatch order")
-            viewModel.getSelectedOrderLive().value?.also { viewModel.dispatchOrder(it) }
+            viewModel.selectedOrder?.also { viewModel.dispatchOrder(it) }
                 ?: Toast.makeText(
                     context,
                     R.string.delivery_dispatch_error_other,
                     Toast.LENGTH_SHORT
                 ).show()
+        }
+        button_print_bill.setOnClickListener {
+            Timber.i("Print order bill")
+            viewModel.selectedOrder?.also { viewModel.printBill(it) }
         }
         delivery_dates.adapter = timesAdapter
     }
@@ -125,9 +139,8 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             .setPositiveButton(R.string.confirm) { dialog, _ ->
                 val selectedPosition = (dialog as AlertDialog).listView.checkedItemPosition
                 if (selectedPosition >= 0) {
-                    val reason =
-                        resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
-                    viewModel.getSelectedOrder()?.let { viewModel.cancelOrder(it, reason) }
+                    val reason = resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
+                    viewModel.selectedOrder?.let { viewModel.cancelOrder(it, reason) }
                     Timber.i("Order cancelled with reason: $reason")
                     dialog.dismiss()
                 }

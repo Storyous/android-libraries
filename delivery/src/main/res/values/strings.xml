@@ -24,7 +24,8 @@
     <string name="delivery_orders_processed">Processed orders</string>
     <string name="delivery_order_items">Order items</string>
     <string name="cancel_delivery_order">Cancel order</string>
-    <string name="dispatch_delivery_order">Dispatch order</string>
+    <string name="dispatch_delivery_order">Dispatch order</string>  
+    <string name="print_delivery_order_bill">Print copy</string>
     <string name="accept_order">Accept order</string>
     <string name="delivery_orders_declined">Declined orders</string>
     <string name="time_at">at %s</string>
@@ -61,4 +62,5 @@
     <string name="settings_integrated_dispatch">Integrated dispatch:</string>
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Choose preparation time</string>
+    <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
 </resources>
