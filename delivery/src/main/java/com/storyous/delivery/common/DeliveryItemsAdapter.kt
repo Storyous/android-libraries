@@ -172,7 +172,7 @@ class DeliveryItemsAdapter(
                 timeTo.isVisible = it.second.isNotEmpty()
             }
             itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
-            autodeclineTimer = AutodeclineCountdown.init(deliveryOrder, autodeclineCountdown, autodeclineText)
+            autodeclineTimer = AutodeclineCountdown.newInstance(deliveryOrder, autodeclineCountdown, autodeclineText)
         }
 
         override fun recycle() {

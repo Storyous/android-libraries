@@ -17,7 +17,7 @@ class AutodeclineCountdown(
         const val TIME_UNIT = 60f
         const val SECOND_MILLIS = 1000L
 
-        fun init(deliveryOrder: DeliveryOrder, visibilityGroup: Group, countdownText: TextView): AutodeclineCountdown? {
+        fun newInstance(deliveryOrder: DeliveryOrder, visibilityGroup: Group, countdownText: TextView): AutodeclineCountdown? {
             val visible = deliveryOrder.state == DeliveryOrder.STATE_NEW &&
                 deliveryOrder.timing?.autoDeclineAfter != null &&
                 deliveryOrder.timing.autoDeclineAfter > TimestampUtil.getDate()
@@ -25,7 +25,7 @@ class AutodeclineCountdown(
             return if (visible) {
                 AutodeclineCountdown(
                     countdownText,
-                    TimestampUtil.getTimeAgo(deliveryOrder.timing!!.autoDeclineAfter!!.time)
+                    -TimestampUtil.getTimeAgo(deliveryOrder.timing!!.autoDeclineAfter!!.time)
                 ).apply { start() }
             } else {
                 null
