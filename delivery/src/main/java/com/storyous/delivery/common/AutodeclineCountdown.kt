@@ -6,10 +6,14 @@ import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.delivery.common.api.DeliveryOrder
-import kotlin.math.floor
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AutodeclineCountdown(
+    private val visibilityGroup: Group,
     private val textView: TextView,
+    private val formatResId: Int,
+    private val viewModel: DeliveryViewModel?,
     timeToDecline: Long
 ) : CountDownTimer(timeToDecline, SECOND_MILLIS) {
 
@@ -17,14 +21,27 @@ class AutodeclineCountdown(
         const val TIME_UNIT = 60f
         const val SECOND_MILLIS = 1000L
 
-        fun newInstance(deliveryOrder: DeliveryOrder, visibilityGroup: Group, countdownText: TextView): AutodeclineCountdown? {
+        fun newInstance(
+            deliveryOrder: DeliveryOrder,
+            visibilityGroup: Group,
+            countdownText: TextView,
+            formatResId: Int = 0,
+            viewModel: DeliveryViewModel? = null
+        ): AutodeclineCountdown? {
             val visible = deliveryOrder.state == DeliveryOrder.STATE_NEW &&
                 deliveryOrder.timing?.autoDeclineAfter != null &&
                 deliveryOrder.timing.autoDeclineAfter > TimestampUtil.getDate()
-            visibilityGroup.isVisible = visible
+            val declined = deliveryOrder.state == DeliveryOrder.STATE_NEW && !visible && formatResId > 0
+            visibilityGroup.isVisible = visible || declined
+            if (declined) {
+                countdownText.text = countdownText.context.getString(R.string.autodecline_declined)
+            }
             return if (visible) {
                 AutodeclineCountdown(
+                    visibilityGroup,
                     countdownText,
+                    formatResId,
+                    viewModel,
                     -TimestampUtil.getTimeAgo(deliveryOrder.timing!!.autoDeclineAfter!!.time)
                 ).apply { start() }
             } else {
@@ -34,29 +51,30 @@ class AutodeclineCountdown(
     }
 
     override fun onTick(millisUntilFinished: Long) {
-        textView.text = getRemainingTime(millisUntilFinished / SECOND_MILLIS)
+        val time = getRemainingTime(millisUntilFinished)
+        textView.text = if (formatResId > 0) {
+            textView.context.getString(formatResId, time)
+        } else {
+            time
+        }
     }
 
     override fun onFinish() {
-        textView.text = "--:--"
+        if (formatResId > 0) {
+            textView.text = textView.context.getString(R.string.autodecline_declined)
+        } else {
+            visibilityGroup.isVisible = false
+        }
+        viewModel?.selectedOrderId = viewModel?.selectedOrderId
     }
 
-    private fun getRemainingTime(secondsUntilFinished: Long): String {
-        val hours = floor(secondsUntilFinished / TIME_UNIT / TIME_UNIT).toInt()
-        val minutes = (floor(secondsUntilFinished / TIME_UNIT) - hours * TIME_UNIT).toInt()
-        val seconds = (secondsUntilFinished - hours * TIME_UNIT * TIME_UNIT - minutes * TIME_UNIT).toInt()
-        return if (hours > 0) {
-            textView.context.getString(
-                R.string.autodecline_hours,
-                hours.toString(),
-                minutes.toString()
-            )
-        } else {
-            textView.context.getString(
-                R.string.autodecline_minutes,
-                minutes.toString(),
-                seconds.toString().padStart(2, '0')
-            )
-        }
+    private fun getRemainingTime(millisUntilFinished: Long): String {
+        return SimpleDateFormat(
+            if (millisUntilFinished > TIME_UNIT * TIME_UNIT * SECOND_MILLIS) {
+                "H'h':mm'm'"
+            } else {
+                "m:ss"
+            },
+            Locale.US).format(millisUntilFinished)
     }
 }

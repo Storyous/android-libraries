@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import com.google.gson.GsonBuilder
+import com.storyous.commonutils.TimestampUtil
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.repositories.DeliveryRepository
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.Date
 
 object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var deliveryModel: DeliveryModel = DeliveryModel()
@@ -95,7 +97,8 @@ object DefaultOrderFunctions : DeliveryOrderFunctions {
     }
 
     override var acceptEnabled: suspend (DeliveryOrder) -> Boolean = {
-        it.state == DeliveryOrder.STATE_NEW
+        it.state == DeliveryOrder.STATE_NEW &&
+            it.timing?.autoDeclineAfter ?: Date(Long.MAX_VALUE) > TimestampUtil.getDate()
     }
 
     override var dispatchVisible: suspend (DeliveryOrder) -> Boolean = {

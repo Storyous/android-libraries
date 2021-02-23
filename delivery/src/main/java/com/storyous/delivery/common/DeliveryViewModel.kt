@@ -10,6 +10,7 @@ import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.Result
+import com.storyous.commonutils.TimestampUtil
 import com.storyous.commonutils.castOrNull
 import com.storyous.commonutils.provider
 import com.storyous.commonutils.toResult
@@ -20,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.Date
 
 @Suppress("TooManyFunctions")
 class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope() {
@@ -76,7 +78,10 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         functionsToLive(order) { acceptVisible(it) to acceptEnabled(it) }
     }
     val cancelFunction = selectedOrderLive.map {
-        with(it?.state == DeliveryOrder.STATE_NEW) { this to this }
+        with(it?.state == DeliveryOrder.STATE_NEW) {
+            this to (this &&
+                it?.timing?.autoDeclineAfter ?: Date(Long.MAX_VALUE) > TimestampUtil.getDate())
+        }
     }
     val dispatchFunction = selectedOrderLive.switchMap { order ->
         functionsToLive(order) { dispatchVisible(it) to dispatchEnabled(it) }

@@ -170,7 +170,13 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             updateDates(it)
             info.isVisible = order.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
             autodeclineTimer?.cancel()
-            autodeclineTimer = AutodeclineCountdown.newInstance(order, autodecline_countdown, autodecline_countdown_text)
+            autodeclineTimer = AutodeclineCountdown.newInstance(
+                order,
+                autodecline_countdown,
+                autodecline_countdown_info,
+                R.string.autodecline_info,
+                viewModel
+            )
         } ?: repaintNoOrderSelected()
     }
 
