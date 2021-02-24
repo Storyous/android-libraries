@@ -56,4 +56,6 @@
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Zadejte dobu přípravy objednávky</string>
     <string name="print_delivery_copy_failed">Při tisknutí nastala chyba, zkuste prosím vytisknout kopii z přehledu účtenek.</string>
+    <string name="autodecline_info">Přijměte objednávku nejpozději za: %s</string>
+    <string name="autodecline_declined">Vypršel čas pro přijetí objednávky.</string>
 </resources>

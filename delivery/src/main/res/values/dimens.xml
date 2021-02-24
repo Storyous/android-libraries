@@ -21,4 +21,5 @@
     <dimen name="settings_height_collapsed">30dp</dimen>
     <dimen name="settings_height_expanded">200dp</dimen>
     <dimen name="time_picker_size">250dp</dimen>
+    <dimen name="elevation_toolbar">4dp</dimen>
 </resources>

@@ -11,6 +11,18 @@
     tools:context="com.storyous.delivery.common.DeliveryDetailFragment">
 
     <TextView
+        android:id="@+id/autodecline_countdown"
+        style="@style/DeliveryItemDetailCountdown"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/autodecline_info"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
         android:id="@+id/deliver_items_header"
         style="@style/DeliveryItemDetailHeader"
         android:layout_width="0dp"
@@ -22,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autodecline_countdown"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -44,10 +56,10 @@
         android:id="@+id/order_detail_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/order_items"
-        app:layout_constraintBottom_toTopOf="@id/buttonBarrier">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_items">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -196,13 +208,13 @@
         android:id="@+id/info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:background="@color/red"
         android:gravity="center"
+        android:padding="@dimen/offset_4dp"
         android:text="@string/scheduling_delivery_info"
         android:textColor="@color/white"
-        android:padding="@dimen/offset_4dp"
         android:visibility="gone"
-        android:layout_marginBottom="15dp"
         app:drawableLeftCompat="@drawable/ic_baseline_info_24"
         app:drawableStartCompat="@drawable/ic_baseline_info_24"
         app:layout_constraintBottom_toTopOf="@id/warning"
@@ -214,19 +226,19 @@
         android:id="@+id/warning"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:background="@color/yellow"
         android:gravity="center"
-        android:textColor="@color/white"
         android:padding="@dimen/offset_4dp"
+        android:textColor="@color/white"
         android:visibility="gone"
-        android:layout_marginBottom="15dp"
         app:drawableLeftCompat="@drawable/ic_warning_24"
         app:drawableStartCompat="@drawable/ic_warning_24"
         app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        tools:visibility="visible"
-        tools:text="Order dispatching is available only on master." />
+        tools:text="Order dispatching is available only on master."
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/buttonBarrier"
@@ -260,7 +272,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel"
+        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel,autodecline_countdown"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

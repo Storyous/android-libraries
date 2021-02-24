@@ -56,4 +56,6 @@
     <string name="settings_minutes">%d min.</string>
     <string name="settings_choose_preparation_time">Elige el tiempo de preparación</string>
     <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
+    <string name="autodecline_info">Si no se acepta, el pedido será automáticamente rechazado en: %s</string>
+    <string name="autodecline_declined">Se ha acabado el tiempo para aceptar el pedido.</string>
 </resources>
