@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
@@ -70,7 +69,6 @@ class DeliveryActivity : AppCompatActivity() {
             settingsFragment.toggle()
         }
         fragment_delivery_settings.isVisible = DeliveryConfiguration.showSettingsBar
-        overlappingDetailFragment?.view?.let { ViewCompat.setTranslationZ(it, 2f) } // put detail to front
     }
 
     override fun onBackPressed() {
