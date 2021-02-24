@@ -173,10 +173,10 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             autodeclineTimer = AutodeclineCountdown.newInstance(
                 order,
                 autodecline_countdown,
-                autodecline_countdown_info,
-                R.string.autodecline_info,
-                viewModel
-            )
+                R.string.autodecline_info
+            ) {
+                viewModel.refreshFunctions()
+            }
         } ?: repaintNoOrderSelected()
     }
 

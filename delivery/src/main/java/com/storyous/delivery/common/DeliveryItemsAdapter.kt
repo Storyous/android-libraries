@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.adapters.Header
@@ -150,8 +149,7 @@ class DeliveryItemsAdapter(
         val address: TextView = itemView.text_item_delivery_address
         val price: TextView = itemView.text_item_delivery_price
         val deliveryType: TextView = itemView.text_item_delivery_type
-        val autodeclineCountdown: Group = itemView.autodecline_countdown
-        val autodeclineText: TextView = itemView.autodecline_countdown_text
+        val autodeclineCountdown: TextView = itemView.autodecline_countdown
         var autodeclineTimer: CountDownTimer? = null
 
         override fun bind(listItem: ListItem<DeliveryOrder>) {
@@ -172,7 +170,7 @@ class DeliveryItemsAdapter(
                 timeTo.isVisible = it.second.isNotEmpty()
             }
             itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
-            autodeclineTimer = AutodeclineCountdown.newInstance(deliveryOrder, autodeclineCountdown, autodeclineText)
+            autodeclineTimer = AutodeclineCountdown.newInstance(deliveryOrder, autodeclineCountdown)
         }
 
         override fun recycle() {

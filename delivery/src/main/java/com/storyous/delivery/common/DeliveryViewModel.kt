@@ -183,4 +183,8 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             Timber.e(it)
         }.toResult()
     }
+
+    fun refreshFunctions() {
+        selectedOrderId = selectedOrderId
+    }
 }

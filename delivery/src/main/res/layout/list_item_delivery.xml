@@ -73,47 +73,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/autodecline_countdown_text"
+        app:layout_constraintBottom_toTopOf="@id/autodecline_countdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/price_barrier"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="6.00 Kč" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/autodecline_countdown_icon"
-        android:layout_width="@dimen/offset_16dp"
-        android:layout_height="@dimen/offset_16dp"
-        android:src="@drawable/ic_hourglass"
-        app:layout_constraintBottom_toBottomOf="@+id/autodecline_countdown_text"
-        app:layout_constraintEnd_toStartOf="@+id/autodecline_countdown_text"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/price_barrier"
-        app:layout_constraintTop_toTopOf="@+id/autodecline_countdown_text" />
-
     <TextView
-        android:id="@+id/autodecline_countdown_text"
+        android:id="@+id/autodecline_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/offset_4dp"
+        android:drawableStart="@drawable/ic_hourglass"
         android:textAppearance="@style/TextAppearance.Medium"
         android:textColor="@color/red"
+        app:drawableStartCompat="@drawable/ic_hourglass"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/autodecline_countdown_icon"
+        app:layout_constraintStart_toStartOf="@+id/price_barrier"
         app:layout_constraintTop_toBottomOf="@+id/text_item_delivery_price"
-        tools:text="0:08" />
+        app:layout_constraintBottom_toTopOf="@id/info"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="100h:08m" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/price_barrier"
         android:layout_width="@dimen/offset_0dp"
         android:layout_height="match_parent"
         app:barrierDirection="start"
-        app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown_icon" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/autodecline_countdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="autodecline_countdown_text,autodecline_countdown_icon" />
+        app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown" />
 
     <TextView
         android:id="@+id/text_item_delivery_customer"

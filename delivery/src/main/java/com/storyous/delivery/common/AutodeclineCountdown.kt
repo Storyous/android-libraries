@@ -2,79 +2,73 @@ package com.storyous.delivery.common
 
 import android.os.CountDownTimer
 import android.widget.TextView
-import androidx.constraintlayout.widget.Group
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.delivery.common.api.DeliveryOrder
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class AutodeclineCountdown(
-    private val visibilityGroup: Group,
+    timeToDecline: Long,
     private val textView: TextView,
-    private val formatResId: Int,
-    private val viewModel: DeliveryViewModel?,
-    timeToDecline: Long
-) : CountDownTimer(timeToDecline, SECOND_MILLIS) {
+    @StringRes private val formatResId: Int?,
+    private val onTimesUp: () -> Unit = {}
+) : CountDownTimer(timeToDecline, TimeUnit.SECONDS.toMillis(1)) {
 
     companion object {
-        const val TIME_UNIT = 60f
-        const val SECOND_MILLIS = 1000L
+        private val hoursFormat = SimpleDateFormat("H'h':mm'm'", Locale.US)
+        private val minutesFormat = SimpleDateFormat("m:ss", Locale.US)
 
         fun newInstance(
             deliveryOrder: DeliveryOrder,
-            visibilityGroup: Group,
             countdownText: TextView,
-            formatResId: Int = 0,
-            viewModel: DeliveryViewModel? = null
+            @StringRes formatResId: Int? = null,
+            onTimesUp: () -> Unit = {}
         ): AutodeclineCountdown? {
-            val visible = deliveryOrder.state == DeliveryOrder.STATE_NEW &&
-                deliveryOrder.timing?.autoDeclineAfter != null &&
-                deliveryOrder.timing.autoDeclineAfter > TimestampUtil.getDate()
-            val declined = deliveryOrder.state == DeliveryOrder.STATE_NEW && !visible && formatResId > 0
-            visibilityGroup.isVisible = visible || declined
-            if (declined) {
-                countdownText.text = countdownText.context.getString(R.string.autodecline_declined)
-            }
-            return if (visible) {
+
+            val millisToAutoDecline = deliveryOrder.timing?.autoDeclineAfter?.let {
+                it.time - TimestampUtil.getDate().time
+            } ?: 0L
+
+            countdownText.isVisible = deliveryOrder.state == DeliveryOrder.STATE_NEW
+
+            return if (millisToAutoDecline <= 0L) {
+                countdownText.setText(R.string.autodecline_declined)
+                null
+            } else {
                 AutodeclineCountdown(
-                    visibilityGroup,
+                    millisToAutoDecline,
                     countdownText,
                     formatResId,
-                    viewModel,
-                    -TimestampUtil.getTimeAgo(deliveryOrder.timing!!.autoDeclineAfter!!.time)
+                    onTimesUp
                 ).apply { start() }
-            } else {
-                null
             }
         }
     }
 
     override fun onTick(millisUntilFinished: Long) {
         val time = getRemainingTime(millisUntilFinished)
-        textView.text = if (formatResId > 0) {
-            textView.context.getString(formatResId, time)
-        } else {
-            time
+        with(textView) {
+            text = formatResId?.let { context.getString(it, time) } ?: time
+            isVisible = true
         }
     }
 
     override fun onFinish() {
-        if (formatResId > 0) {
-            textView.text = textView.context.getString(R.string.autodecline_declined)
-        } else {
-            visibilityGroup.isVisible = false
+        with(textView) {
+            setText(R.string.autodecline_declined)
+            isVisible = formatResId != null
         }
-        viewModel?.selectedOrderId = viewModel?.selectedOrderId
+        onTimesUp()
     }
 
     private fun getRemainingTime(millisUntilFinished: Long): String {
-        return SimpleDateFormat(
-            if (millisUntilFinished > TIME_UNIT * TIME_UNIT * SECOND_MILLIS) {
-                "H'h':mm'm'"
-            } else {
-                "m:ss"
-            },
-            Locale.US).format(millisUntilFinished)
+        return if (TimeUnit.MILLISECONDS.toHours(millisUntilFinished) > 1) {
+            hoursFormat
+        } else {
+            minutesFormat
+        }.format(millisUntilFinished)
     }
 }
