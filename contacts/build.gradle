@@ -40,14 +40,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Firestore
     implementation 'com.google.firebase:firebase-firestore-ktx:22.0.0'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_play_services_version"
 
     // JWT
     testImplementation 'com.auth0:java-jwt:3.10.2'

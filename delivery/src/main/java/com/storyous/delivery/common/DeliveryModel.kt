@@ -67,7 +67,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
 
     fun loadOrders(): Job {
         if (loadingOrdersJob?.isActive != true) {
-            loadingOrdersJob = launch(provider.Main) {
+            loadingOrdersJob = launch {
                 val (placeId, merchantId, autoConfirmEnabled) = DeliveryConfiguration.placeInfo.also {
                     if (it == null) Timber.w("Delivery is not configured to load new orders")
                 } ?: return@launch
