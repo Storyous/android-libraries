@@ -28,13 +28,14 @@ class AutodeclineCountdown(
             onTimesUp: () -> Unit = {}
         ): AutodeclineCountdown? {
 
+            val countdownEnabled = deliveryOrder.state == DeliveryOrder.STATE_NEW
             val millisToAutoDecline = deliveryOrder.timing?.autoDeclineAfter?.let {
                 it.time - TimestampUtil.getDate().time
             } ?: 0L
 
-            countdownText.isVisible = deliveryOrder.state == DeliveryOrder.STATE_NEW
+            countdownText.isVisible = countdownEnabled
 
-            return if (millisToAutoDecline <= 0L) {
+            return if (millisToAutoDecline <= 0L || !countdownEnabled) {
                 countdownText.setText(R.string.autodecline_declined)
                 null
             } else {
