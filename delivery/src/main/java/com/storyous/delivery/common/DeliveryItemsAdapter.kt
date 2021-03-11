@@ -170,6 +170,8 @@ class DeliveryItemsAdapter(
                 timeTo.isVisible = it.second.isNotEmpty()
             }
             itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+
+            autodeclineTimer?.cancel()
             autodeclineTimer = AutodeclineCountdown.newInstance(deliveryOrder, autodeclineCountdown)
         }
 
