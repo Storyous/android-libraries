@@ -35,28 +35,31 @@
     <TextView
         android:id="@+id/text_item_delivery_time_from"
         style="@style/TextAppearance.Medium"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/offset_8dp"
         android:layout_marginEnd="@dimen/offset_8dp"
         android:layout_marginRight="@dimen/offset_8dp"
+        android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/red"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_to"
         app:layout_constraintEnd_toStartOf="@id/guideline_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_item_delivery_type"
-        tools:text="od 2:59" />
+        tools:text="od 22:59" />
 
     <TextView
         android:id="@+id/text_item_delivery_time_to"
         style="@style/TextAppearance.Medium"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/offset_8dp"
         android:layout_marginRight="@dimen/offset_8dp"
         android:layout_marginBottom="@dimen/offset_8dp"
+        android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/red"
@@ -85,20 +88,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_hourglass"
+        android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Medium"
         android:textColor="@color/red"
         app:drawableStartCompat="@drawable/ic_hourglass"
+        app:layout_constraintBottom_toTopOf="@id/info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/price_barrier"
         app:layout_constraintTop_toBottomOf="@+id/text_item_delivery_price"
-        app:layout_constraintBottom_toTopOf="@id/info"
-        app:layout_constraintVertical_bias="1.0"
         tools:text="100h:08m" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/price_barrier"
         android:layout_width="@dimen/offset_0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:barrierDirection="start"
         app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown" />
 
@@ -114,7 +117,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_address"
         app:layout_constraintEnd_toStartOf="@id/price_barrier"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guideline_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -131,11 +133,10 @@
         android:layout_marginBottom="@dimen/offset_8dp"
         app:layout_constraintBottom_toTopOf="@id/info"
         app:layout_constraintEnd_toStartOf="@id/price_barrier"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guideline_name"
         app:layout_constraintTop_toBottomOf="@id/text_item_delivery_customer"
         app:layout_goneMarginBottom="@dimen/offset_0dp"
-        tools:text="Evergreen Terrace 476, Springfield khgs kiu hfuvhfs uvhrh ihviu  vi rih iefbvi bhib ihfbv ifbvi biv biberivber ibfihv beiv br ibweri rir" />
+        tools:text="Evergreen Terrace 476, Springfield khgs kdc d kd vjkwd vkvkw vkw kwkn rknvkw vcknw vkwriu hfuvhfs uvhrh ihviu  vi rih iefbvi bhib ihfbv ifbvi biv biberivber ibfihv beiv br ibweri rir" />
 
     <TextView
         android:id="@+id/info"
