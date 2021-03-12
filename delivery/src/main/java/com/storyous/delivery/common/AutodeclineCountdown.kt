@@ -36,7 +36,10 @@ class AutodeclineCountdown(
             countdownText.isVisible = countdownEnabled
 
             return if (millisToAutoDecline <= 0L || !countdownEnabled) {
-                countdownText.setText(R.string.autodecline_declined)
+                with(countdownText) {
+                    setText(R.string.autodecline_declined)
+                    isVisible = formatResId != null
+                }
                 null
             } else {
                 AutodeclineCountdown(
