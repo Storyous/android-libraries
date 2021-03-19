@@ -1,6 +1,7 @@
 package com.storyous.delivery.common
 
 import android.content.Context
+import android.view.ViewStub
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
 import com.google.gson.GsonBuilder
@@ -18,6 +19,8 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var placeInfo: PlaceInfo? = null
     var formatter: Formatter = DefaultFormatter()
     var onActivityToolbarCreate: (Toolbar, FragmentManager) -> Unit = { _, _ -> }
+    var onCreateActionButton: (ViewStub, FragmentManager) -> Unit = { _, _ -> }
+    var onUnauthorizedError: () -> Unit = {}
     var useOrderTimingField = true
     var globalDispatchDisabled = false to ""
     var showSettingsBar = false
