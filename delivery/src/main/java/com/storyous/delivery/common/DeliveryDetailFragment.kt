@@ -30,7 +30,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.selectedOrderLive.observe(this) { onOrderSelected(it) }
+        viewModel.selectedOrderLive.observe(this, this::onOrderSelected)
         viewModel.loadingOrderAccepting.observe(this) {
             button_accept.showOverlay(it)
         }
