@@ -2,14 +2,13 @@ package com.storyous.delivery.common
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.storyous.commonutils.castOrNull
 import com.storyous.delivery.common.api.DeliveryOrder
 import kotlinx.android.synthetic.main.fragment_delivery.*
 
@@ -46,6 +45,8 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
 
         viewModel.selectedOrderId = arguments?.getString(ARG_ORDER_ID)
         viewModel.loadOrders()
+
+        requireActivity().onBackPressedDispatcher.addCallback { onBackPressed() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,16 +60,10 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
         DeliveryConfiguration.onCreateActionButton(fragment_delivery_button, childFragmentManager)
     }
 
-    fun onBackPressed() {
-        if (overlappingDetailFragment?.isVisible != true) {
-            return
+    private fun onBackPressed() {
+        if (overlappingDetailFragment?.isVisible == true) {
+            viewModel.deselectOrder()
         }
-
-        viewModel.deselectOrder()
-    }
-
-    fun deselectOrder() {
-        viewModel.deselectOrder()
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
