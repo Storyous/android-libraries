@@ -46,7 +46,7 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
         viewModel.selectedOrderId = arguments?.getString(ARG_ORDER_ID)
         viewModel.loadOrders()
 
-        requireActivity().onBackPressedDispatcher.addCallback { onBackPressed() }
+        requireActivity().onBackPressedDispatcher.addCallback(this) { onBackPressed() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
