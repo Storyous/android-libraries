@@ -32,7 +32,7 @@
     <ViewStub
         android:id="@+id/fragment_delivery_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/Button.Primary.Contextual.Light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fragment_delivery_detail"
         app:layout_constraintStart_toStartOf="parent"
