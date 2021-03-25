@@ -13,7 +13,7 @@
         android:text="@string/cancel_delivery_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_accept"
-        app:layout_constraintStart_toEndOf="@+id/centerGuideline" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.storyous.commonutils.widgets.LoadingButton
         android:id="@+id/button_accept"
@@ -34,7 +34,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 
     <com.storyous.commonutils.widgets.LoadingButton
@@ -45,6 +45,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/centerGuideline"
+        app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible" />
 </merge>
