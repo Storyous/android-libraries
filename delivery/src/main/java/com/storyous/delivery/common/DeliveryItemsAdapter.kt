@@ -180,7 +180,7 @@ class DeliveryItemsAdapter(
         }
 
         private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {
-            return if (!DeliveryConfiguration.useOrderTimingField || order.timing == null) {
+            return if (order.timing == null) {
                 order.getLegacyDeliveryTime(provider) to ""
             } else if (order.timing.showTime() == DeliveryTiming.SHOW_ASAP) {
                 provider.getString(R.string.delivery_asap) to ""

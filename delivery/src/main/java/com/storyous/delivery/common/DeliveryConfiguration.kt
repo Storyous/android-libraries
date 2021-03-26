@@ -21,7 +21,6 @@ object DeliveryConfiguration : DeliveryOrderFunctions by DefaultOrderFunctions {
     var onActivityToolbarCreate: (Toolbar, FragmentManager) -> Unit = { _, _ -> }
     var onCreateActionButton: (ViewStub, FragmentManager) -> Unit = { _, _ -> }
     var onUnauthorizedError: () -> Unit = {}
-    var useOrderTimingField = true
     var globalDispatchDisabled = false to ""
     var showSettingsBar = false
     var gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()

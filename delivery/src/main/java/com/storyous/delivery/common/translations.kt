@@ -28,9 +28,7 @@ fun DeliveryOrder.getLegacyDeliveryTime(provider: StringResProvider): String {
 }
 
 fun DeliveryOrder.getDeliveryTypeTranslation(provider: StringResProvider): String {
-    return if (!DeliveryConfiguration.useOrderTimingField) {
-        return getLegacyDeliveryTypeTranslation(provider)
-    } else when (timing?.showTime()) {
+    return when (timing?.showTime()) {
         DeliveryTiming.SHOW_ESTIMATED_PICKUP, DeliveryTiming.SHOW_REQUESTED_PICKUP ->
             getLegacyDeliveryTypeTranslation(provider)
         DeliveryTiming.SHOW_ESTIMATED_DELIVERY, DeliveryTiming.SHOW_REQUESTED_DELIVERY ->
