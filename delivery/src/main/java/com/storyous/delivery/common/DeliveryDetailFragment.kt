@@ -183,7 +183,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     private fun updateDates(order: DeliveryOrder) {
         val times = mutableListOf<Pair<String, String>>()
         val provider = ContextStringResProvider(requireContext().applicationContext)
-        if (DeliveryConfiguration.useOrderTimingField && order.timing != null) {
+        if (order.timing != null) {
             times.addAll(order.getTimingTranslations(provider))
         } else {
             times.add(order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
