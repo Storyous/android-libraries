@@ -79,6 +79,74 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="delivery_payment_type_header,delivery_payment_type" />
 
+    <TextView
+        android:id="@+id/delivery_tips_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delivery_tips_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_barrier" />
+
+    <TextView
+        android:id="@+id/delivery_tips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toEndOf="@+id/delivery_tips_header"
+        app:layout_constraintTop_toTopOf="@id/delivery_tips_header"
+        tools:text="10 Kč" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/delivery_tips_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="delivery_tips_header,delivery_tips" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/delivery_tips_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="delivery_tips_header,delivery_tips" />
+
+    <TextView
+        android:id="@+id/delivery_discount_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delivery_discount_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_tips_barrier" />
+
+    <TextView
+        android:id="@+id/delivery_discount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toEndOf="@+id/delivery_discount_header"
+        app:layout_constraintTop_toTopOf="@id/delivery_discount_header"
+        tools:text="15 Kč" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/delivery_discount_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="delivery_discount_header,delivery_discount" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/delivery_discount_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="delivery_discount_header,delivery_discount" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/delivery_dates"
         android:layout_width="0dp"
@@ -88,7 +156,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
         app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_barrier"
+        app:layout_constraintTop_toBottomOf="@id/delivery_discount_barrier"
         tools:itemCount="3"
         tools:listitem="@layout/delivery_detail_date" />
 

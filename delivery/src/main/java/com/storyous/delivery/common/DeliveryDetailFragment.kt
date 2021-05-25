@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
 import kotlinx.android.synthetic.main.layout_delivery_detail_meta_data.*
 import timber.log.Timber
+import java.math.BigDecimal
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
@@ -161,26 +162,42 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        order?.let {
+        order?.apply {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
 
-            itemsAdapter.items = order.items
-            updateCustomerInfo(it.customer, it.desk)
-            updatePaymentType(it.alreadyPaid)
-            updateOrderNote(it.note)
-            updateOrderNumber(it.provider, it.orderId)
-            updateDates(it)
-            info.isVisible = order.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+            itemsAdapter.items = items
+            updateCustomerInfo(customer, desk)
+            updatePaymentType(alreadyPaid)
+            updateDiscount(discountWithVat?.takeIf { it > BigDecimal.ZERO })
+            updateTips(tipWithVat?.takeIf { it > BigDecimal.ZERO })
+            updateOrderNote(note)
+            updateOrderNumber(provider, orderId)
+            updateDates(this)
+            info.isVisible = state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
             autodeclineTimer?.cancel()
             autodeclineTimer = AutodeclineCountdown.newInstance(
-                order,
+                this,
                 autodecline_countdown,
                 R.string.autodecline_info
             ) {
                 viewModel.refreshFunctions()
             }
         } ?: repaintNoOrderSelected()
+    }
+
+    private fun updateTips(tipWithVat: BigDecimal?) {
+        delivery_tips_group.isVisible = tipWithVat != null
+        tipWithVat?.let {
+            delivery_tips.text = DeliveryConfiguration.formatter.formatPrice(it)
+        }
+    }
+
+    private fun updateDiscount(discountWithVat: BigDecimal?) {
+        delivery_discount_group.isVisible = discountWithVat != null
+        discountWithVat?.let {
+            delivery_discount.text = DeliveryConfiguration.formatter.formatPrice(it)
+        }
     }
 
     private fun updateDates(order: DeliveryOrder) {

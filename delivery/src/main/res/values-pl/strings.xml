@@ -58,4 +58,6 @@
     <string name="print_delivery_copy_failed">Wystąpił błąd podczas drukowania, proszę skorzystać z przeglądu rachunków, aby wydrukować duplikat.</string>
     <string name="autodecline_info">W przypadku braku akceptacji, zamówienie zostanie automatycznie odrzucone w: %s</string>
     <string name="autodecline_declined">Czas na przyjęcie zamówienia upłynął.</string>
+    <string name="delivery_tips_header">Tips:</string>
+    <string name="delivery_discount_header">Discount:</string>
 </resources>
