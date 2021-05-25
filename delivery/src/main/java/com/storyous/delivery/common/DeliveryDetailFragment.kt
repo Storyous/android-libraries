@@ -10,13 +10,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
+import kotlinx.android.synthetic.main.layout_delivery_detail_meta_data.*
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
@@ -43,7 +43,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         viewModel.printOrderBillState.observe(this) {
             button_print_bill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
-                Toast.makeText(requireContext(), R.string.print_delivery_copy_failed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    R.string.print_delivery_copy_failed,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
@@ -72,12 +76,10 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         super.onViewCreated(view, savedInstanceState)
 
         order_items.adapter = itemsAdapter
-        val linearLayoutManager = LinearLayoutManager(view.context)
-        order_items.layoutManager = linearLayoutManager
         order_items.addItemDecoration(
             DividerItemDecoration(
                 view.context,
-                linearLayoutManager.orientation
+                DividerItemDecoration.VERTICAL
             )
         )
         noDetail.visibility = View.VISIBLE
@@ -146,7 +148,8 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             .setPositiveButton(R.string.confirm) { dialog, _ ->
                 val selectedPosition = (dialog as AlertDialog).listView.checkedItemPosition
                 if (selectedPosition >= 0) {
-                    val reason = resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
+                    val reason =
+                        resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
                     viewModel.selectedOrder?.let { viewModel.cancelOrder(it, reason) }
                     Timber.i("Order cancelled with reason: $reason")
                     dialog.dismiss()
@@ -186,7 +189,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         if (order.timing != null) {
             times.addAll(order.getTimingTranslations(provider))
         } else {
-            times.add(order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
+            times.add(
+                order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(
+                    provider
+                )
+            )
         }
         timesAdapter.items = times
     }

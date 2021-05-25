@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/delivery_detail_meta_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="120dp">
+
+    <TextView
+        android:id="@+id/customer_detail_header"
+        style="@style/DeliveryItemDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_detail_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintBottom_toTopOf="@id/customer_detail_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/customer_detail_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/customer_detail_address"
+        app:layout_constraintEnd_toStartOf="@+id/customer_detail_phone"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_header"
+        tools:text="Marian Kadlec" />
+
+    <TextView
+        android:id="@+id/customer_detail_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toTopOf="@id/customer_detail_name"
+        tools:text="+420 123 456 789" />
+
+    <TextView
+        android:id="@+id/customer_detail_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_name"
+        tools:text="Rohanské nábřeží 330, Praha 8" />
+
+    <TextView
+        android:id="@+id/delivery_payment_type_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/delivery_payment_type_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/customer_detail_address" />
+
+    <TextView
+        android:id="@+id/delivery_payment_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toEndOf="@+id/delivery_payment_type_header"
+        app:layout_constraintTop_toTopOf="@id/delivery_payment_type_header"
+        tools:text="already paid kjhjds i ivubvbisbfv hks bvbsfv bvhbb sfv" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/delivery_payment_type_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="delivery_payment_type_header,delivery_payment_type" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/delivery_dates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_barrier"
+        tools:itemCount="3"
+        tools:listitem="@layout/delivery_detail_date" />
+
+    <TextView
+        android:id="@+id/order_note_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/order_note_header"
+        android:textAppearance="@style/TextAppearance.Medium"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/delivery_dates" />
+
+    <TextView
+        android:id="@+id/order_note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/order_note_header"
+        tools:text="Rohlík namazat nutellou, prosímh kshkjvsh vjsjiv sbvhsb kbvskbv dskhbvkbf bsjbv shfbvsbvjkhsbkjhv bskhvb" />
+
+    <TextView
+        android:id="@+id/order_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:textAppearance="@style/TextAppearance.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
+        app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
+        app:layout_constraintTop_toBottomOf="@id/order_note"
+        tools:text="Objednávka z Dáme jídlo č. 12345" />
+</androidx.constraintlayout.widget.ConstraintLayout>

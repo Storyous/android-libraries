@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:paddingBottom="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/itemListGuideline"
         app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
@@ -61,146 +62,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/order_items">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            layout="@layout/layout_delivery_detail_meta_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="90dp">
-
-            <TextView
-                android:id="@+id/customer_detail_header"
-                style="@style/DeliveryItemDetailHeader"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/customer_detail_header"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintBottom_toTopOf="@id/customer_detail_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/customer_detail_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Medium"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/customer_detail_address"
-                app:layout_constraintEnd_toStartOf="@+id/customer_detail_phone"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/customer_detail_header"
-                tools:text="Marian Kadlec" />
-
-            <TextView
-                android:id="@+id/customer_detail_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toEndOf="@id/customer_detail_name"
-                app:layout_constraintTop_toTopOf="@id/customer_detail_name"
-                tools:text="+420 123 456 789" />
-
-            <TextView
-                android:id="@+id/customer_detail_address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintBottom_toTopOf="@id/delivery_payment_type_header"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/customer_detail_name"
-                app:layout_constraintVertical_bias="100.0"
-                tools:text="Rohanské nábřeží 330, Praha 8" />
-
-            <TextView
-                android:id="@+id/delivery_payment_type_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Medium"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/delivery_payment_type"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/customer_detail_address"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Payment type:" />
-
-            <TextView
-                android:id="@+id/delivery_payment_type"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintBottom_toTopOf="@id/delivery_dates"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/delivery_payment_type_header"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="already paid" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/delivery_dates"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/order_note_header"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/delivery_payment_type"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:itemCount="1"
-                tools:listitem="@layout/delivery_detail_date" />
-
-            <TextView
-                android:id="@+id/order_note_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/order_note_header"
-                android:textAppearance="@style/TextAppearance.Medium"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/order_note"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/delivery_dates"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintVertical_chainStyle="packed" />
-
-            <TextView
-                android:id="@+id/order_note"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintBottom_toTopOf="@id/order_number"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/order_note_header"
-                app:layout_constraintVertical_bias="100.0"
-                tools:text="Rohlík namazat nutellou, prosím" />
-
-            <TextView
-                android:id="@+id/order_number"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:textAppearance="@style/TextAppearance.Medium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/customer_detail_header"
-                app:layout_constraintStart_toStartOf="@+id/customer_detail_header"
-                app:layout_constraintTop_toBottomOf="@id/order_note"
-                app:layout_constraintVertical_bias="100.0"
-                tools:text="Objednávka z Dáme jídlo č. 12345" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content" />
 
     </androidx.core.widget.NestedScrollView>
 
@@ -245,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch" />
+        app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch,button_print_bill" />
 
     <include layout="@layout/delivery_detail_buttons" />
 
