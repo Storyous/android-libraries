@@ -58,4 +58,6 @@
     <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
     <string name="autodecline_info">Si no se acepta, el pedido será automáticamente rechazado en: %s</string>
     <string name="autodecline_declined">Se ha acabado el tiempo para aceptar el pedido.</string>
+    <string name="delivery_tips_header">Tips:</string>
+    <string name="delivery_discount_header">Discount:</string>
 </resources>

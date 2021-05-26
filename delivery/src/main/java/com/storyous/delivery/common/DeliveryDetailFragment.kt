@@ -10,14 +10,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import kotlinx.android.synthetic.main.delivery_detail_buttons.*
 import kotlinx.android.synthetic.main.fragment_delivery_detail.*
+import kotlinx.android.synthetic.main.layout_delivery_detail_meta_data.*
 import timber.log.Timber
+import java.math.BigDecimal
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
@@ -43,7 +44,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         viewModel.printOrderBillState.observe(this) {
             button_print_bill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
-                Toast.makeText(requireContext(), R.string.print_delivery_copy_failed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    R.string.print_delivery_copy_failed,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
@@ -72,12 +77,10 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         super.onViewCreated(view, savedInstanceState)
 
         order_items.adapter = itemsAdapter
-        val linearLayoutManager = LinearLayoutManager(view.context)
-        order_items.layoutManager = linearLayoutManager
         order_items.addItemDecoration(
             DividerItemDecoration(
                 view.context,
-                linearLayoutManager.orientation
+                DividerItemDecoration.VERTICAL
             )
         )
         noDetail.visibility = View.VISIBLE
@@ -146,7 +149,8 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             .setPositiveButton(R.string.confirm) { dialog, _ ->
                 val selectedPosition = (dialog as AlertDialog).listView.checkedItemPosition
                 if (selectedPosition >= 0) {
-                    val reason = resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
+                    val reason =
+                        resources.getStringArray(R.array.delivery_cancel_reasons)[selectedPosition]
                     viewModel.selectedOrder?.let { viewModel.cancelOrder(it, reason) }
                     Timber.i("Order cancelled with reason: $reason")
                     dialog.dismiss()
@@ -158,20 +162,22 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
-        order?.let {
+        order?.apply {
             noDetail.visibility = View.GONE
             detail.visibility = View.VISIBLE
 
-            itemsAdapter.items = order.items
-            updateCustomerInfo(it.customer, it.desk)
-            updatePaymentType(it.alreadyPaid)
-            updateOrderNote(it.note)
-            updateOrderNumber(it.provider, it.orderId)
-            updateDates(it)
-            info.isVisible = order.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+            itemsAdapter.items = items
+            updateCustomerInfo(customer, desk)
+            updatePaymentType(alreadyPaid)
+            updateDiscount(discountWithVat?.takeIf { it > BigDecimal.ZERO })
+            updateTips(tipWithVat?.takeIf { it > BigDecimal.ZERO })
+            updateOrderNote(note)
+            updateOrderNumber(provider, orderId)
+            updateDates(this)
+            info.isVisible = state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
             autodeclineTimer?.cancel()
             autodeclineTimer = AutodeclineCountdown.newInstance(
-                order,
+                this,
                 autodecline_countdown,
                 R.string.autodecline_info
             ) {
@@ -180,13 +186,31 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         } ?: repaintNoOrderSelected()
     }
 
+    private fun updateTips(tipWithVat: BigDecimal?) {
+        delivery_tips_group.isVisible = tipWithVat != null
+        tipWithVat?.let {
+            delivery_tips.text = DeliveryConfiguration.formatter.formatPrice(it)
+        }
+    }
+
+    private fun updateDiscount(discountWithVat: BigDecimal?) {
+        delivery_discount_group.isVisible = discountWithVat != null
+        discountWithVat?.let {
+            delivery_discount.text = DeliveryConfiguration.formatter.formatPrice(it)
+        }
+    }
+
     private fun updateDates(order: DeliveryOrder) {
         val times = mutableListOf<Pair<String, String>>()
         val provider = ContextStringResProvider(requireContext().applicationContext)
         if (order.timing != null) {
             times.addAll(order.getTimingTranslations(provider))
         } else {
-            times.add(order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(provider))
+            times.add(
+                order.getLegacyDeliveryTypeTranslation(provider) to order.getLegacyDeliveryTime(
+                    provider
+                )
+            )
         }
         timesAdapter.items = times
     }
