@@ -17,11 +17,15 @@ object ActivityResult : ActivityResultObserver {
     val observers = mutableListOf<ActivityResultObserver>()
 
     fun observe(observer: ActivityResultObserver) {
-        observers.add(observer)
+        synchronized(observers) {
+            observers.add(observer)
+        }
     }
 
     fun removeObserver(observer: ActivityResultObserver) {
-        observers.remove(observer)
+        synchronized(observers) {
+            observers.remove(observer)
+        }
     }
 
     override fun onActivityResult(
@@ -30,8 +34,10 @@ object ActivityResult : ActivityResultObserver {
         resultCode: Int,
         data: Intent?
     ) {
-        observers.forEach {
-            it.onActivityResult(activity, requestCode, resultCode, data)
+        synchronized(observers) {
+            observers.forEach {
+                it.onActivityResult(activity, requestCode, resultCode, data)
+            }
         }
     }
 }
