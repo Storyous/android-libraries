@@ -29,6 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingBottom="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
         app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
         app:layout_constraintHorizontal_bias="0.0"
