@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/TextAppearance.Medium"
-    android:background="@drawable/payment_detail_dialog_button_background_selector"
-    android:textColor="@color/white"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:text="New orders">
-</TextView>
+    android:background="@drawable/payment_detail_dialog_button_background_selector"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp"
+    android:textColor="@color/white"
+    tools:text="New orders" />

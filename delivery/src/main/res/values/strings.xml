@@ -67,4 +67,7 @@
     <string name="autodecline_declined">The time to accept the order has run out.</string>
     <string name="delivery_tips_header">Tips:</string>
     <string name="delivery_discount_header">Discount:</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="show_with">Show: %s</string>
 </resources>

@@ -1,15 +1,9 @@
 package com.storyous.delivery.common.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.storyous.commonutils.TimestampUtil
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 
 @Suppress("TooManyFunctions")
 @Dao
@@ -39,6 +33,10 @@ abstract class DeliveryDao {
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE state = :state")
     abstract fun getOrdersLive(state: String): LiveData<List<DeliveryOrder>>
+
+    @Transaction
+    @Query("SELECT * FROM DeliveryOrder WHERE state IN (:states)")
+    abstract fun getOrdersLive(states: List<String>): LiveData<List<DeliveryOrder>>
 
     @Transaction
     @Query("SELECT * FROM DeliveryOrder WHERE orderId = :orderId")

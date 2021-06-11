@@ -17,6 +17,7 @@
     <dimen name="offset_8dp">8dp</dimen>
     <dimen name="offset_16dp">16dp</dimen>
     <dimen name="cancel_reason_choice_min_height">42dp</dimen>
+    <dimen name="dropdown_item_height">42dp</dimen>
     <dimen name="contextual_button_height">56dp</dimen>
     <dimen name="settings_height_collapsed">30dp</dimen>
     <dimen name="settings_height_expanded">200dp</dimen>

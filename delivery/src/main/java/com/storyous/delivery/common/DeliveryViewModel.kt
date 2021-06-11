@@ -1,9 +1,7 @@
 package com.storyous.delivery.common
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
@@ -41,6 +39,12 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         const val MESSAGE_OK_DECLINED = 3
     }
 
+    val filteredStatesLive = MutableLiveData(listOf(DeliveryOrder.STATE_CONFIRMED))
+    var filteredStates: List<String>
+        get() = filteredStatesLive.value ?: listOf()
+        set(value) {
+            filteredStatesLive.value = value
+        }
     private val selectedOrderIdLive = MutableLiveData<String?>(null)
     var selectedOrderId: String?
         get() = selectedOrderIdLive.value
@@ -48,20 +52,21 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
             selectedOrderIdLive.value = value
             Timber.i("Delivery order selected $value")
         }
-    val selectedOrderLive = Transformations.switchMap(selectedOrderIdLive) {
-        it?.let { DeliveryConfiguration.deliveryRepository?.getOrderLive(it) }
-            ?: MutableLiveData<DeliveryOrder>(null)
+    val selectedOrderLive = selectedOrderIdLive.switchMap {
+        it?.let {
+            DeliveryConfiguration.deliveryRepository!!.getOrderLive(it).map { order ->
+                order ?: deselectOrder()
+                order
+            }
+        } ?: MutableLiveData<DeliveryOrder>(null)
     }
     val selectedOrder: DeliveryOrder? get() = selectedOrderLive.value
-    private val deliveryOrdersLive: LiveData<List<DeliveryOrder>> =
-        MediatorLiveData<List<DeliveryOrder>>().apply {
-            addSource(DeliveryConfiguration.deliveryRepository!!.deliveryOrdersLive) { orders ->
-                if (selectedOrder?.orderId?.let { orderId -> orders.find { it.orderId == orderId } } == null) {
-                    deselectOrder()
-                }
-                value = orders
-            }
-        }
+    val newOrdersLive = DeliveryConfiguration.deliveryRepository!!.getOrdersLive(
+        listOf(DeliveryOrder.STATE_NEW, DeliveryOrder.STATE_SCHEDULING_DELIVERY)
+    )
+    val filteredOrdersLive = filteredStatesLive.switchMap {
+        DeliveryConfiguration.deliveryRepository!!.getOrdersLive(it)
+    }
 
     private fun functionsToLive(
         order: DeliveryOrder?,
@@ -79,8 +84,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     }
     val cancelFunction = selectedOrderLive.map {
         with(it?.state == DeliveryOrder.STATE_NEW) {
-            this to (this &&
-                it?.timing?.autoDeclineAfter ?: Date(Long.MAX_VALUE) > TimestampUtil.getDate())
+            this to (this && it?.timing?.autoDeclineAfter ?: Date(Long.MAX_VALUE) > TimestampUtil.getDate())
         }
     }
     val dispatchFunction = selectedOrderLive.switchMap { order ->
@@ -100,8 +104,6 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
     fun deselectOrder() {
         selectedOrderIdLive.value = null
     }
-
-    fun getDeliveryOrdersLive() = deliveryOrdersLive
 
     fun acceptOrder(order: DeliveryOrder) {
         loadingOrderAccepting.value = true

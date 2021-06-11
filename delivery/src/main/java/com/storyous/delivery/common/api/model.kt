@@ -38,7 +38,13 @@ data class DeliveryOrder(
         const val TYPE_TABLE_ORDER = "orderToTable"
 
         @Retention(AnnotationRetention.SOURCE)
-        @StringDef(STATE_NEW, STATE_SCHEDULING_DELIVERY, STATE_CONFIRMED, STATE_DISPATCHED, STATE_DECLINED)
+        @StringDef(
+            STATE_NEW,
+            STATE_SCHEDULING_DELIVERY,
+            STATE_CONFIRMED,
+            STATE_DISPATCHED,
+            STATE_DECLINED
+        )
         annotation class DeliveryState
 
         const val STATE_NEW = "NEW"
@@ -174,6 +180,13 @@ data class DeliveryTiming(
             else -> SHOW_NOTHING
         }
     }
+
+    val mostImportantTime: Date?
+        get() = estimatedPickupTime?.from
+            ?: requestedPickupTime?.from
+            ?: estimatedMealReadyTime
+            ?: estimatedDeliveryTime?.from
+            ?: requestedDeliveryTime?.from
 }
 
 data class DeliveryDateRange(
