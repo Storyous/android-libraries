@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 
+@Suppress("TooManyFunctions")
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
     private val db: DeliveryDao
