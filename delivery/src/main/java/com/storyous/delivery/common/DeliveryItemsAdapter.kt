@@ -26,20 +26,22 @@ import java.util.Calendar
 import java.util.Date
 
 class DeliveryItemsAdapter(
+    private val selectedState: SelectedState = SelectedState(),
     private val onClickListener: (DeliveryOrder) -> Unit
 ) : RecyclerView.Adapter<DeliveryItemsAdapter.DeliveryViewHolder>(),
     ItemsAdapter<ListItem<DeliveryOrder>> {
 
     override var items: List<ListItem<DeliveryOrder>> = listOf()
 
-    private var selectedOrderId = ""
-    private var lastSelectedViewPosition: Int = -1
     private val clickListener: (Int, DeliveryOrder) -> Unit = { position, it ->
 
-        selectedOrderId = it.orderId
-        notifyItemChanged(lastSelectedViewPosition)
+        with(selectedState) {
+            orderId = it.orderId
         notifyItemChanged(position)
-        lastSelectedViewPosition = position
+            onStateChanged()
+            lastPosition = position
+            onStateChanged = { notifyItemChanged(lastPosition) }
+        }
 
         onClickListener(it)
     }
@@ -80,9 +82,9 @@ class DeliveryItemsAdapter(
     override fun onBindViewHolder(viewHolder: DeliveryViewHolder, position: Int) {
         items[position].let {
             viewHolder.bind(it)
-            if ((it is Item) && it.itemValue.orderId == selectedOrderId) {
+            if ((it is Item) && it.itemValue.orderId == selectedState.orderId) {
                 viewHolder.itemView.isSelected = true
-                lastSelectedViewPosition = viewHolder.adapterPosition
+                selectedState.lastPosition = viewHolder.adapterPosition
             } else {
                 viewHolder.itemView.isSelected = false
             }
@@ -243,3 +245,9 @@ fun List<DeliveryOrder>.toAdapterItemsByDate(context: Context): List<ListItem<De
                 orders.sortedBy { it.itemValue.timing?.mostImportantTime }
         }
 }
+
+data class SelectedState(
+    var orderId: String? = null,
+    var lastPosition: Int = -1,
+    var onStateChanged: () -> Unit = {}
+)

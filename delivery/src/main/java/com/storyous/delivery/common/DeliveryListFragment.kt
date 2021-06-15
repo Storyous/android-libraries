@@ -17,11 +17,12 @@ import kotlinx.android.synthetic.main.fragment_delivery_list.*
 class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
+    private val commonSelectedState = SelectedState()
     private val newDeliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter { viewModel.selectedOrderId = it.orderId }
+        DeliveryItemsAdapter(commonSelectedState) { viewModel.selectedOrderId = it.orderId }
     }
     private val deliveryItemsAdapter by lazy {
-        DeliveryItemsAdapter { viewModel.selectedOrderId = it.orderId }
+        DeliveryItemsAdapter(commonSelectedState) { viewModel.selectedOrderId = it.orderId }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
