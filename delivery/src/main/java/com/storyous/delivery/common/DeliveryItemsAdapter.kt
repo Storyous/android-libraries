@@ -84,7 +84,7 @@ class DeliveryItemsAdapter(
             viewHolder.bind(it)
             if ((it is Item) && it.itemValue.orderId == selectedState.orderId) {
                 viewHolder.itemView.isSelected = true
-                selectedState.lastPosition = viewHolder.adapterPosition
+                selectedState.lastPosition = viewHolder.bindingAdapterPosition
             } else {
                 viewHolder.itemView.isSelected = false
             }
@@ -120,7 +120,7 @@ class DeliveryItemViewHolder(
     override fun bind(listItem: ListItem<DeliveryOrder>) {
         val deliveryOrder = (listItem as Item).itemValue
         itemView.setOnClickListener {
-            onClickListener(adapterPosition, deliveryOrder)
+            onClickListener(bindingAdapterPosition, deliveryOrder)
         }
 
         name.text = deliveryOrder.customer.name
