@@ -37,7 +37,7 @@ class DeliveryItemsAdapter(
 
         with(selectedState) {
             orderId = it.orderId
-        notifyItemChanged(position)
+            notifyItemChanged(position)
             onStateChanged()
             lastPosition = position
             onStateChanged = { notifyItemChanged(lastPosition) }
@@ -195,7 +195,7 @@ fun List<DeliveryOrder>.toAdapterItemsByState(
 
     val data = mutableListOf<ListItem<DeliveryOrder>>()
     if (ordersNew.isNotEmpty()) {
-        data.add(Header(textHeaderNew, HEADER_ENABLED))
+        data.add(Header(textHeaderNew, HEADER_DISABLED))
         data.addAll(ordersNew.map { Item(it) })
     }
     if (ordersWaiting.isNotEmpty()) {
