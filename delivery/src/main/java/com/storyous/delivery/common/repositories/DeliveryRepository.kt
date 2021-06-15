@@ -18,6 +18,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 
+@Suppress("TooManyFunctions")
 open class DeliveryRepository(
     private val apiService: () -> DeliveryService,
     private val db: DeliveryDao
@@ -118,7 +119,8 @@ open class DeliveryRepository(
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
 
-    suspend fun getConfirmedOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_CONFIRMED).map { it.toApi() }
+    suspend fun getConfirmedOrdersFromDb() =
+        db.getOrders(DeliveryOrder.STATE_CONFIRMED).map { it.toApi() }
 
     suspend fun clear() {
         withContext(provider.IO) {
@@ -127,4 +129,6 @@ open class DeliveryRepository(
         lastMod = null
         deliveryError.value?.let { deliveryError.value = null }
     }
+
+    fun getOrdersLive(states: List<String>) = db.getOrdersLive(states).toApi()
 }
