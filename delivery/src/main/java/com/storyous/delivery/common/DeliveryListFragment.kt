@@ -2,7 +2,6 @@ package com.storyous.delivery.common
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -64,7 +63,7 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
         with(orders_filter) {
             setOnClickListener {
-                showMenu(it, R.menu.order_state_filter)
+                showStateFilterMenu(it)
             }
         }
 
@@ -74,9 +73,9 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
         }
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
-        PopupMenu(requireContext(), v).apply {
-            menuInflater.inflate(menuRes, menu)
+    private fun showStateFilterMenu(anchor: View) {
+        PopupMenu(requireContext(), anchor).apply {
+            menuInflater.inflate(R.menu.order_state_filter, menu)
             setOnMenuItemClickListener {
                 viewModel.filteredStates = when (it.itemId) {
                     R.id.confirmed_orders -> listOf(DeliveryOrder.STATE_CONFIRMED)

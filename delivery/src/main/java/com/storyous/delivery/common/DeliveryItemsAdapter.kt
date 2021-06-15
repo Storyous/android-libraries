@@ -108,8 +108,8 @@ class DeliveryItemViewHolder(
 ) : DeliveryItemsAdapter.DeliveryViewHolder(itemView) {
 
     private val provider = ContextStringResProvider(itemView.context)
-    val timeFrom: TextView = itemView.text_item_delivery_time_from
-    val timeTo: TextView = itemView.text_item_delivery_time_to
+    private val timeFrom: TextView = itemView.text_item_delivery_time_from
+    private val timeTo: TextView = itemView.text_item_delivery_time_to
     val name: TextView = itemView.text_item_delivery_customer
     val address: TextView = itemView.text_item_delivery_address
     val price: TextView = itemView.text_item_delivery_price
@@ -144,12 +144,14 @@ class DeliveryItemViewHolder(
         autodeclineTimer?.cancel()
     }
 
-    private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> {
-        return if (order.timing == null) {
+    private fun getDeliveryTime(order: DeliveryOrder): Pair<String, String> = when {
+        order.timing == null -> {
             order.getLegacyDeliveryTime(provider) to ""
-        } else if (order.timing.showTime() == DeliveryTiming.SHOW_ASAP) {
+        }
+        order.timing.showTime() == DeliveryTiming.SHOW_ASAP -> {
             provider.getString(R.string.delivery_asap) to ""
-        } else {
+        }
+        else -> {
             order.getImportantTimingTranslation(provider)?.let { timing ->
                 timing.second?.getTranslation(provider) ?: (timing.first to "")
             } ?: "" to ""
@@ -218,10 +220,10 @@ fun List<DeliveryOrder>.toAdapterItemsByDate(context: Context): List<ListItem<De
         this?.let {
             Calendar.getInstance().apply {
                 time = it
-                set(Calendar.HOUR_OF_DAY, 0);
-                set(Calendar.MINUTE, 0);
-                set(Calendar.SECOND, 0);
-                set(Calendar.MILLISECOND, 0);
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
             }.time
         }
     }
@@ -239,7 +241,7 @@ fun List<DeliveryOrder>.toAdapterItemsByDate(context: Context): List<ListItem<De
             val title = when (date) {
                 today -> context.getString(R.string.today)
                 tomorrow -> context.getString(R.string.tomorrow)
-                else -> DateUtils.DMY.format(date)
+                else -> DateUtils.DMY.format(date!!)
             }
             listOf(Header<DeliveryOrder>(title, HEADER_DISABLED)) +
                 orders.sortedBy { it.itemValue.timing?.mostImportantTime }
