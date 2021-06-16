@@ -15,6 +15,8 @@ open class CoroutineDispatcherProvider {
     open val Main: CoroutineContext by lazy { delegate() ?: Dispatchers.Main }
 
     open val IO: CoroutineContext by lazy { delegate() ?: Dispatchers.IO }
+
+    open val Default: CoroutineContext by lazy { delegate() ?: Dispatchers.Default }
 }
 
 val CoroutineScope.provider: CoroutineDispatcherProvider

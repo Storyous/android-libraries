@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.DateUtils
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.commonutils.adapters.Header
@@ -16,11 +18,16 @@ import com.storyous.commonutils.adapters.ItemType
 import com.storyous.commonutils.adapters.ItemType.HEADER_DISABLED
 import com.storyous.commonutils.adapters.ItemType.HEADER_ENABLED
 import com.storyous.commonutils.adapters.ListItem
+import com.storyous.commonutils.provider
 import com.storyous.commonutils.recyclerView.ItemsAdapter
 import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
 import kotlinx.android.synthetic.main.list_item_delivery.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.util.Calendar
 import java.util.Date
@@ -29,8 +36,10 @@ class DeliveryItemsAdapter(
     private val selectedState: SelectedState = SelectedState(),
     private val onClickListener: (DeliveryOrder) -> Unit
 ) : RecyclerView.Adapter<DeliveryItemsAdapter.DeliveryViewHolder>(),
-    ItemsAdapter<ListItem<DeliveryOrder>> {
+    ItemsAdapter<ListItem<DeliveryOrder>>,
+    CoroutineScope by CoroutineProviderScope() {
 
+    private var mapItemsJob: Job? = null
     override var items: List<ListItem<DeliveryOrder>> = listOf()
 
     private val clickListener: (Int, DeliveryOrder) -> Unit = { position, it ->
@@ -50,8 +59,18 @@ class DeliveryItemsAdapter(
         items: List<DeliveryOrder>,
         mapper: List<DeliveryOrder>.() -> List<ListItem<DeliveryOrder>>
     ) {
-        this.items = mapper(items)
-        notifyDataSetChanged()
+        mapItemsJob?.cancel()
+        mapItemsJob = launch {
+            val newItems = withContext(provider.Default) { mapper(items) }
+
+            synchronized(this@DeliveryItemsAdapter.items) {
+                val diffResult = DiffUtil.calculateDiff(
+                    DeliveryOrderDiffCallback(this@DeliveryItemsAdapter.items, newItems)
+                )
+                this@DeliveryItemsAdapter.items = newItems
+                diffResult.dispatchUpdatesTo(this@DeliveryItemsAdapter)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, itemType: Int): DeliveryViewHolder {
@@ -99,6 +118,31 @@ class DeliveryItemsAdapter(
     abstract class DeliveryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(listItem: ListItem<DeliveryOrder>)
         open fun recycle() = Unit
+    }
+}
+
+class DeliveryOrderDiffCallback(
+    val oldItems: List<ListItem<DeliveryOrder>>,
+    val newItems: List<ListItem<DeliveryOrder>>
+) : DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldItems.size
+
+    override fun getNewListSize(): Int = newItems.size
+
+    override fun areItemsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int
+    ): Boolean {
+        val oldItem = oldItems[oldItemPosition]
+        val newItem = newItems[newItemPosition]
+        return oldItem is Item
+            && newItem is Item
+            && oldItem.itemValue.orderId == newItem.itemValue.orderId
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldItems[oldItemPosition] == newItems[newItemPosition]
     }
 }
 
