@@ -23,7 +23,7 @@ fun ContextStringResProvider(context: Context) = object : StringResProvider {
 
 fun DeliveryOrder.getLegacyDeliveryTime(provider: StringResProvider): String {
     val prefix = if (deliveryOnTime == true) R.string.time_at else R.string.time_till
-    val date = DateUtils.HM.format(deliveryTime)
+    val date = deliveryTime?.let { DateUtils.HM.format(it) }
     return provider.getString(prefix, date)
 }
 
