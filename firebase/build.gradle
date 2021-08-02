@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'com.github.dcendents.android-maven'
 }
 
@@ -37,7 +36,6 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
 
@@ -55,7 +53,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Firestore
-    implementation 'com.google.firebase:firebase-firestore-ktx:22.0.0'
+    implementation "com.google.firebase:firebase-firestore-ktx:$firebase_firestore_ktx"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
 
     // JWT

@@ -215,6 +215,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         timesAdapter.items = times
     }
 
+    @Suppress("unused")
     private fun updateOrderNumber(provider: String, orderId: String) {
         order_number.text = DeliveryModel.getOrderInfo(provider) { resId, param ->
             getString(resId, "$param")
