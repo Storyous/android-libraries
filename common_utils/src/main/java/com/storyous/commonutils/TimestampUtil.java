@@ -51,11 +51,9 @@ public enum TimestampUtil {
                     new SyncListener() {
                         @Override
                         public void onSuccess(long ticksDelta, long responseTimeMs) {
-                            Timber.tag("Kronos").i("NTP successfully synced - ticksDelta: %d, responseTimeMs: %d", ticksDelta, responseTimeMs);
                             Timber.tag("Kronos").i(
-                                    "NTP time was initialized %s vs system time %s",
-                                    format(new Date(mKronosClock.getCurrentTimeMs())),
-                                    format(new Date())
+                                    "NTP time was initialized %s vs system time %s, delta: %d, response: %d ms",
+                                    format(new Date(mKronosClock.getCurrentTimeMs())), format(new Date()), ticksDelta, responseTimeMs
                             );
                         }
 
