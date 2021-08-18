@@ -14,18 +14,23 @@ import com.lyft.kronos.KronosClock;
 import com.lyft.kronos.SyncListener;
 
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import timber.log.Timber;
 
 public enum TimestampUtil {
     INSTANCE;
 
+    private static final String TIMBER_TAG = "Kronos";
+    private static final List<String> NTP_HOSTS = Arrays.asList(
+            "cz.pool.ntp.org", "0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org"
+    );
+
     private BroadcastReceiver mConnectionReinitReceiver;
     private KronosClock mKronosClock;
-    private ArrayList<String> mNtpHosts;
 
     public void receiveBroadcast(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -36,22 +41,13 @@ public enum TimestampUtil {
     }
 
     public synchronized void init(Context context) {
-        Timber.tag("Kronos").i("Start Kronos init.");
-        if (mNtpHosts == null) {
-            mNtpHosts = new ArrayList<String>();
-            mNtpHosts.add("cz.pool.ntp.org");
-            mNtpHosts.add("0.pool.ntp.org");
-            mNtpHosts.add("1.pool.ntp.org");
-            mNtpHosts.add("2.pool.ntp.org");
-            mNtpHosts.add("3.pool.ntp.org");
-        }
         if (mKronosClock == null) {
             mKronosClock = AndroidClockFactory.createKronosClock(
                     context,
                     new SyncListener() {
                         @Override
                         public void onSuccess(long ticksDelta, long responseTimeMs) {
-                            Timber.tag("Kronos").i(
+                            Timber.tag(TIMBER_TAG).i(
                                     "NTP time was initialized %s vs system time %s, delta: %d, response: %d ms",
                                     format(new Date(mKronosClock.getCurrentTimeMs())), format(new Date()), ticksDelta, responseTimeMs
                             );
@@ -59,18 +55,19 @@ public enum TimestampUtil {
 
                         @Override
                         public void onStartSync(@NonNull String host) {
-                            Timber.tag("Kronos").i("Syncing NTP with: %s", host);
+                            Timber.tag(TIMBER_TAG).i("Syncing NTP with: %s", host);
                         }
 
                         @Override
                         public void onError(@NonNull String host, @NonNull Throwable throwable) {
-                            Timber.tag("Kronos").e(throwable, "Failed to sync NTP with the host: %s", host);
+                            Timber.tag(TIMBER_TAG).e("Failed to sync NTP with the host: %s, message: %s", host, throwable.getMessage());
                         }
 
                         private String format(Date date) {
                             return DateUtils.INSTANCE.getISO8601_FRACT().format(date);
                         }
-                    }
+                    },
+                    NTP_HOSTS
             );
         }
         mKronosClock.syncInBackground();
