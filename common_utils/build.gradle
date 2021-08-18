@@ -51,8 +51,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    implementation "com.github.instacart.truetime-android:library:$truetime_version"
-    implementation "com.github.instacart.truetime-android:library-extension-rx:$truetime_version"
+    implementation "com.lyft.kronos:kronos-android:$kronos_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
 
     implementation 'com.github.tony19:logback-android:2.0.0'
