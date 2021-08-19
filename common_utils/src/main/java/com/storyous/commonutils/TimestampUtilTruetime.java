@@ -7,30 +7,22 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import androidx.annotation.NonNull;
-
-import com.lyft.kronos.AndroidClockFactory;
-import com.lyft.kronos.KronosClock;
-import com.lyft.kronos.SyncListener;
+import com.instacart.library.truetime.TrueTime;
+import com.instacart.library.truetime.TrueTimeRx;
 
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public enum TimestampUtil {
+public enum TimestampUtilTruetime {
     INSTANCE;
 
-    private static final String TIMBER_TAG = "Kronos";
-    private static final List<String> NTP_HOSTS = Arrays.asList(
-            "cz.pool.ntp.org", "0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org"
-    );
-
     private BroadcastReceiver mConnectionReinitReceiver;
-    private KronosClock mKronosClock;
+    private TimeObserver mObserver;
 
     public void receiveBroadcast(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -41,42 +33,30 @@ public enum TimestampUtil {
     }
 
     public synchronized void init(Context context) {
-        if (mKronosClock == null) {
-            mKronosClock = AndroidClockFactory.createKronosClock(
-                    context,
-                    new SyncListener() {
-                        @Override
-                        public void onSuccess(long ticksDelta, long responseTimeMs) {
-                            Timber.tag(TIMBER_TAG).i(
-                                    "NTP time was initialized %s vs system time %s, delta: %d, response: %d ms",
-                                    format(new Date(mKronosClock.getCurrentTimeMs())), format(new Date()), ticksDelta, responseTimeMs
-                            );
-                        }
-
-                        @Override
-                        public void onStartSync(@NonNull String host) {
-                            Timber.tag(TIMBER_TAG).i("Syncing NTP with: %s", host);
-                        }
-
-                        @Override
-                        public void onError(@NonNull String host, @NonNull Throwable throwable) {
-                            Timber.tag(TIMBER_TAG).e("Failed to sync NTP with the host: %s, message: %s", host, throwable.getMessage());
-                        }
-
-                        private String format(Date date) {
-                            return DateUtils.INSTANCE.getISO8601_FRACT().format(date);
-                        }
-                    },
-                    NTP_HOSTS
-            );
+        if (mObserver != null) {
+            mObserver.dispose();
         }
-        mKronosClock.syncInBackground();
+
+        Timber.i("Start TrueTime init.");
+        mObserver = TrueTimeRx.build()
+                .withSharedPreferencesCache(context)
+                .initializeNtp("cz.pool.ntp.org")
+                .map(longs -> TrueTimeRx.now())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new TimeObserver());
     }
 
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     // third party library can throw any exception possible
     public Date getNow() {
-        return mKronosClock == null ? new Date() : new Date(mKronosClock.getCurrentTimeMs());
+        if (TrueTime.isInitialized()) {
+            try {
+                return TrueTimeRx.now();
+            } catch (RuntimeException ex) {
+                Timber.e(ex, "Could not initialize TrueTime");
+            }
+        }
+        return new Date();
     }
 
     public static synchronized long getTime() {
@@ -116,6 +96,10 @@ public enum TimestampUtil {
     }
 
     public synchronized void stop(Context context) {
+        if (mObserver != null) {
+            mObserver.dispose();
+        }
+
         if (mConnectionReinitReceiver != null) {
             try {
                 context.getApplicationContext()
@@ -124,6 +108,31 @@ public enum TimestampUtil {
                 Timber.e(ex, "TimestampUtil connectivity receiver not registered");
             }
             mConnectionReinitReceiver = null;
+        }
+    }
+
+    private static class TimeObserver extends DisposableSingleObserver<Date> {
+        @Override
+        public void onSuccess(Date date) {
+            Timber.i(
+                    "NTP time was initialized %s vs system time %s",
+                    format(date),
+                    format(new Date())
+            );
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Timber.i(
+                    "NTP time error occured: %s, current %s, system time %s",
+                    e.getMessage(),
+                    TrueTime.isInitialized() ? format(TrueTimeRx.now()) : "not initialized",
+                    format(new Date())
+            );
+        }
+
+        private String format(Date date) {
+            return DateUtils.INSTANCE.getISO8601_FRACT().format(date);
         }
     }
 }
