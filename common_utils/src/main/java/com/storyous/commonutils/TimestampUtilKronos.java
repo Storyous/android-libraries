@@ -73,8 +73,6 @@ public enum TimestampUtilKronos {
         mKronosClock.syncInBackground();
     }
 
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    // third party library can throw any exception possible
     public Date getNow() {
         return mKronosClock == null ? new Date() : new Date(mKronosClock.getCurrentTimeMs());
     }
