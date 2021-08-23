@@ -23,8 +23,6 @@ public enum TimestampUtil {
       TimestampUtilTruetime.INSTANCE.init(context);
    }
 
-   @SuppressWarnings("PMD.AvoidCatchingGenericException")
-   // third party library can throw any exception possible
    public Date getNow() {
       return useKronos ? TimestampUtilKronos.INSTANCE.getNow() : TimestampUtilTruetime.INSTANCE.getNow();
    }

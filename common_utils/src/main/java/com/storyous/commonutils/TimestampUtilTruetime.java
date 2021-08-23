@@ -21,6 +21,7 @@ import timber.log.Timber;
 public enum TimestampUtilTruetime {
     INSTANCE;
 
+    private static final String TIMBER_TAG = "Truetime";
     private BroadcastReceiver mConnectionReinitReceiver;
     private TimeObserver mObserver;
 
@@ -37,7 +38,7 @@ public enum TimestampUtilTruetime {
             mObserver.dispose();
         }
 
-        Timber.i("Start TrueTime init.");
+        Timber.tag(TIMBER_TAG).i("Start TrueTime init.");
         mObserver = TrueTimeRx.build()
                 .withSharedPreferencesCache(context)
                 .initializeNtp("cz.pool.ntp.org")
@@ -53,7 +54,7 @@ public enum TimestampUtilTruetime {
             try {
                 return TrueTimeRx.now();
             } catch (RuntimeException ex) {
-                Timber.e(ex, "Could not initialize TrueTime");
+                Timber.tag(TIMBER_TAG).e(ex, "Could not initialize TrueTime");
             }
         }
         return new Date();
@@ -105,7 +106,7 @@ public enum TimestampUtilTruetime {
                 context.getApplicationContext()
                         .unregisterReceiver(mConnectionReinitReceiver);
             } catch (IllegalArgumentException ex) {
-                Timber.e(ex, "TimestampUtil connectivity receiver not registered");
+                Timber.tag(TIMBER_TAG).e(ex, "TimestampUtil connectivity receiver not registered");
             }
             mConnectionReinitReceiver = null;
         }
@@ -114,7 +115,7 @@ public enum TimestampUtilTruetime {
     private static class TimeObserver extends DisposableSingleObserver<Date> {
         @Override
         public void onSuccess(Date date) {
-            Timber.i(
+            Timber.tag(TIMBER_TAG).i(
                     "NTP time was initialized %s vs system time %s",
                     format(date),
                     format(new Date())
@@ -123,7 +124,7 @@ public enum TimestampUtilTruetime {
 
         @Override
         public void onError(Throwable e) {
-            Timber.i(
+            Timber.tag(TIMBER_TAG).i(
                     "NTP time error occured: %s, current %s, system time %s",
                     e.getMessage(),
                     TrueTime.isInitialized() ? format(TrueTimeRx.now()) : "not initialized",
