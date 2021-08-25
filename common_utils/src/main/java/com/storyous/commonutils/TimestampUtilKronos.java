@@ -10,8 +10,10 @@ import android.net.NetworkInfo;
 import androidx.annotation.NonNull;
 
 import com.lyft.kronos.AndroidClockFactory;
+import com.lyft.kronos.Clock;
 import com.lyft.kronos.KronosClock;
 import com.lyft.kronos.SyncListener;
+import com.lyft.kronos.SyncResponseCache;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -24,10 +26,17 @@ import timber.log.Timber;
 public enum TimestampUtilKronos {
     INSTANCE;
 
-    private static final String TIMBER_TAG = "Kronos";
+    /**
+     * See {@link com.lyft.kronos.ClockFactory#createKronosClock(Clock, SyncResponseCache)} for more info}
+     */
+    private static final Long REQUEST_TIMEOUT_MS = 20 * 1000L; // 20 seconds
+    private static final Long CACHE_EXPIRATION_MS = 30 * 60 * 1000L; // 30 minutes
+    private static final Long MIN_WAIT_TIME_BETWEEN_SYNC_MS = 10 * 60 * 1000L; // 10 minutes
+    private static final Long MAX_NTP_RESPONSE_TIME_MS = 20 * 1000L; // 20 seconds
     private static final List<String> NTP_HOSTS = Arrays.asList(
             "cz.pool.ntp.org", "0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org"
     );
+    private static final String TIMBER_TAG = "Kronos";
 
     private BroadcastReceiver mConnectionReinitReceiver;
     private KronosClock mKronosClock;
@@ -67,7 +76,11 @@ public enum TimestampUtilKronos {
                             return DateUtils.INSTANCE.getISO8601_FRACT().format(date);
                         }
                     },
-                    NTP_HOSTS
+                    NTP_HOSTS,
+                    REQUEST_TIMEOUT_MS,
+                    MIN_WAIT_TIME_BETWEEN_SYNC_MS,
+                    CACHE_EXPIRATION_MS,
+                    MAX_NTP_RESPONSE_TIME_MS
             );
         }
         mKronosClock.syncInBackground();
