@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.storyous.commonutils.castOrNull
+import com.storyous.commonutils.extensions.positiveButton
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
@@ -157,8 +159,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
                 }
             }
             .setNegativeButton(R.string.cancel, null)
-            .setSingleChoiceItems(adapter, -1, null)
+            .setSingleChoiceItems(adapter, -1) { dialog, _ ->
+                dialog.castOrNull<AlertDialog>()?.positiveButton?.isEnabled = true
+            }
             .show()
+            .apply { positiveButton?.isEnabled = false }
     }
 
     private fun onOrderSelected(order: DeliveryOrder?) {
