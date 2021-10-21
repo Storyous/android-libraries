@@ -56,6 +56,10 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
+        // check if are used only AndroidX dependencies to be able disable jetifier
+        // https://blog.dipien.com/say-bye-bye-to-android-jetifier-a7e0d388f5d6
+        classpath("com.dipien:bye-bye-jetifier:1.2.0")
     }
 }
 
@@ -74,3 +78,5 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply plugin: "com.dipien.byebyejetifier"
