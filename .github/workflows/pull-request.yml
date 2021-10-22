@@ -18,6 +18,8 @@ jobs:
           java-version: 1.8
       - name: Detekt check
         run: bash ./gradlew detekt --stacktrace
+      - name: Check AndroidX libs
+        run: bash ./gradlew canISayByeByeJetifier -Pandroid.enableJetifier=false
       - name: Unit tests
         run: bash ./gradlew test --stacktrace
 
