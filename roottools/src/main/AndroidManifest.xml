@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.storyous.roottools">
+
+    <application>
+        <service
+            android:name="com.storyous.roottools.magisk.IsolatedService"
+            android:enabled="true"
+            android:isolatedProcess="true" />
+    </application>
+</manifest>
