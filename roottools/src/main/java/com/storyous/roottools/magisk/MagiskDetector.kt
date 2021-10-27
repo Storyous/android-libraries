@@ -10,15 +10,19 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 internal interface MagiskDetector : IIsolatedService {
+
     companion object {
-        private suspend fun getIsolatedService(ctx: Context): IIsolatedService? = suspendCoroutine {
+
+        private suspend fun getIsolatedService(
+            ctx: Context
+        ): IIsolatedService? = suspendCoroutine { cont ->
             val connection = object : ServiceConnection {
                 override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                    it.resume(IIsolatedService.Stub.asInterface(service))
+                    cont.resume(IIsolatedService.Stub.asInterface(service))
                 }
 
                 override fun onServiceDisconnected(name: ComponentName) {
-                    it.resumeWithException(IllegalStateException("${name.className} disconnected"))
+                    cont.resumeWithException(IllegalStateException("${name.className} disconnected"))
                 }
             }
 
@@ -26,7 +30,11 @@ internal interface MagiskDetector : IIsolatedService {
                 Intent(ctx, IsolatedService::class.java),
                 connection,
                 Context.BIND_AUTO_CREATE
-            )
+            ).also {
+                if (!it) {
+                    cont.resumeWithException(IllegalStateException("Failed IsolatedService binding"))
+                }
+            }
         }
 
         suspend operator fun invoke(ctx: Context): MagiskDetector {
