@@ -1,50 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_cancel"
-        style="@style/Button.Primary.Contextual.Dark"
-        android:layout_width="0dp"
-        android:text="@string/cancel_delivery_order"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_accept"
-        app:layout_constraintStart_toStartOf="parent" />
+    <merge
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_accept"
-        style="@style/Button.Primary.Contextual.Light"
-        android:layout_width="0dp"
-        android:gravity="center"
-        android:text="@string/accept_order"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_cancel" />
+        <com.storyous.commonutils.widgets.LoadingButton
+            android:id="@+id/button_cancel"
+            style="@style/Button.Primary.Contextual.Dark"
+            android:layout_width="0dp"
+            android:text="@string/cancel_delivery_order"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_accept"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_dispatch"
-        style="@style/Button.Primary.Contextual.Dark"
-        android:layout_width="0dp"
-        android:text="@string/dispatch_delivery_order"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        <com.storyous.commonutils.widgets.LoadingButton
+            android:id="@+id/button_accept"
+            style="@style/Button.Primary.Contextual.Light"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:text="@string/accept_order"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_cancel" />
 
-    <com.storyous.commonutils.widgets.LoadingButton
-        android:id="@+id/button_print_bill"
-        style="@style/Button.Primary.Contextual.Dark"
-        android:layout_width="0dp"
-        android:text="@string/print_delivery_order_bill"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
-</merge>
+        <com.storyous.commonutils.widgets.LoadingButton
+            android:id="@+id/button_dispatch"
+            style="@style/Button.Primary.Contextual.Dark"
+            android:layout_width="0dp"
+            android:text="@string/dispatch_delivery_order"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+
+        <com.storyous.commonutils.widgets.LoadingButton
+            android:id="@+id/button_print_bill"
+            style="@style/Button.Primary.Contextual.Dark"
+            android:layout_width="0dp"
+            android:text="@string/print_delivery_order_bill"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+    </merge>
+</layout>
