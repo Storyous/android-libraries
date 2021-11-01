@@ -17,12 +17,17 @@ internal interface MagiskDetector : IIsolatedService {
             ctx: Context
         ): IIsolatedService? = suspendCoroutine { cont ->
             val connection = object : ServiceConnection {
+                private var resumed = false
+                
                 override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                    cont.resume(IIsolatedService.Stub.asInterface(service))
+                    if (!resumed) {
+                        resumed = true
+                        cont.resume(IIsolatedService.Stub.asInterface(service))
+                    }
                 }
 
                 override fun onServiceDisconnected(name: ComponentName) {
-                    cont.resumeWithException(IllegalStateException("${name.className} disconnected"))
+                    //cont.resumeWithException(IllegalStateException("${name.className} disconnected"))
                 }
             }
 

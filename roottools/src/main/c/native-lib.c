@@ -35,11 +35,8 @@ static const char *suPaths[] = {
         "/dev/su"
 };
 
-
-JNIEXPORT jboolean
-Java_com_darvin_security_Native_isMagiskPresentNative(
-        JNIEnv *env,
-        jobject this) {
+JNIEXPORT jboolean JNICALL
+Java_com_storyous_roottools_magisk_Native_isMagiskPresentNative(JNIEnv *env, jclass clazz) {
     bool bRet = false;
     do {
         bRet = is_supath_detected();
