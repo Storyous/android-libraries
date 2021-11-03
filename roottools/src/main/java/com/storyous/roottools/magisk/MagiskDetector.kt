@@ -13,25 +13,25 @@ internal interface MagiskDetector : IIsolatedService {
 
     companion object {
 
+        @Volatile
+        private var instance: MagiskDetector? = null
+
         private suspend fun getIsolatedService(
             ctx: Context
         ): IIsolatedService? = suspendCoroutine { cont ->
             val connection = object : ServiceConnection {
-                private var resumed = false
-                
+
                 override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                    if (!resumed) {
-                        resumed = true
-                        cont.resume(IIsolatedService.Stub.asInterface(service))
-                    }
+                    cont.resume(IIsolatedService.Stub.asInterface(service))
                 }
 
                 override fun onServiceDisconnected(name: ComponentName) {
-                    //cont.resumeWithException(IllegalStateException("${name.className} disconnected"))
+                    instance = null
+                    ctx.unbindService(this)
                 }
             }
 
-            ctx.applicationContext.bindService(
+            ctx.bindService(
                 Intent(ctx, IsolatedService::class.java),
                 connection,
                 Context.BIND_AUTO_CREATE
@@ -42,11 +42,12 @@ internal interface MagiskDetector : IIsolatedService {
             }
         }
 
-        suspend operator fun invoke(ctx: Context): MagiskDetector {
-            return getIsolatedService(ctx)
-                ?.let { MagiskDetektorImpl(it) }
+        @Synchronized
+        suspend operator fun invoke(ctx: Context): MagiskDetector = instance ?: MagiskDetektorImpl(
+            getIsolatedService(ctx.applicationContext)
                 ?: throw IllegalStateException("IIsolatedService not found")
-        }
+        ).also { instance = it }
+
     }
 }
 
