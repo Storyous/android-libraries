@@ -3,7 +3,7 @@ package com.storyous.roottools.magisk;
 class Native {
 
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("root-lib");
     }
 
     static native boolean isMagiskPresentNative();
