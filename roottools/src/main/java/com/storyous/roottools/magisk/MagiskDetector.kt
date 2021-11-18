@@ -21,13 +21,20 @@ internal interface MagiskDetector : IIsolatedService {
         ): IIsolatedService? = suspendCoroutine { cont ->
             val connection = object : ServiceConnection {
 
+                private var resumed = false
+
                 override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                    cont.resume(IIsolatedService.Stub.asInterface(service))
+                    if (!resumed) {
+                        resumed = true
+                        cont.resume(IIsolatedService.Stub.asInterface(service))
+                    }
                 }
 
                 override fun onServiceDisconnected(name: ComponentName) {
-                    instance = null
-                    ctx.unbindService(this)
+                    if (instance != null) {
+                        instance = null
+                        ctx.unbindService(this)
+                    }
                 }
             }
 
