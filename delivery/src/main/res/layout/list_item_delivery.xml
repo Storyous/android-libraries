@@ -1,151 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/list_item_background_selector_light"
-    android:forceHasOverlappingRendering="false"
-    android:padding="@dimen/offset_8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <TextView
-        android:id="@+id/text_item_delivery_type"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/offset_0dp"
-        android:layout_marginLeft="@dimen/offset_0dp"
-        android:gravity="center"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_from"
-        app:layout_constraintEnd_toStartOf="@id/guideline_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Kurýr vyzvedne" />
+        android:background="@drawable/list_item_background_selector_light"
+        android:forceHasOverlappingRendering="false"
+        android:padding="@dimen/offset_8dp">
 
-    <TextView
-        android:id="@+id/text_item_delivery_time_from"
-        style="@style/TextAppearance.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_8dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textColor="@color/red"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_to"
-        app:layout_constraintEnd_toStartOf="@id/guideline_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_item_delivery_type"
-        tools:text="od 22:59" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
 
-    <TextView
-        android:id="@+id/text_item_delivery_time_to"
-        style="@style/TextAppearance.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/offset_8dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textColor="@color/red"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/info"
-        app:layout_constraintEnd_toStartOf="@id/guideline_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_item_delivery_time_from"
-        app:layout_goneMarginBottom="@dimen/offset_0dp"
-        tools:text="do 3:00" />
+        <TextView
+            android:id="@+id/text_item_delivery_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_0dp"
+            android:layout_marginLeft="@dimen/offset_0dp"
+            android:gravity="center"
+            android:textColor="@color/red"
+            app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_from"
+            app:layout_constraintEnd_toStartOf="@id/guideline_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Kurýr vyzvedne" />
 
-    <TextView
-        android:id="@+id/text_item_delivery_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@id/autodecline_countdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/price_barrier"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="6.00 Kč" />
+        <TextView
+            android:id="@+id/text_item_delivery_time_from"
+            style="@style/TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_8dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_time_to"
+            app:layout_constraintEnd_toStartOf="@id/guideline_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_delivery_type"
+            tools:text="od 22:59" />
 
-    <TextView
-        android:id="@+id/autodecline_countdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_hourglass"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Medium"
-        android:textColor="@color/red"
-        app:drawableStartCompat="@drawable/ic_hourglass"
-        app:layout_constraintBottom_toTopOf="@id/info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/price_barrier"
-        app:layout_constraintTop_toBottomOf="@+id/text_item_delivery_price"
-        tools:text="100h:08m" />
+        <TextView
+            android:id="@+id/text_item_delivery_time_to"
+            style="@style/TextAppearance.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_8dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/info"
+            app:layout_constraintEnd_toStartOf="@id/guideline_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_delivery_time_from"
+            app:layout_goneMarginBottom="@dimen/offset_0dp"
+            tools:text="do 3:00" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/price_barrier"
-        android:layout_width="@dimen/offset_0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="start"
-        app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown" />
+        <TextView
+            android:id="@+id/text_item_delivery_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Medium"
+            app:layout_constraintBottom_toTopOf="@id/autodecline_countdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/price_barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="6.00 Kč" />
 
-    <TextView
-        android:id="@+id/text_item_delivery_customer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/offset_8dp"
-        android:layout_marginLeft="@dimen/offset_8dp"
-        android:layout_marginEnd="@dimen/offset_8dp"
-        android:layout_marginRight="@dimen/offset_8dp"
-        android:textAppearance="@style/TextAppearance.Medium"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_address"
-        app:layout_constraintEnd_toStartOf="@id/price_barrier"
-        app:layout_constraintStart_toEndOf="@id/guideline_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="John Doe" />
+        <TextView
+            android:id="@+id/autodecline_countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_hourglass"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:textColor="@color/red"
+            app:drawableStartCompat="@drawable/ic_hourglass"
+            app:layout_constraintBottom_toTopOf="@id/info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/price_barrier"
+            app:layout_constraintTop_toBottomOf="@+id/text_item_delivery_price"
+            tools:text="100h:08m" />
 
-    <TextView
-        android:id="@+id/text_item_delivery_address"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/offset_8dp"
-        android:layout_marginLeft="@dimen/offset_8dp"
-        android:layout_marginEnd="@dimen/offset_8dp"
-        android:layout_marginRight="@dimen/offset_8dp"
-        android:layout_marginBottom="@dimen/offset_8dp"
-        app:layout_constraintBottom_toTopOf="@id/info"
-        app:layout_constraintEnd_toStartOf="@id/price_barrier"
-        app:layout_constraintStart_toEndOf="@id/guideline_name"
-        app:layout_constraintTop_toBottomOf="@id/text_item_delivery_customer"
-        app:layout_goneMarginBottom="@dimen/offset_0dp"
-        tools:text="Evergreen Terrace 476, Springfield khgs kdc d kd vjkwd vkvkw vkw kwkn rknvkw vcknw vkwriu hfuvhfs uvhrh ihviu  vi rih iefbvi bhib ihfbv ifbvi biv biberivber ibfihv beiv br ibweri rir" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/price_barrier"
+            android:layout_width="@dimen/offset_0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="text_item_delivery_price,autodecline_countdown" />
 
-    <TextView
-        android:id="@+id/info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:gravity="center"
-        android:padding="@dimen/offset_4dp"
-        android:text="@string/scheduling_delivery_info"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:drawableLeftCompat="@drawable/ic_baseline_info_24"
-        app:drawableStartCompat="@drawable/ic_baseline_info_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_item_delivery_customer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_8dp"
+            android:layout_marginLeft="@dimen/offset_8dp"
+            android:layout_marginEnd="@dimen/offset_8dp"
+            android:layout_marginRight="@dimen/offset_8dp"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/text_item_delivery_address"
+            app:layout_constraintEnd_toStartOf="@id/price_barrier"
+            app:layout_constraintStart_toEndOf="@id/guideline_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="John Doe" />
+
+        <TextView
+            android:id="@+id/text_item_delivery_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/offset_8dp"
+            android:layout_marginLeft="@dimen/offset_8dp"
+            android:layout_marginEnd="@dimen/offset_8dp"
+            android:layout_marginRight="@dimen/offset_8dp"
+            android:layout_marginBottom="@dimen/offset_8dp"
+            app:layout_constraintBottom_toTopOf="@id/info"
+            app:layout_constraintEnd_toStartOf="@id/price_barrier"
+            app:layout_constraintStart_toEndOf="@id/guideline_name"
+            app:layout_constraintTop_toBottomOf="@id/text_item_delivery_customer"
+            app:layout_goneMarginBottom="@dimen/offset_0dp"
+            tools:text="Evergreen Terrace 476, Springfield khgs kdc d kd vjkwd vkvkw vkw kwkn rknvkw vcknw vkwriu hfuvhfs uvhrh ihviu  vi rih iefbvi bhib ihfbv ifbvi biv biberivber ibfihv beiv br ibweri rir" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:gravity="center"
+            android:padding="@dimen/offset_4dp"
+            android:text="@string/scheduling_delivery_info"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:drawableLeftCompat="@drawable/ic_baseline_info_24"
+            app:drawableStartCompat="@drawable/ic_baseline_info_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
