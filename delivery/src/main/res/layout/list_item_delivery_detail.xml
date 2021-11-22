@@ -1,63 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:forceHasOverlappingRendering="false">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/count_square"
-        layout="@layout/typed_value_layout"
-        android:layout_width="@dimen/count_indicator_size"
-        android:layout_height="@dimen/count_indicator_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/item_title"
-        style="@style/Title"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/count_square"
-        app:layout_constraintEnd_toStartOf="@id/price_square"
-        app:layout_constraintStart_toEndOf="@id/count_square"
-        app:layout_constraintTop_toTopOf="@id/count_square"
-        tools:text="Some special product" />
+        android:background="@color/white"
+        android:forceHasOverlappingRendering="false">
 
-    <include
-        android:id="@+id/price_square"
-        layout="@layout/typed_value_layout"
-        android:layout_width="@dimen/price_indicator_size"
-        android:layout_height="@dimen/price_indicator_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/item_title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        <include
+            android:id="@+id/count_square"
+            layout="@layout/typed_value_layout"
+            android:layout_width="@dimen/count_indicator_size"
+            android:layout_height="@dimen/count_indicator_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/subitems_barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="item_title,price_square" />
+        <TextView
+            android:id="@+id/item_title"
+            style="@style/Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/count_square"
+            app:layout_constraintEnd_toStartOf="@id/price_square"
+            app:layout_constraintStart_toEndOf="@id/count_square"
+            app:layout_constraintTop_toTopOf="@id/count_square"
+            tools:text="Some special product" />
 
-    <LinearLayout
-        android:id="@+id/subitems"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_8dp"
-        android:layout_marginEnd="@dimen/offset_8dp"
-        android:layout_marginRight="@dimen/offset_8dp"
-        android:layout_marginBottom="@dimen/offset_8dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/item_title"
-        app:layout_constraintTop_toBottomOf="@+id/subitems_barrier" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/price_square"
+            layout="@layout/typed_value_layout"
+            android:layout_width="@dimen/price_indicator_size"
+            android:layout_height="@dimen/price_indicator_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/subitems_barrier"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="item_title,price_square" />
+
+        <LinearLayout
+            android:id="@+id/subitems"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_8dp"
+            android:layout_marginEnd="@dimen/offset_8dp"
+            android:layout_marginRight="@dimen/offset_8dp"
+            android:layout_marginBottom="@dimen/offset_8dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/item_title"
+            app:layout_constraintTop_toBottomOf="@+id/subitems_barrier" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
