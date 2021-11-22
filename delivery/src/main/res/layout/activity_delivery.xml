@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:forceHasOverlappingRendering="false"
-    tools:context="com.storyous.delivery.common.DeliveryActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/elevation_toolbar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/search_arrow"
-        app:title="@string/app_name" />
+        android:layout_height="match_parent"
+        android:forceHasOverlappingRendering="false"
+        tools:context="com.storyous.delivery.common.DeliveryActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_delivery_settings"
-        android:name="com.storyous.delivery.common.DeliverySettingsFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_shape"
-        android:elevation="@dimen/elevation_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_toolbar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/search_arrow"
+            app:title="@string/app_name" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_delivery_list"
-        android:name="com.storyous.delivery.common.DeliveryListFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_delivery_settings" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_delivery_settings"
+            android:name="com.storyous.delivery.common.DeliverySettingsFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_shape"
+            android:elevation="@dimen/elevation_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_delivery_detail"
-        android:name="com.storyous.delivery.common.DeliveryDetailFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:tag="overlappingDetail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_delivery_list"
+            android:name="com.storyous.delivery.common.DeliveryListFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_delivery_settings" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_delivery_detail"
+            android:name="com.storyous.delivery.common.DeliveryDetailFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:tag="overlappingDetail"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

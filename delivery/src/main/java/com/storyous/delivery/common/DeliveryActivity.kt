@@ -7,10 +7,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.storyous.delivery.common.api.DeliveryOrder
-import kotlinx.android.synthetic.main.activity_delivery.*
+import com.storyous.delivery.common.databinding.ActivityDeliveryBinding
 
 class DeliveryActivity : AppCompatActivity() {
 
@@ -43,32 +44,39 @@ class DeliveryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_delivery)
+        with(
+            DataBindingUtil.setContentView<ActivityDeliveryBinding>(
+                this,
+                R.layout.activity_delivery
+            )
+        ) {
 
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+            toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        viewModel.stopRinging()
-        viewModel.selectedOrderLive.observe(this) { onOrderSelected(it) }
+            viewModel.stopRinging()
+            viewModel.selectedOrderLive.observe(this@DeliveryActivity) { onOrderSelected(it) }
 
-        DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
+            DeliveryConfiguration.onActivityToolbarCreate(toolbar, supportFragmentManager)
 
-        DeliveryConfiguration.deliveryRepository?.getDeliveryError()?.observe(this) {
-            it?.takeIf { !it.consumed }?.run {
-                consume()
-                finish()
+            DeliveryConfiguration.deliveryRepository?.getDeliveryError()
+                ?.observe(this@DeliveryActivity) {
+                    it?.takeIf { !it.consumed }?.run {
+                        consume()
+                        finish()
+                    }
+                }
+
+            viewModel.selectedOrderId = intent.getStringExtra(ARG_ORDER_ID)
+            viewModel.loadOrders()
+
+            val constraintSet = ConstraintSet().apply { clone(root) }
+            fragmentDeliverySettings.setOnClickListener {
+                TransitionManager.beginDelayedTransition(root, AutoTransition())
+                constraintSet.applyTo(root)
+                settingsFragment.toggle()
             }
+            fragmentDeliverySettings.isVisible = DeliveryConfiguration.showSettingsBar
         }
-
-        viewModel.selectedOrderId = intent.getStringExtra(ARG_ORDER_ID)
-        viewModel.loadOrders()
-
-        val constraintSet = ConstraintSet().apply { clone(root) }
-        fragment_delivery_settings.setOnClickListener {
-            TransitionManager.beginDelayedTransition(root, AutoTransition())
-            constraintSet.applyTo(root)
-            settingsFragment.toggle()
-        }
-        fragment_delivery_settings.isVisible = DeliveryConfiguration.showSettingsBar
     }
 
     override fun onBackPressed() {
