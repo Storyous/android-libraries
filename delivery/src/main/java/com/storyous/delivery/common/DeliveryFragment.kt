@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.storyous.delivery.common.api.DeliveryOrder
-import kotlinx.android.synthetic.main.fragment_delivery.*
+import com.storyous.delivery.common.databinding.FragmentDeliveryBinding
 
 class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
 
@@ -50,14 +50,19 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val constraintSet = ConstraintSet().apply { clone(root) }
-        fragment_delivery_settings.setOnClickListener {
-            TransitionManager.beginDelayedTransition(root, AutoTransition())
-            constraintSet.applyTo(root)
-            settingsFragment.toggle()
+        with(FragmentDeliveryBinding.bind(view)) {
+
+            val constraintSet = ConstraintSet().apply { clone(root) }
+            fragmentDeliverySettings.setOnClickListener {
+                TransitionManager.beginDelayedTransition(root, AutoTransition())
+                constraintSet.applyTo(root)
+                settingsFragment.toggle()
+            }
+            fragmentDeliverySettings.isVisible = DeliveryConfiguration.showSettingsBar
+            fragmentDeliveryButton.viewStub?.apply {
+                DeliveryConfiguration.onCreateActionButton(this, childFragmentManager)
+            }
         }
-        fragment_delivery_settings.isVisible = DeliveryConfiguration.showSettingsBar
-        DeliveryConfiguration.onCreateActionButton(fragment_delivery_button, childFragmentManager)
     }
 
     private fun onBackPressed() {
