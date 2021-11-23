@@ -7,15 +7,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.databinding.ActivityDeliveryBinding
 
-class DeliveryActivity : AppCompatActivity() {
+class DeliveryActivity : AppCompatActivity(R.layout.activity_delivery) {
 
     private val viewModel by viewModels<DeliveryViewModel>()
+    private val binding by viewBinding<ActivityDeliveryBinding>()
 
     companion object {
         private const val ARG_ORDER_ID = "orderId"
@@ -44,13 +45,7 @@ class DeliveryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(
-            DataBindingUtil.setContentView<ActivityDeliveryBinding>(
-                this,
-                R.layout.activity_delivery
-            )
-        ) {
-
+        with(binding) {
             toolbar.setNavigationOnClickListener { onBackPressed() }
 
             viewModel.stopRinging()

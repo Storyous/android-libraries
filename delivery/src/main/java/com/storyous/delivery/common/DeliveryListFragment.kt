@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.databinding.FragmentDeliveryListBinding
 
@@ -15,7 +16,7 @@ import com.storyous.delivery.common.databinding.FragmentDeliveryListBinding
  */
 class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
-    private lateinit var binding: FragmentDeliveryListBinding
+    private val binding by viewBinding<FragmentDeliveryListBinding>()
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
     private val commonSelectedState = SelectedState()
     private val newDeliveryItemsAdapter by lazy {
@@ -56,7 +57,6 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentDeliveryListBinding.bind(view)
 
         with(binding.listDeliveriesNew) {
             adapter = newDeliveryItemsAdapter

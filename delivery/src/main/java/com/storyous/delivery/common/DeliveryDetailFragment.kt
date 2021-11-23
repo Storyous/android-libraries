@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.commonutils.castOrNull
 import com.storyous.commonutils.extensions.positiveButton
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import com.storyous.delivery.common.databinding.FragmentDeliveryDetailBinding
-import timber.log.Timber
 import java.math.BigDecimal
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
-    private lateinit var binding: FragmentDeliveryDetailBinding
+    private val binding by viewBinding<FragmentDeliveryDetailBinding>()
     private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
     private val timesAdapter by lazy { DeliveryTimesAdapter() }
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
@@ -76,7 +77,6 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentDeliveryDetailBinding.bind(view)
 
         binding.orderItems.adapter = itemsAdapter
         binding.orderItems.addItemDecoration(

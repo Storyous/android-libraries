@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.databinding.FragmentDeliveryBinding
 
@@ -23,6 +24,7 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
     }
 
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
+    private val binding by viewBinding<FragmentDeliveryBinding>()
 
     private val overlappingDetailFragment
         get() = childFragmentManager.findFragmentByTag("overlappingDetail")
@@ -50,8 +52,7 @@ class DeliveryFragment : Fragment(R.layout.fragment_delivery) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(FragmentDeliveryBinding.bind(view)) {
-
+        with(binding) {
             val constraintSet = ConstraintSet().apply { clone(root) }
             fragmentDeliverySettings.setOnClickListener {
                 TransitionManager.beginDelayedTransition(root, AutoTransition())

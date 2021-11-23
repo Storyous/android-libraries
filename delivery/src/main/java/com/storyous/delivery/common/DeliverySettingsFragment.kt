@@ -14,13 +14,14 @@ import androidx.core.view.contains
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliverySettings
 import com.storyous.delivery.common.databinding.FragmentDeliverySettingsBinding
 import com.storyous.delivery.common.views.Expandable
 
 class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), Expandable {
 
-    private lateinit var binding: FragmentDeliverySettingsBinding
+    private val binding by viewBinding<FragmentDeliverySettingsBinding>()
     override var expanded: Boolean = false
     private lateinit var constraintCollapsed: ConstraintSet
     private lateinit var constraintExpanded: ConstraintSet
@@ -40,7 +41,6 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentDeliverySettingsBinding.bind(view)
 
         constraintCollapsed = ConstraintSet().apply {
             clone(view as ConstraintLayout)
