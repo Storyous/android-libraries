@@ -1,11 +1,10 @@
 package com.storyous.delivery.common
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.recyclerView.ItemsAdapter
-import kotlinx.android.synthetic.main.delivery_detail_date.view.*
+import com.storyous.delivery.common.databinding.DeliveryDetailDateBinding
 
 class DeliveryTimesAdapter :
     RecyclerView.Adapter<DeliveryTimesAdapter.ItemDetailViewHolder>(),
@@ -19,8 +18,7 @@ class DeliveryTimesAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, itemType: Int): ItemDetailViewHolder {
         return ItemDetailViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.delivery_detail_date, parent, false)
+            DeliveryDetailDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -31,10 +29,10 @@ class DeliveryTimesAdapter :
     }
 
     class ItemDetailViewHolder(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
-        private val labelView = itemView.estimated_pickup_label
-        private val valueView = itemView.estimated_pickup_value
+        binding: DeliveryDetailDateBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private val labelView = binding.estimatedPickupLabel
+        private val valueView = binding.estimatedPickupValue
 
         fun bind(label: String, value: String) {
             labelView.text = label

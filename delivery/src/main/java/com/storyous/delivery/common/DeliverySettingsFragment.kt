@@ -14,12 +14,14 @@ import androidx.core.view.contains
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliverySettings
+import com.storyous.delivery.common.databinding.FragmentDeliverySettingsBinding
 import com.storyous.delivery.common.views.Expandable
-import kotlinx.android.synthetic.main.fragment_delivery_settings.*
 
 class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), Expandable {
 
+    private val binding by viewBinding<FragmentDeliverySettingsBinding>()
     override var expanded: Boolean = false
     private lateinit var constraintCollapsed: ConstraintSet
     private lateinit var constraintExpanded: ConstraintSet
@@ -58,12 +60,12 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
             )
         }
 
-        accept_orders_switch.setOnClickListener {
+        binding.acceptOrdersSwitch.setOnClickListener {
             saveSettings()
         }
 
-        integrated_dispatch_spinner.adapter = dispatchAdapter
-        integrated_dispatch_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.integratedDispatchSpinner.adapter = dispatchAdapter
+        binding.integratedDispatchSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 IntegratedDispatch.apiKeyFromValue(parent?.selectedItem?.toString() ?: "", requireContext())
                     .takeIf { viewModel.settings.value?.integratedDispatch != it }?.run { saveSettings() }
@@ -73,7 +75,7 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
                 // no action
             }
         }
-        prep_time_link.setOnClickListener {
+        binding.prepTimeLink.setOnClickListener {
             TimePickerDialog(currentPrepTime) {
                 updatePrepTime(it)
                 saveSettings()
@@ -87,13 +89,13 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
     override fun expand() {
         with(view as ConstraintLayout) {
             constraintExpanded.applyTo(this)
-            removeView(flow)
+            removeView(binding.flow)
         }
         setVisibility(false)
     }
 
     override fun toggle(): Boolean {
-        if (View.VISIBLE == progress.visibility) {
+        if (View.VISIBLE == binding.progress.visibility) {
             return expanded
         }
         return super.toggle()
@@ -101,8 +103,8 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
 
     override fun collapse() {
         with(view as ConstraintLayout) {
-            if (flow != null && !contains(flow)) {
-                addView(flow)
+            if (binding.flow != null && !contains(binding.flow)) {
+                addView(binding.flow)
             }
             constraintCollapsed.applyTo(this)
         }
@@ -110,40 +112,43 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
     }
 
     private fun setVisibility(showProgress: Boolean) {
-        progress.isVisible = showProgress
-        group_labels.isVisible = !showProgress
-        group_infos.isVisible = !showProgress && !expanded
-        group_buttons.isVisible = !showProgress && expanded
+        binding.progress.isVisible = showProgress
+        binding.groupLabels.isVisible = !showProgress
+        binding.groupInfos.isVisible = !showProgress && !expanded
+        binding.groupButtons.isVisible = !showProgress && expanded
     }
 
     private fun updateSettings(settings: DeliverySettings) {
-        accept_orders_info.text = addSeparator(getString(
+        binding.acceptOrdersInfo.text = addSeparator(getString(
             if (settings.acceptNewOrders) R.string.settings_yes else R.string.settings_no
         ))
-        accept_orders_switch.isChecked = settings.acceptNewOrders
+        binding.acceptOrdersSwitch.isChecked = settings.acceptNewOrders
 
-        integrated_dispatch_info.text = IntegratedDispatch.valueFromApiKey(
+        binding.integratedDispatchInfo.text = IntegratedDispatch.valueFromApiKey(
             settings.integratedDispatch, requireContext()
         )
-        integrated_dispatch_spinner.setSelection(dispatchAdapter.getPosition(settings.integratedDispatch))
+        binding.integratedDispatchSpinner.setSelection(dispatchAdapter.getPosition(settings.integratedDispatch))
 
         updatePrepTime(settings.mealPrepTime)
     }
 
     private fun updatePrepTime(prepTime: Int) {
         currentPrepTime = prepTime
-        prep_time_info.text = addSeparator(getString(R.string.settings_minutes, prepTime))
+        binding.prepTimeInfo.text = addSeparator(getString(R.string.settings_minutes, prepTime))
         SpannableString(getString(R.string.settings_minutes, prepTime)).also {
             it.setSpan(URLSpan(""), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            prep_time_link.setText(it, TextView.BufferType.SPANNABLE)
+            binding.prepTimeLink.setText(it, TextView.BufferType.SPANNABLE)
         }
     }
 
     private fun saveSettings() {
         viewModel.saveSettings(DeliverySettings(
-            accept_orders_switch.isChecked,
+            binding.acceptOrdersSwitch.isChecked,
             currentPrepTime,
-            IntegratedDispatch.apiKeyFromValue(integrated_dispatch_spinner.selectedItem.toString(), requireContext())
+            IntegratedDispatch.apiKeyFromValue(
+                binding.integratedDispatchSpinner.selectedItem.toString(), 
+                requireContext()
+            )
         ))
     }
 

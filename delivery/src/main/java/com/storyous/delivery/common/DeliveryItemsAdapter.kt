@@ -23,14 +23,14 @@ import com.storyous.commonutils.recyclerView.ItemsAdapter
 import com.storyous.commonutils.recyclerView.getString
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
-import kotlinx.android.synthetic.main.list_item_delivery.view.*
+import com.storyous.delivery.common.databinding.ListItemDeliveryBinding
+import java.math.BigDecimal
+import java.util.Calendar
+import java.util.Date
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
-import java.util.Calendar
-import java.util.Date
 
 class DeliveryItemsAdapter(
     private val selectedState: SelectedState = SelectedState(),
@@ -83,8 +83,11 @@ class DeliveryItemsAdapter(
             }
             ItemType.ITEM -> {
                 DeliveryItemViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.list_item_delivery, parent, false),
+                    ListItemDeliveryBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    ),
                     clickListener
                 )
             }
@@ -137,8 +140,8 @@ class DeliveryOrderDiffCallback(
         val oldItem = oldItems[oldItemPosition]
         val newItem = newItems[newItemPosition]
         return oldItem is Item
-            && newItem is Item
-            && oldItem.itemValue.orderId == newItem.itemValue.orderId
+                && newItem is Item
+                && oldItem.itemValue.orderId == newItem.itemValue.orderId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -147,18 +150,18 @@ class DeliveryOrderDiffCallback(
 }
 
 class DeliveryItemViewHolder(
-    itemView: View,
+    private val binding: ListItemDeliveryBinding,
     private val onClickListener: (Int, DeliveryOrder) -> Unit
-) : DeliveryItemsAdapter.DeliveryViewHolder(itemView) {
+) : DeliveryItemsAdapter.DeliveryViewHolder(binding.root) {
 
-    private val provider = ContextStringResProvider(itemView.context)
-    private val timeFrom: TextView = itemView.text_item_delivery_time_from
-    private val timeTo: TextView = itemView.text_item_delivery_time_to
-    val name: TextView = itemView.text_item_delivery_customer
-    val address: TextView = itemView.text_item_delivery_address
-    val price: TextView = itemView.text_item_delivery_price
-    val deliveryType: TextView = itemView.text_item_delivery_type
-    val autodeclineCountdown: TextView = itemView.autodecline_countdown
+    private val provider = ContextStringResProvider(binding.root.context)
+    private val timeFrom: TextView = binding.textItemDeliveryTimeFrom
+    private val timeTo: TextView = binding.textItemDeliveryTimeTo
+    val name: TextView = binding.textItemDeliveryCustomer
+    val address: TextView = binding.textItemDeliveryAddress
+    val price: TextView = binding.textItemDeliveryPrice
+    val deliveryType: TextView = binding.textItemDeliveryType
+    val autodeclineCountdown: TextView = binding.autodeclineCountdown
     var autodeclineTimer: CountDownTimer? = null
 
     override fun bind(listItem: ListItem<DeliveryOrder>) {
@@ -178,7 +181,7 @@ class DeliveryItemViewHolder(
             timeTo.text = it.second
             timeTo.isVisible = it.second.isNotEmpty()
         }
-        itemView.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+        binding.info.isVisible = deliveryOrder.state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
 
         autodeclineTimer?.cancel()
         autodeclineTimer = AutodeclineCountdown.newInstance(deliveryOrder, autodeclineCountdown)
@@ -288,7 +291,7 @@ fun List<DeliveryOrder>.toAdapterItemsByDate(context: Context): List<ListItem<De
                 else -> DateUtils.DMY.format(date!!)
             }
             listOf(Header<DeliveryOrder>(title, HEADER_DISABLED)) +
-                orders.sortedBy { it.itemValue.timing?.mostImportantTime }
+                    orders.sortedBy { it.itemValue.timing?.mostImportantTime }
         }
 }
 

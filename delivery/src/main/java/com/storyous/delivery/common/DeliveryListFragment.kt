@@ -7,14 +7,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.DeliveryOrder
-import kotlinx.android.synthetic.main.fragment_delivery_list.*
+import com.storyous.delivery.common.databinding.FragmentDeliveryListBinding
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
+    private val binding by viewBinding<FragmentDeliveryListBinding>()
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
     private val commonSelectedState = SelectedState()
     private val newDeliveryItemsAdapter by lazy {
@@ -27,7 +29,7 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.filteredStatesLive.observe(this) {
-            orders_filter.text = getString(
+            binding.ordersFilter.text = getString(
                 R.string.show_with, when {
                     it.contains(DeliveryOrder.STATE_CONFIRMED) -> getString(R.string.delivery_orders_waiting)
                     it.contains(DeliveryOrder.STATE_DISPATCHED) -> getString(R.string.delivery_orders_processed)
@@ -56,18 +58,18 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(list_deliveries_new) {
+        with(binding.listDeliveriesNew) {
             adapter = newDeliveryItemsAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         }
 
-        with(orders_filter) {
+        with(binding.ordersFilter) {
             setOnClickListener {
                 showStateFilterMenu(it)
             }
         }
 
-        with(list_deliveries) {
+        with(binding.listDeliveries) {
             adapter = deliveryItemsAdapter
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
         }

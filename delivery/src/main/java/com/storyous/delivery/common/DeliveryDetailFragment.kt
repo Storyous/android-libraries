@@ -13,18 +13,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.storyous.commonutils.castOrNull
 import com.storyous.commonutils.extensions.positiveButton
+import com.storyous.commonutils.viewBinding
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
-import kotlinx.android.synthetic.main.delivery_detail_buttons.*
-import kotlinx.android.synthetic.main.fragment_delivery_detail.*
-import kotlinx.android.synthetic.main.layout_delivery_detail_meta_data.*
-import timber.log.Timber
+import com.storyous.delivery.common.databinding.FragmentDeliveryDetailBinding
 import java.math.BigDecimal
+import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
+    private val binding by viewBinding<FragmentDeliveryDetailBinding>()
     private val itemsAdapter by lazy { DeliveryDetailItemsAdapter() }
     private val timesAdapter by lazy { DeliveryTimesAdapter() }
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
@@ -35,16 +35,16 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
         viewModel.selectedOrderLive.observe(this, this::onOrderSelected)
         viewModel.loadingOrderAccepting.observe(this) {
-            button_accept.showOverlay(it)
+            binding.buttons.buttonAccept.showOverlay(it)
         }
         viewModel.loadingOrderCancelling.observe(this) {
-            button_cancel.showOverlay(it)
+            binding.buttons.buttonCancel.showOverlay(it)
         }
         viewModel.loadingOrderDispatching.observe(this) {
-            button_dispatch.showOverlay(it)
+            binding.buttons.buttonDispatch.showOverlay(it)
         }
         viewModel.printOrderBillState.observe(this) {
-            button_print_bill.showOverlay(it?.isLoading() == true)
+            binding.buttons.buttonPrintBill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
                 Toast.makeText(
                     requireContext(),
@@ -55,40 +55,40 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
         viewModel.acceptFunction.observe(this) {
-            button_accept.isVisible = it?.first == true
-            button_accept.isEnabled = it?.second == true
+            binding.buttons.buttonAccept.isVisible = it?.first == true
+            binding.buttons.buttonAccept.isEnabled = it?.second == true
         }
         viewModel.cancelFunction.observe(this) {
-            button_cancel.isVisible = it.first
-            button_cancel.isEnabled = it.second
+            binding.buttons.buttonCancel.isVisible = it.first
+            binding.buttons.buttonCancel.isEnabled = it.second
         }
         viewModel.dispatchFunction.observe(this) {
             val globallyOff = DeliveryConfiguration.globalDispatchDisabled.first
-            button_dispatch.isVisible = it?.first == true
-            button_dispatch.isEnabled = it?.second == true && !globallyOff
-            warning.text = DeliveryConfiguration.globalDispatchDisabled.second
-            warning.isVisible = globallyOff && it?.second == true && warning.text.isNotEmpty()
+            binding.buttons.buttonDispatch.isVisible = it?.first == true
+            binding.buttons.buttonDispatch.isEnabled = it?.second == true && !globallyOff
+            binding.warning.text = DeliveryConfiguration.globalDispatchDisabled.second
+            binding.warning.isVisible = globallyOff && it?.second == true && binding.warning.text.isNotEmpty()
         }
         viewModel.printBillFunction.observe(this) {
-            button_print_bill.isVisible = it?.first == true
-            button_print_bill.isEnabled = it?.second == true
+            binding.buttons.buttonPrintBill.isVisible = it?.first == true
+            binding.buttons.buttonPrintBill.isEnabled = it?.second == true
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        order_items.adapter = itemsAdapter
-        order_items.addItemDecoration(
+        binding.orderItems.adapter = itemsAdapter
+        binding.orderItems.addItemDecoration(
             DividerItemDecoration(
                 view.context,
                 DividerItemDecoration.VERTICAL
             )
         )
-        noDetail.visibility = View.VISIBLE
-        detail.visibility = View.GONE
+        binding.noDetail.visibility = View.VISIBLE
+        binding.detail.visibility = View.GONE
 
-        button_accept.setOnClickListener {
+        binding.buttons.buttonAccept.setOnClickListener {
             Timber.i("Confirm order")
             viewModel.selectedOrder?.also { viewModel.acceptOrder(it) }
                 ?: Toast.makeText(
@@ -97,11 +97,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        button_cancel.setOnClickListener {
+        binding.buttons.buttonCancel.setOnClickListener {
             Timber.i("Cancel order")
             onOrderCancelClicked()
         }
-        button_dispatch.setOnClickListener {
+        binding.buttons.buttonDispatch.setOnClickListener {
             Timber.i("Dispatch order")
             viewModel.selectedOrder?.also { viewModel.dispatchOrder(it) }
                 ?: Toast.makeText(
@@ -110,11 +110,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
                     Toast.LENGTH_SHORT
                 ).show()
         }
-        button_print_bill.setOnClickListener {
+        binding.buttons.buttonPrintBill.setOnClickListener {
             Timber.i("Print order bill")
             viewModel.selectedOrder?.also { viewModel.printBill(it) }
         }
-        delivery_dates.adapter = timesAdapter
+        binding.meta.deliveryDates.adapter = timesAdapter
     }
 
     override fun onDestroyView() {
@@ -168,8 +168,8 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
     private fun onOrderSelected(order: DeliveryOrder?) {
         order?.apply {
-            noDetail.visibility = View.GONE
-            detail.visibility = View.VISIBLE
+            binding.noDetail.visibility = View.GONE
+            binding.detail.visibility = View.VISIBLE
 
             itemsAdapter.items = items
             updateCustomerInfo(customer, desk)
@@ -179,11 +179,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             updateOrderNote(note)
             updateOrderNumber(provider, orderId)
             updateDates(this)
-            info.isVisible = state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
+            binding.info.isVisible = state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
             autodeclineTimer?.cancel()
             autodeclineTimer = AutodeclineCountdown.newInstance(
                 this,
-                autodecline_countdown,
+                binding.autodeclineCountdown,
                 R.string.autodecline_info
             ) {
                 viewModel.refreshFunctions()
@@ -192,16 +192,16 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     private fun updateTips(tipWithVat: BigDecimal?) {
-        delivery_tips_group.isVisible = tipWithVat != null
+        binding.meta.deliveryTipsGroup.isVisible = tipWithVat != null
         tipWithVat?.let {
-            delivery_tips.text = DeliveryConfiguration.formatter.formatPrice(it)
+            binding.meta.deliveryTips.text = DeliveryConfiguration.formatter.formatPrice(it)
         }
     }
 
     private fun updateDiscount(discountWithVat: BigDecimal?) {
-        delivery_discount_group.isVisible = discountWithVat != null
+        binding.meta.deliveryDiscountGroup.isVisible = discountWithVat != null
         discountWithVat?.let {
-            delivery_discount.text = DeliveryConfiguration.formatter.formatPrice(it)
+            binding.meta.deliveryDiscount.text = DeliveryConfiguration.formatter.formatPrice(it)
         }
     }
 
@@ -222,18 +222,18 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
 
     @Suppress("unused")
     private fun updateOrderNumber(provider: String, orderId: String) {
-        order_number.text = DeliveryModel.getOrderInfo(provider) { resId, param ->
+        binding.meta.orderNumber.text = DeliveryModel.getOrderInfo(provider) { resId, param ->
             getString(resId, "$param")
         }
-        order_number.isVisible = order_number.text.isNotEmpty()
+        binding.meta.orderNumber.isVisible = binding.meta.orderNumber.text.isNotEmpty()
         /* we will use only provider name until we have correct order number. then we will add:
          + "\n$orderId"
          */
     }
 
     private fun updatePaymentType(alreadyPaid: Boolean) {
-        delivery_payment_type_header.text = getString(R.string.delivery_payment_type_header)
-        delivery_payment_type.text = getString(
+        binding.meta.deliveryPaymentTypeHeader.text = getString(R.string.delivery_payment_type_header)
+        binding.meta.deliveryPaymentType.text = getString(
             if (alreadyPaid) {
                 R.string.delivery_already_paid
             } else {
@@ -243,20 +243,20 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     private fun updateOrderNote(note: String?) {
-        order_note_group.isVisible = note?.isNotBlank() == true
-        order_note.text = note
+        binding.orderNoteGroup.isVisible = note?.isNotBlank() == true
+        binding.meta.orderNote.text = note
     }
 
     private fun repaintNoOrderSelected() {
-        noDetail.visibility = View.VISIBLE
-        detail.visibility = View.GONE
-        order_note_group.isVisible = false
+        binding.noDetail.visibility = View.VISIBLE
+        binding.detail.visibility = View.GONE
+        binding.orderNoteGroup.isVisible = false
     }
 
     private fun updateCustomerInfo(customer: Customer, desk: Desk?) {
-        customer_detail_name.text = customer.name
-        customer_detail_phone.text = customer.phoneNumber
-        customer_detail_address.text = desk?.name?.let { getString(R.string.table, it) }
+        binding.meta.customerDetailName.text = customer.name
+        binding.meta.customerDetailPhone.text = customer.phoneNumber
+        binding.meta.customerDetailAddress.text = desk?.name?.let { getString(R.string.table, it) }
             ?: customer.deliveryAddress
     }
 }

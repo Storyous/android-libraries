@@ -1,161 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_light"
-    android:forceHasOverlappingRendering="false"
-    tools:context="com.storyous.delivery.common.DeliveryDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/deliver_items_header"
-        style="@style/DeliveryItemDetailHeader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:text="@string/delivery_order_items"
-        android:textAppearance="@style/TextAppearance.Medium"
-        app:layout_constraintBottom_toTopOf="@+id/order_items"
-        app:layout_constraintEnd_toEndOf="@+id/centerGuideline"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="packed" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_light"
+        android:forceHasOverlappingRendering="false"
+        tools:context="com.storyous.delivery.common.DeliveryDetailFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/order_items"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingBottom="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
-        app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/deliver_items_header"
-        app:layout_constraintTop_toBottomOf="@id/deliver_items_header"
-        tools:itemCount="5"
-        tools:listitem="@layout/list_item_delivery_detail" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/order_detail_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/centerGuideline"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/deliver_items_header"
+            style="@style/DeliveryItemDetailHeader"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="start"
+            android:text="@string/delivery_order_items"
+            android:textAppearance="@style/TextAppearance.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/order_items"
+            app:layout_constraintEnd_toEndOf="@+id/centerGuideline"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-            <TextView
-                android:id="@+id/autodecline_countdown"
-                style="@style/DeliveryItemDetailCountdown"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_items"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
+            app:layout_constraintEnd_toEndOf="@id/deliver_items_header"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/deliver_items_header"
+            app:layout_constraintTop_toBottomOf="@id/deliver_items_header"
+            tools:itemCount="5"
+            tools:listitem="@layout/list_item_delivery_detail" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/order_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonBarrier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/centerGuideline"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autodecline_info"
-                android:textAppearance="@style/TextAppearance.Medium" />
+                android:orientation="vertical">
 
-            <include
-                layout="@layout/layout_delivery_detail_meta_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/autodecline_countdown"
+                    style="@style/DeliveryItemDetailCountdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/autodecline_info"
+                    android:textAppearance="@style/TextAppearance.Medium" />
 
-    </androidx.core.widget.NestedScrollView>
+                <include
+                    android:id="@+id/meta"
+                    layout="@layout/layout_delivery_detail_meta_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/red"
-        android:gravity="center"
-        android:padding="@dimen/offset_4dp"
-        android:text="@string/scheduling_delivery_info"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:drawableLeftCompat="@drawable/ic_baseline_info_24"
-        app:drawableStartCompat="@drawable/ic_baseline_info_24"
-        app:layout_constraintBottom_toTopOf="@id/warning"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/centerGuideline"
-        tools:visibility="visible" />
+        </androidx.core.widget.NestedScrollView>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/warning"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/yellow"
-        android:gravity="center"
-        android:padding="@dimen/offset_4dp"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:drawableLeftCompat="@drawable/ic_warning_24"
-        app:drawableStartCompat="@drawable/ic_warning_24"
-        app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/centerGuideline"
-        tools:text="Order dispatching is available only on master."
-        tools:visibility="visible" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/red"
+            android:gravity="center"
+            android:padding="@dimen/offset_4dp"
+            android:text="@string/scheduling_delivery_info"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:drawableLeftCompat="@drawable/ic_baseline_info_24"
+            app:drawableStartCompat="@drawable/ic_baseline_info_24"
+            app:layout_constraintBottom_toTopOf="@id/warning"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/centerGuideline"
+            tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/buttonBarrier"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch,button_print_bill" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/warning"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/yellow"
+            android:gravity="center"
+            android:padding="@dimen/offset_4dp"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:drawableLeftCompat="@drawable/ic_warning_24"
+            app:drawableStartCompat="@drawable/ic_warning_24"
+            app:layout_constraintBottom_toTopOf="@id/buttonBarrier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/centerGuideline"
+            tools:text="Order dispatching is available only on master."
+            tools:visibility="visible" />
 
-    <include layout="@layout/delivery_detail_buttons" />
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/buttonBarrier"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch,button_print_bill" />
 
-    <TextView
-        android:id="@+id/not_open"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delivery_order_not_open"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <include
+            android:id="@+id/buttons"
+            layout="@layout/delivery_detail_buttons" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/order_note_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="order_note_header,order_note"
-        tools:visibility="visible" />
+        <TextView
+            android:id="@+id/not_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delivery_order_not_open"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel,,autodecline_countdown"
-        tools:visibility="visible" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/order_note_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="order_note_header,order_note"
+            tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/noDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="not_open"
-        tools:visibility="gone" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel,,autodecline_countdown"
+            tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/centerGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/noDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="not_open"
+            tools:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
