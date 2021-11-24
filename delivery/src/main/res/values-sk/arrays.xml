@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="delivery_cancel_reasons">
+    <item>Duplicitná objednávka</item>
+    <item>Kuchyňa nestíha</item>
+    <item>Nedostatok kuriérov</item>
+    <item>Nekompletné menu</item>
+    <item>Položka nie je k dispozícii</item>
+    <item>Reštaurácia je zatvorená</item>
+    <item>Zákazník je mimo rozvozovú zónu</item>
+  </string-array>
+</resources>

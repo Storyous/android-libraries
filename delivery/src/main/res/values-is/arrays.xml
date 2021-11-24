@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="delivery_cancel_reasons">
+    <item>Afrita pöntun</item>
+    <item>Pöntunargeta eldhúss náð</item>
+    <item>Ekki nægilega margir sendlar</item>
+    <item>Matseðill er ófullnægjandi</item>
+    <item>Atriði á matseðli er ekki í boð</item>
+    <item>Veitingastaðurinn er lokaður</item>
+    <item>Viðskiptavinurinn er utan afhendingarsvæðisins</item>
+  </string-array>
+</resources>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
   <string-array name="delivery_cancel_reasons">
-    <item>Duplicate order</item>
-    <item>Kitchen order capacity reached</item>
-    <item>Not enough couriers</item>
-    <item>Menu is incomplete</item>
-    <item>Menu item is not available</item>
-    <item>The restaurant is closed</item>
-    <item>The customer is outside the delivery area</item>
+    <item>A rendelés másodpéldánya</item>
+    <item>Konyhai rendelési kapacitás elérve</item>
+    <item>Nincs elegendő kiszállító</item>
+    <item>Hiányos menü</item>
+    <item>Menü tétel nem elérhető</item>
+    <item>Az étterem zárva</item>
+    <item>A vendég a kiszállítási területen túl található</item>
   </string-array>
 </resources>
