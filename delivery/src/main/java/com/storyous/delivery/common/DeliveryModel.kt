@@ -43,6 +43,8 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
                     getString(R.string.delivery_service_ubereats, null)
                 DeliveryViewModel.PROVIDER_DELIVERECT ->
                     getString(R.string.delivery_service_deliverect, null)
+                DeliveryViewModel.PROVIDER_DELIVERY_HERO ->
+                    getString(R.string.delivery_service_delivery_hero, null)
                 DeliveryViewModel.PROVIDER_PHONE ->
                     getString(R.string.delivery_service_phone, null)
                 DeliveryViewModel.PROVIDER_STORYOUS_TAKEAWAY_WEB,

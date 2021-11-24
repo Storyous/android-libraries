@@ -14,6 +14,7 @@
     <string name="delivery_service_wolt" translatable="false">Wolt</string>
     <string name="delivery_service_ubereats" translatable="false">UberEats</string>
     <string name="delivery_service_deliverect" translatable="false">Deliverect</string>
+    <string name="delivery_service_delivery_hero" translatable="false">Delivery Hero</string>
     <string name="delivery_service_phone">phone</string>
     <string name="delivery_service_storyous_takeaway" translatable="false">OneMenu</string>
     <string name="delivery_service_onemenu_qr" translatable="false">OneMenuQR</string>
