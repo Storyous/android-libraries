@@ -29,6 +29,7 @@ class DeliveryViewModel : ViewModel(), CoroutineScope by CoroutineProviderScope(
         const val PROVIDER_WOLT = "wolt"
         const val PROVIDER_UBER_EATS = "ubereats"
         const val PROVIDER_DELIVERECT = "deliverect"
+        const val PROVIDER_DELIVERY_HERO = "deliveryHero"
         const val PROVIDER_PHONE = "phone"
         const val PROVIDER_STORYOUS_TAKEAWAY_WEB = "5e6e9c3f0ab34eb0f646bc05"
         const val PROVIDER_STORYOUS_TAKEAWAY_APP = "5e1eca6a3a6c2907928d392b"
