@@ -4,6 +4,11 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion compile_sdk_version
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.storyous.androidlibraries"
         minSdkVersion min_sdk_version
