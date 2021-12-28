@@ -1,7 +1,9 @@
 package com.storyous.delivery.common
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,7 +16,10 @@ import com.storyous.delivery.common.databinding.FragmentDeliveryListBinding
 /**
  * A placeholder fragment containing a simple view.
  */
-class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
+class DeliveryListFragment : Fragment() {
+
+    private var _binding: FragmentDeliveryListBinding? = null
+    private val binding get() = _binding!!
 
     private val binding by viewBinding<FragmentDeliveryListBinding>()
     private val viewModel by viewModels<DeliveryViewModel>({ requireActivity() })
@@ -24,6 +29,20 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
     }
     private val deliveryItemsAdapter by lazy {
         DeliveryItemsAdapter(commonSelectedState) { viewModel.selectedOrderId = it.orderId }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = FragmentDeliveryListBinding.inflate(inflater, container, false).let {
+        _binding = it
+        it.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
