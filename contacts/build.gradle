@@ -47,3 +47,9 @@ dependencies {
     // JWT
     testImplementation 'com.auth0:java-jwt:3.10.2'
 }
+
+ext {
+    pomName = 'Storyous Libraries: Contacts'
+    pomDescription = 'Contacts storage'
+}
+apply from: '../maven_publish.gradle'

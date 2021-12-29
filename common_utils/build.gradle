@@ -65,3 +65,9 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 }
+
+ext {
+    pomName = 'Storyous Libraries: Common Utils'
+    pomDescription = 'Common utilities for Storyous projects'
+}
+apply from: '../maven_publish.gradle'

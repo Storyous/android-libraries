@@ -58,3 +58,8 @@ dependencies {
     testImplementation 'com.auth0:java-jwt:3.10.2'
 }
 
+ext {
+    pomName = 'Storyous Libraries: Firebase'
+    pomDescription = 'Firebase utilities'
+}
+apply from: '../maven_publish.gradle'

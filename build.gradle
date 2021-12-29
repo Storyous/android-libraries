@@ -80,3 +80,9 @@ task clean(type: Delete) {
 }
 
 apply plugin: "com.dipien.byebyejetifier"
+
+ext {
+    publishingGroupId = 'com.github.Storyous'
+}
+apply plugin: 'maven-publish'
+apply from: 'last_tag.gradle'

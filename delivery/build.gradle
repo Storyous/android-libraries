@@ -98,3 +98,9 @@ dependencies {
     implementation 'me.grantland:autofittextview:0.2.1'
     implementation 'me.tankery.lib:circularSeekBar:1.3.0'
 }
+
+ext {
+    pomName = 'Storyous Libraries: Delivery'
+    pomDescription = 'Delivery API and common UI'
+}
+apply from: '../maven_publish.gradle'

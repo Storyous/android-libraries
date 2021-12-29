@@ -116,7 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:barrierDirection="top"
-            app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch,button_print_bill" />
+            app:constraint_referenced_ids="button_cancel,button_accept,button_dispatch,button_print_bill"
+            tools:ignore="NotSibling" />
 
         <include
             android:id="@+id/buttons"
@@ -138,7 +139,8 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="order_note_header,order_note"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="NotSibling" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/detail"
@@ -146,7 +148,8 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="order_detail_container,order_items,button_accept,deliver_items_header,button_cancel,,autodecline_countdown"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="NotSibling" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/noDetail"

@@ -51,4 +51,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
 }
 
-//apply from: 'maven-push.gradle'
+ext {
+    pomName = 'Storyous Libraries: RootTools'
+    pomDescription = 'Rooted device recognition'
+}
+apply from: '../maven_publish.gradle'
