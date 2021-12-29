@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-//apply plugin: 'com.github.dcendents.android-maven'
-
-group='com.github.Storyous'
 
 android {
     compileSdkVersion compile_sdk_version

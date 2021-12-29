@@ -16,7 +16,7 @@ class ApiBuilder(definition: Api<*, *>) {
             httpClientBuilder.cache(definition.cache)
         }
 
-        definition.interceptors.forEach {
+        definition.interceptors.iterator().forEach {
             httpClientBuilder.addInterceptor(it)
         }
 
@@ -24,7 +24,7 @@ class ApiBuilder(definition: Api<*, *>) {
             .baseUrl(definition.baseUrl)
             .client(httpClientBuilder.build())
             .apply {
-                definition.convertFactories.forEach { addConverterFactory(it) }
+                definition.convertFactories.iterator().forEach { addConverterFactory(it) }
             }
             .build()
     }

@@ -40,7 +40,7 @@ buildscript {
     ext.truetime_version = '3.4'
     ext.kronos_version = '0.0.1-alpha11'
     ext.fragment_ktx_version = '1.4.0'
-    ext.firebase_firestore_ktx = '24.0.0'
+    ext.firebase_firestore_ktx = '23.0.4' // 23.0.4 is the max version for minSdk 16
     ext.constraint_layout = '2.1.2'
     ext.slf4j_version = '1.7.25'
 

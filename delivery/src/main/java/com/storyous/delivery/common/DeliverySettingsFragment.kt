@@ -146,7 +146,7 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
             binding.acceptOrdersSwitch.isChecked,
             currentPrepTime,
             IntegratedDispatch.apiKeyFromValue(
-                binding.integratedDispatchSpinner.selectedItem.toString(), 
+                binding.integratedDispatchSpinner.selectedItem.toString(),
                 requireContext()
             )
         ))
