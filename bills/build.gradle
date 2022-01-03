@@ -1,9 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "kotlin-kapt"
-apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.github.Storyous'
 
 repositories {
     mavenCentral()
@@ -54,3 +51,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
 }
+
+ext {
+    pomName = 'Storyous Libraries: Bills'
+    pomDescription = 'Bills API'
+}
+apply from: '../maven_publish.gradle'

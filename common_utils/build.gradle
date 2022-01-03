@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group='com.github.Storyous'
 
 repositories {
     mavenCentral()
@@ -68,3 +65,9 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 }
+
+ext {
+    pomName = 'Storyous Libraries: Common Utils'
+    pomDescription = 'Common utilities for Storyous projects'
+}
+apply from: '../maven_publish.gradle'

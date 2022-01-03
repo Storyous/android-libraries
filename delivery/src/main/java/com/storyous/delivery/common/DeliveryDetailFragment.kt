@@ -123,7 +123,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     private fun onNewMessages(messages: List<Int>?) {
-        messages?.forEach { messageId ->
+        messages?.iterator()?.forEach { messageId ->
             val message = when (messageId) {
                 DeliveryViewModel.MESSAGE_ERROR_STATE_CONFLICT ->
                     getString(R.string.delivery_confirm_error_conflict)

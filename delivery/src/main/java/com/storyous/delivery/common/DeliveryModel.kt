@@ -21,7 +21,7 @@ open class DeliveryModel : CoroutineScope by CoroutineProviderScope() {
     private val confirmedOrdersLock = Semaphore(1)
 
     var newOrdersInterceptor: suspend (List<DeliveryOrder>) -> Unit = { orders ->
-        orders.forEach {
+        orders.iterator().forEach {
             if (it.autoConfirm == true && DeliveryConfiguration.placeInfo?.autoConfirmEnabled == true) {
                 runCatching { confirm(it) }
             }

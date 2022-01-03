@@ -209,7 +209,7 @@ class DeliveryItemViewHolder(
         var total = 0.0
         for (item in order.items) {
             total += item.unitPriceWithVat.toDouble() * item.count
-            item.additions?.forEach { addition ->
+            item.additions?.iterator()?.forEach { addition ->
                 total += addition.unitPriceWithVat.toDouble() * addition.countPerMainItem * item.count
             }
         }

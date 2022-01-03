@@ -64,7 +64,7 @@ class DeliveryDetailItemsAdapter :
 
             val inflater = LayoutInflater.from(itemView.context)
             subitems.removeAllViews()
-            item.additions?.forEach {
+            item.additions?.iterator()?.forEach {
                 val binding = ListItemDeliveryAdditionBinding.inflate(inflater, subitems, false)
                 bindSubItem(binding, item, it)
                 subitems.addView(binding.root)

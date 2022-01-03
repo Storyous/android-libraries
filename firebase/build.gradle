@@ -1,10 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'com.github.dcendents.android-maven'
 }
-
-group='com.github.Storyous'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -60,3 +57,9 @@ dependencies {
     implementation 'com.auth0.android:jwtdecode:2.0.0'
     testImplementation 'com.auth0:java-jwt:3.10.2'
 }
+
+ext {
+    pomName = 'Storyous Libraries: Firebase'
+    pomDescription = 'Firebase utilities'
+}
+apply from: '../maven_publish.gradle'

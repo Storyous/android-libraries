@@ -47,7 +47,8 @@ import okhttp3.OkHttpClient
 /**
  * Implementation of FirebaseRestAuth
  * @param app FirebaseApp
- * @param apiKey Web API Key from Firebase Console, usually provided by google-services.json, but there are some cases where this does not match your assigned Web API Key and you will need to override
+ * @param apiKey Web API Key from Firebase Console, usually provided by google-services.json,
+ * but there are some cases where this does not match your assigned Web API Key and you will need to override
  */
 class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : FirebaseRestAuth {
 

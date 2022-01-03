@@ -1,0 +1,17 @@
+afterEvaluate {
+    publishing {
+        publications {
+            "$project.name"(MavenPublication) {
+                groupId = publishingGroupId
+                artifactId = project.name
+                version = gitLastTag
+
+                from components.release
+                pom {
+                    name = project.pomName
+                    description = project.pomDescription
+                }
+            }
+        }
+    }
+}

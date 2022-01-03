@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group='com.github.Storyous'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -50,3 +47,9 @@ dependencies {
     // JWT
     testImplementation 'com.auth0:java-jwt:3.10.2'
 }
+
+ext {
+    pomName = 'Storyous Libraries: Contacts'
+    pomDescription = 'Contacts storage'
+}
+apply from: '../maven_publish.gradle'
