@@ -64,15 +64,16 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.18.1"
+    id 'io.gitlab.arturbosch.detekt' version '1.19.0'
 }
+
+apply from: 'detekt/detekt.gradle'
 
 allprojects {
     repositories {
         google()
         jcenter()
     }
-    apply from: "$rootDir/detekt.gradle"
 }
 
 task clean(type: Delete) {
