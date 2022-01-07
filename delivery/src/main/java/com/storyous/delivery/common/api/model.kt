@@ -81,7 +81,8 @@ class DeliveryItem(
     vatId: Int,
     measure: String?,
     val count: Double,
-    val additions: List<DeliveryAddition>?
+    val additions: List<DeliveryAddition>?,
+    val note: String?
 ) : DeliveryProduct(itemId, productId, title, unitPriceWithVat, vatRate, vatId, measure) {
 
     override fun toString(): String {
