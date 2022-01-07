@@ -83,6 +83,7 @@ task clean(type: Delete) {
 apply plugin: "com.dipien.byebyejetifier"
 
 ext {
+    publishingActive = true
     publishingGroupId = 'com.github.Storyous'
 }
 apply plugin: 'maven-publish'
