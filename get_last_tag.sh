@@ -1,2 +1,2 @@
 #!/bin/sh
-git describe --tags --abbrev=0
+git describe --tags --abbrev=0 origin
