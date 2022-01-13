@@ -2,6 +2,7 @@ package com.storyous.delivery.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.storyous.commonutils.recyclerView.ItemsAdapter
 import com.storyous.commonutils.recyclerView.getString
@@ -46,6 +47,7 @@ class DeliveryDetailItemsAdapter :
         private val count = binding.countSquare.value
         private val measure = binding.countSquare.type
         private val title = binding.itemTitle
+        private val note = binding.itemNote
         private val price = binding.priceSquare.value
         private val currency = binding.priceSquare.type
         private val subitems = binding.subitems
@@ -54,6 +56,8 @@ class DeliveryDetailItemsAdapter :
             count.text = DeliveryConfiguration.formatter.formatCount(item.count)
             measure.text = item.measure ?: getString(R.string.piece_measure)
             title.text = item.title
+            note.isVisible = !item.note.isNullOrBlank()
+            note.text = item.note
 
             price.text = DeliveryConfiguration.formatter.formatPriceWithoutCurrency(
                 item.unitPriceWithVat.multiply(BigDecimal.valueOf(item.count))
