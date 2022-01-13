@@ -14,22 +14,35 @@
             layout="@layout/typed_value_layout"
             android:layout_width="@dimen/count_indicator_size"
             android:layout_height="@dimen/count_indicator_size"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_title"
             style="@style/Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/count_square"
+            android:layout_marginTop="@dimen/offset_8dp"
+            app:layout_constraintBottom_toTopOf="@+id/item_note"
             app:layout_constraintEnd_toStartOf="@id/price_square"
             app:layout_constraintStart_toEndOf="@id/count_square"
-            app:layout_constraintTop_toTopOf="@id/count_square"
-            tools:text="Some special product" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Some special product\nMauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Maecenas ipsum velit, consectetuer eu lobortis ut, dictum at dui." />
+
+        <TextView
+            android:id="@+id/item_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_8dp"
+            android:textAppearance="@style/TextAppearance.Medium"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/subitems_barrier"
+            app:layout_constraintEnd_toEndOf="@+id/item_title"
+            app:layout_constraintStart_toStartOf="@+id/item_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_title"
+            tools:text="Some long note of special product\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim."
+            tools:visibility="visible" />
 
         <include
             android:id="@+id/price_square"
@@ -37,22 +50,19 @@
             android:layout_width="@dimen/price_indicator_size"
             android:layout_height="@dimen/price_indicator_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/subitems_barrier"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="item_title,price_square" />
+            app:constraint_referenced_ids="count_square,item_note,price_square" />
 
         <LinearLayout
             android:id="@+id/subitems"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/offset_8dp"
             android:layout_marginEnd="@dimen/offset_8dp"
             android:layout_marginRight="@dimen/offset_8dp"
             android:layout_marginBottom="@dimen/offset_8dp"
@@ -61,6 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/item_title"
-            app:layout_constraintTop_toBottomOf="@+id/subitems_barrier" />
+            app:layout_constraintTop_toBottomOf="@+id/subitems_barrier"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
