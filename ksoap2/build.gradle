@@ -1,0 +1,43 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/ksoap2-android-releases" }
+}
+
+dependencies {
+    implementation group: 'net.sourceforge.kxml', name: 'kxml', version: '2.2.4'
+    implementation group: 'net.sourceforge.kobjects', name: 'kobjects-j2me', version: '0.0-SNAPSHOT-20040926-2'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
+}
+
+ext {
+    pomName = 'Storyous Libraries: kSOAP 2'
+    pomDescription = 'kSOAP 2'
+}
+apply from: '../maven_publish.gradle'
