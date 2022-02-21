@@ -35,3 +35,9 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
 }
+
+ext {
+    pomName = 'Storyous Libraries: kSOAP 2'
+    pomDescription = 'kSOAP 2'
+}
+apply from: '../maven_publish.gradle'
