@@ -84,7 +84,7 @@ apply plugin: "com.dipien.byebyejetifier"
 
 ext {
     publishingActive = true
-    publishingGroupId = 'com.github.Storyous'
+    publishingGroupId = 'com.github.Storyous.android-libraries'
 }
 
 // Repository for publish must be defined only once at top level script
