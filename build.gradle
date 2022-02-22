@@ -86,5 +86,24 @@ ext {
     publishingActive = true
     publishingGroupId = 'com.github.Storyous'
 }
+
+if (publishingActive) {
+    afterEvaluate {
+        publishing {
+            repositories {
+                println "creating repo $it"
+                maven {
+                    name = "GitHubPackages"
+                    url = "https://maven.pkg.github.com/storyous/android-libraries"
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+        }
+    }
+}
+
 apply plugin: 'maven-publish'
 apply from: 'last_tag.gradle'
