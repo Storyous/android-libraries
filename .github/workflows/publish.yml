@@ -1,4 +1,4 @@
-name: Publish Android libraries
+name: Build and publish Android libraries
 
 on:
   push:

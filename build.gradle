@@ -87,11 +87,14 @@ ext {
     publishingGroupId = 'com.github.Storyous'
 }
 
+// Repository for publish must be defined only once at top level script
+// else duplicate repos will be created and publish fail
 if (publishingActive) {
     afterEvaluate {
         publishing {
             repositories {
-                println "creating repo $it"
+
+                // Repository for publishing via GitHub Actions.
                 maven {
                     name = "GitHubPackages"
                     url = "https://maven.pkg.github.com/storyous/android-libraries"
