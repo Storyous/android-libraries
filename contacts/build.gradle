@@ -20,16 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        local {
-            initWith debug
-        }
     }
 }
 
 dependencies {
-    releaseImplementation "com.github.Storyous.android-libraries:firebase:+"
-    debugImplementation "com.github.Storyous.android-libraries:firebase:+"
-    localImplementation project(path: ':firebase')
+    implementation project(path: ':firebase')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"

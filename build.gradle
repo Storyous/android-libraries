@@ -77,7 +77,7 @@ allprojects {
             url = uri("https://maven.pkg.github.com/storyous/android-libraries")
             credentials {
                 username = ""
-                password = "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"
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
