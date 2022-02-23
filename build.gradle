@@ -108,5 +108,11 @@ if (publishingActive) {
     }
 }
 
+// Disable generating Gradle specific metadata because they are not compatible with handling
+// of dependencies in maven_publish script
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
 apply plugin: 'maven-publish'
 apply from: 'last_tag.gradle'
