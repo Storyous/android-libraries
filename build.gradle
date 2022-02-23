@@ -73,13 +73,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {
-            url = uri("https://maven.pkg.github.com/storyous/android-libraries")
-            credentials {
-                username = ""
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
     }
 }
 
