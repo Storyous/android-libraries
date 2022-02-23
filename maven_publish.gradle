@@ -21,6 +21,8 @@ if (publishingActive) {
                                         .getElementsByTagName("version").item(0)
                                 if (versionNode.getTextContent() == "unspecified") {
                                     versionNode.setTextContent(version)
+                                    dependencies.item(i).getElementsByTagName("groupId")
+                                            .item(0).setTextContent(groupId)
                                 }
                             }
                         }
