@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LabelLayout" parent="androidx.appcompat.widget.LinearLayoutCompat">
+        <attr name="android:text" />
+        <attr name="android:orientation" />
+    </declare-styleable>
+
+    <declare-styleable name="DialogHeader" parent="androidx.appcompat.widget.LinearLayoutCompat">
+        <attr name="android:text" />
+        <attr name="android:background" />
+        <attr name="android:minHeight" />
+        <attr name="android:elevation" />
+    </declare-styleable>
+</resources>

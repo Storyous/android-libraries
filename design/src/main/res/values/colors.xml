@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- palette -->
+    <color name="palette_grey_light">#f4f4f4</color>
+    <color name="palette_grey">#535658</color>
+    <color name="palette_red">#d45354</color>
+
+    <!-- usage -->
+    <color name="text">@color/palette_grey</color>
+    <color name="dialog_header_background">@color/palette_grey_light</color>
+    <color name="dialog_header_cross">@color/palette_grey</color>
+    <color name="warning">@color/palette_red</color>
+</resources>

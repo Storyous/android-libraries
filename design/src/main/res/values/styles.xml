@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Label" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/text</item>
+    </style>
+
+    <style name="Theme.MaterialDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+    </style>
+
+    <style name="Theme.MaterialDialog.Wider">
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="Button" parent="Widget.MaterialComponents.Button.TextButton">
+
+    </style>
+
+    <style name="Button.Primary">
+
+    </style>
+
+    <style name="Button.Dialog">
+
+    </style>
+
+    <style name="Header">
+        <item name="android:textAppearance">@style/TextAppearance.Large</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Header.Dialog" parent="Header">
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextAppearance.Large" parent="android:TextAppearance.Holo.Large" />
+</resources>
