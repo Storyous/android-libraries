@@ -84,7 +84,35 @@ apply plugin: "com.dipien.byebyejetifier"
 
 ext {
     publishingActive = true
-    publishingGroupId = 'com.github.Storyous'
+    publishingGroupId = 'com.github.Storyous.android-libraries'
 }
+
+// Repository for publish must be defined only once at top level script
+// else duplicate repos will be created and publish fail
+if (publishingActive) {
+    afterEvaluate {
+        publishing {
+            repositories {
+
+                // Repository for publishing via GitHub Actions.
+                maven {
+                    name = "GitHubPackages"
+                    url = "https://maven.pkg.github.com/storyous/android-libraries"
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Disable generating Gradle specific metadata because they are not compatible with handling
+// of dependencies in maven_publish script
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
 apply plugin: 'maven-publish'
 apply from: 'last_tag.gradle'

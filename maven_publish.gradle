@@ -11,6 +11,21 @@ if (publishingActive) {
                     pom {
                         name = project.pomName
                         description = project.pomDescription
+
+                        // This replace local dependencies with dependency from Maven repo
+                        withXml { pom ->
+                            def dependencies = pom.asElement().getElementsByTagName("dependencies")
+                                    .item(0).getElementsByTagName("dependency")
+                            for (int i = 0; i < dependencies.getLength(); i++) {
+                                def versionNode = dependencies.item(i)
+                                        .getElementsByTagName("version").item(0)
+                                if (versionNode.getTextContent() == "unspecified") {
+                                    versionNode.setTextContent(version)
+                                    dependencies.item(i).getElementsByTagName("groupId")
+                                            .item(0).setTextContent(groupId)
+                                }
+                            }
+                        }
                     }
                 }
             }
