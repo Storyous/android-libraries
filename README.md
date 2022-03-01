@@ -4,6 +4,7 @@
 
 # Install
 Add this to repositories block
+```
 maven {
     url = uri("https://maven.pkg.github.com/storyous/android-libraries")
     credentials {
@@ -11,5 +12,6 @@ maven {
         password = "insert_github_token"
     }
 }
+```
 
 Current version of libraries can be found here https://github.com/orgs/Storyous/packages?repo_name=android-libraries
