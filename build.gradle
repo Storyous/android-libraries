@@ -115,4 +115,3 @@ tasks.withType(GenerateModuleMetadata) {
 }
 
 apply plugin: 'maven-publish'
-apply from: 'last_tag.gradle'
