@@ -46,8 +46,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
-        
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
@@ -72,7 +71,7 @@ apply from: 'detekt/detekt.gradle'
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
