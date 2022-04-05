@@ -12,6 +12,8 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/offset_16dp"
         android:layout_marginLeft="@dimen/offset_16dp"
+        android:layout_marginEnd="@dimen/offset_8dp"
+        android:layout_marginRight="@dimen/offset_8dp"
         android:layout_weight="1"
         tools:text="Big Dialog Header" />
 
@@ -24,5 +26,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="@dimen/offset_8dp"
         android:tint="@color/dialog_header_cross"
-        app:srcCompat="@drawable/ic_cross_24" />
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_cross_24"
+        tools:visibility="visible" />
 </merge>

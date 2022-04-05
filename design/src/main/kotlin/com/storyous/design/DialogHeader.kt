@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.res.use
+import androidx.core.view.isVisible
 
 class DialogHeader @JvmOverloads constructor(
     context: Context,
@@ -48,10 +49,13 @@ class DialogHeader @JvmOverloads constructor(
     }
 
     fun setTitle(text: CharSequence?) {
-        title.text = text ?: ""
+        title.text = text ?: if (isInEditMode) "Title" else ""
     }
 
     fun setCloseClickListener(listener: ((View) -> Unit)?) {
-        close.setOnClickListener(listener)
+        close.apply {
+            isVisible = listener != null
+            setOnClickListener(listener)
+        }
     }
 }
