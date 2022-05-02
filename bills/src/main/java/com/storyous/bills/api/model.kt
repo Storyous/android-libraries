@@ -1,5 +1,7 @@
 package com.storyous.bills.api
 
+import com.storyous.bills.db.AdditionalPrintData
+import com.storyous.bills.db.Transaction
 import java.math.BigDecimal
 import java.util.Date
 
@@ -27,6 +29,12 @@ interface Bill {
     val sessionCreated: Date
     val taxSummaries: Map<String, BigDecimal>
     val tips: BigDecimal
+    val fiscalized: Boolean
+    val transactionId: String?
+    val transaction: Transaction?
+    val additionalPrintData: AdditionalPrintData
+    val formattedFinalPrice: String
+    val formattedDiscount: String
 }
 
 data class BillWithItems(
@@ -53,7 +61,13 @@ data class BillWithItems(
     override val sessionCreated: Date,
     override val taxSummaries: Map<String, BigDecimal>,
     override val tips: BigDecimal,
-    val items: List<BillItem>
+    val items: List<BillItem>,
+    override val fiscalized: Boolean,
+    override val transactionId: String?,
+    override val transaction: Transaction?,
+    override val additionalPrintData: AdditionalPrintData,
+    override val formattedFinalPrice: String,
+    override val formattedDiscount: String
 ) : Bill
 
 data class Person(
@@ -68,7 +82,12 @@ data class FiscalData(
     val fik: String,
     val httpStatusCode: Int,
     val mode: Int,
-    val pkp: String
+    val pkp: String,
+    val customType: String,
+    val crc: String,
+    val okp: String,
+    val billId: String,
+    val qr: String
 )
 
 data class BillItem(
@@ -84,8 +103,8 @@ data class BillItem(
 )
 
 data class OrderProvider(
-    val code: String,
-    val orderId: String
+    val code: String?,
+    val orderId: String?
 )
 
 data class BillsResponse(
