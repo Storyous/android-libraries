@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.google.gson.GsonBuilder
 import com.storyous.bills.BuildConfig
 
 @Database(
@@ -24,18 +23,23 @@ abstract class BillsDatabase : RoomDatabase() {
         private var instance: BillsDatabase? = null
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also { instance = it }
+        operator fun invoke(
+            context: Context,
+            fieldConversionErrorHandler: (Throwable, String?) -> Unit
+        ) = instance ?: synchronized(LOCK) {
+            instance ?: buildDatabase(context, fieldConversionErrorHandler).also { instance = it }
         }
 
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(
+        private fun buildDatabase(
+            context: Context,
+            fieldConversionErrorHandler: (Throwable, String?) -> Unit
+        ) = Room.databaseBuilder(
             context,
             BillsDatabase::class.java,
             BuildConfig.DATABASE
         )
+            .addTypeConverter(Converters(fieldConversionErrorHandler))
             .fallbackToDestructiveMigration()
             .build()
-
-        var gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create()
     }
 }

@@ -16,10 +16,11 @@ interface Bill {
     val finalPrice: BigDecimal
     val finalPriceWithoutTax: BigDecimal
     val fiscalData: FiscalData
+    val fiscalized: Boolean
     val fiscalizedAt: Date
-    val invoiceData: Any
+    val invoiceData: Any?
     val issuedAsVatPayer: Boolean
-    val orderProvider: OrderProvider
+    val orderProvider: OrderProvider?
     val paidAt: Date
     val paidBy: Person
     val paymentMethod: String
@@ -29,12 +30,9 @@ interface Bill {
     val sessionCreated: Date
     val taxSummaries: Map<String, BigDecimal>
     val tips: BigDecimal
-    val fiscalized: Boolean
     val transactionId: String?
     val transaction: Transaction?
-    val additionalPrintData: AdditionalPrintData
-    val formattedFinalPrice: String
-    val formattedDiscount: String
+    val additionalPrintData: AdditionalPrintData?
 }
 
 data class BillWithItems(
@@ -48,10 +46,11 @@ data class BillWithItems(
     override val finalPrice: BigDecimal,
     override val finalPriceWithoutTax: BigDecimal,
     override val fiscalData: FiscalData,
+    override val fiscalized: Boolean,
     override val fiscalizedAt: Date,
-    override val invoiceData: Any,
+    override val invoiceData: Any?,
     override val issuedAsVatPayer: Boolean,
-    override val orderProvider: OrderProvider,
+    override val orderProvider: OrderProvider?,
     override val paidAt: Date,
     override val paidBy: Person,
     override val paymentMethod: String,
@@ -61,13 +60,10 @@ data class BillWithItems(
     override val sessionCreated: Date,
     override val taxSummaries: Map<String, BigDecimal>,
     override val tips: BigDecimal,
-    val items: List<BillItem>,
-    override val fiscalized: Boolean,
     override val transactionId: String?,
     override val transaction: Transaction?,
-    override val additionalPrintData: AdditionalPrintData,
-    override val formattedFinalPrice: String,
-    override val formattedDiscount: String
+    override val additionalPrintData: AdditionalPrintData?,
+    val items: List<BillItem>
 ) : Bill
 
 data class Person(
@@ -77,17 +73,18 @@ data class Person(
 )
 
 data class FiscalData(
-    val bkp: String,
-    val endpoint: String,
-    val fik: String,
-    val httpStatusCode: Int,
-    val mode: Int,
-    val pkp: String,
-    val customType: String,
-    val crc: String,
-    val okp: String,
-    val billId: String,
-    val qr: String
+    val bkp: String?,
+    val endpoint: String?,
+    val fik: String?,
+    val httpStatusCode: Int?,
+    val mode: Int?,
+    val pkp: String?,
+    val customType: String?,
+    val crc: String?,
+    val okp: String?,
+    val billId: String?,
+    val qr: String?,
+    val uuid: String?
 )
 
 data class BillItem(
@@ -103,8 +100,8 @@ data class BillItem(
 )
 
 data class OrderProvider(
-    val code: String?,
-    val orderId: String?
+    val code: String,
+    val orderId: String
 )
 
 data class BillsResponse(

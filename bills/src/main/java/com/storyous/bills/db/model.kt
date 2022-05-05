@@ -13,38 +13,36 @@ import java.util.*
 )
 @Suppress("LongParameterList")
 data class CachedBill(
-    @PrimaryKey val billId: String,     // billIdentifier
-    val createdAt: Date,                // created
-    val createdBy: Person,              // waiter
-
+    @PrimaryKey val billId: String,
+    val paymentBillId: Int?,
+    val createdAt: Date,
+    val createdBy: Person,
     val currencyCode: String,
     val customerId: String,
-    val desk: Desk,                     // ** deskId -> desk
-    val discount: BigDecimal,           // == discount
-    val finalPrice: BigDecimal,         // == finalPrice
+    val desk: Desk?,
+    val discount: BigDecimal,
+    val finalPrice: BigDecimal,
     val finalPriceWithoutTax: BigDecimal,
-    val fiscalData: FiscalData?,         // == fiscalData
+    val fiscalData: FiscalData?,
+    val fiscalized: Boolean,
     val fiscalizedAt: Date?,
-    val invoiceData: InvoiceData,
+    val invoiceData: InvoiceData?,
     val issuedAsVatPayer: Boolean,
-    val orderProvider: OrderProvider,
-    val paidAt: Date,
-    val paidBy: Person,
+    val orderProvider: OrderProvider?,
+    val paidAt: Date?,
+    val paidBy: Person?,
     val paymentMethod: String,
     val personCount: Int,
     val refunded: Boolean,
+    val refundedBillIdentifier: String?,
     val rounding: BigDecimal,
     val sessionCreated: Date,
-    val taxSummaries: Map<String, BigDecimal>,
+    val taxSummaries: Map<String, BigDecimal>?,
     val tips: BigDecimal,
-    val items: List<CachedBillItem> = listOf(),
-
-    val paymentBillId: Int,
-    val fiscalized: Boolean,
     val transactionId: String?,
     val transaction: Transaction?,
-    val additionalPrintData: AdditionalPrintData,       // data
-    val refundedBillIdentifier: String?
+    val additionalPrintData: AdditionalPrintData?,
+    val items: List<CachedBillItem> = listOf()
 )
 
 data class Person(
@@ -113,12 +111,13 @@ data class FiscalData(
     val crc: String?,
     val okp: String?,
     val billId: String?,
-    val qr: String?
+    val qr: String?,
+    val uuid: String?
 )
 
 data class OrderProvider(
-    val code: String?,
-    val orderId: String?,
+    val code: String,
+    val orderId: String,
     val customerName: String?,
     val customerPhone: String?,
     val customerAddress: String?
