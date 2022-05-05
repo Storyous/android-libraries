@@ -30,6 +30,10 @@ abstract class BillsDao {
     abstract suspend fun getCachedBills(start: Int, size: Int): List<CachedBill>
 
     @Transaction
+    @Query("UPDATE CachedBill SET fiscalData=:fiscalData WHERE billId=:billId")
+    abstract suspend fun updateBillFiscalData(billId: String, fiscalData: String?)
+
+    @Transaction
     @Query("UPDATE CachedBill SET refunded=1 WHERE billId=:billId")
     abstract suspend fun setRefunded(billId: String)
 }
