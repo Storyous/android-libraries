@@ -1,5 +1,7 @@
 package com.storyous.bills.api
 
+import com.storyous.bills.db.AdditionalPrintData
+import com.storyous.bills.db.Transaction
 import java.math.BigDecimal
 import java.util.Date
 
@@ -14,10 +16,11 @@ interface Bill {
     val finalPrice: BigDecimal
     val finalPriceWithoutTax: BigDecimal
     val fiscalData: FiscalData
+    val fiscalized: Boolean
     val fiscalizedAt: Date
-    val invoiceData: Any
+    val invoiceData: Any?
     val issuedAsVatPayer: Boolean
-    val orderProvider: OrderProvider
+    val orderProvider: OrderProvider?
     val paidAt: Date
     val paidBy: Person
     val paymentMethod: String
@@ -27,6 +30,9 @@ interface Bill {
     val sessionCreated: Date
     val taxSummaries: Map<String, BigDecimal>
     val tips: BigDecimal
+    val transactionId: String?
+    val transaction: Transaction?
+    val additionalPrintData: AdditionalPrintData?
 }
 
 data class BillWithItems(
@@ -40,10 +46,11 @@ data class BillWithItems(
     override val finalPrice: BigDecimal,
     override val finalPriceWithoutTax: BigDecimal,
     override val fiscalData: FiscalData,
+    override val fiscalized: Boolean,
     override val fiscalizedAt: Date,
-    override val invoiceData: Any,
+    override val invoiceData: Any?,
     override val issuedAsVatPayer: Boolean,
-    override val orderProvider: OrderProvider,
+    override val orderProvider: OrderProvider?,
     override val paidAt: Date,
     override val paidBy: Person,
     override val paymentMethod: String,
@@ -53,6 +60,9 @@ data class BillWithItems(
     override val sessionCreated: Date,
     override val taxSummaries: Map<String, BigDecimal>,
     override val tips: BigDecimal,
+    override val transactionId: String?,
+    override val transaction: Transaction?,
+    override val additionalPrintData: AdditionalPrintData?,
     val items: List<BillItem>
 ) : Bill
 
@@ -63,12 +73,18 @@ data class Person(
 )
 
 data class FiscalData(
-    val bkp: String,
-    val endpoint: String,
-    val fik: String,
-    val httpStatusCode: Int,
-    val mode: Int,
-    val pkp: String
+    val bkp: String?,
+    val endpoint: String?,
+    val fik: String?,
+    val httpStatusCode: Int?,
+    val mode: Int?,
+    val pkp: String?,
+    val customType: String?,
+    val crc: String?,
+    val okp: String?,
+    val billId: String?,
+    val qr: String?,
+    val uuid: String?
 )
 
 data class BillItem(
