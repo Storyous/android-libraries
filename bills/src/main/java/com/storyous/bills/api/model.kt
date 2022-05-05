@@ -92,3 +92,9 @@ data class BillsResponse(
     val data: List<Bill>,
     val nextPage: String
 )
+
+data class RefundBillRequest(
+    val reasonId: Int?,
+    val fiscalData: Map<String, String?>?,
+    val isReopen: Boolean
+)
