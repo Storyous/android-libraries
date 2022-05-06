@@ -81,6 +81,12 @@ class Converters(private val fieldConversionErrorHandler: (Throwable, String?) -
     @TypeConverter
     fun jsonToTaxSummaries(value: String?): Map<String, BigDecimal>? = jsonToObject(value)
 
+    @TypeConverter
+    fun merchantToJson(merchant: Merchant?) = objectToJson(merchant)
+
+    @TypeConverter
+    fun jsonToMerchant(value: String?): Merchant? = jsonToObject(value)
+
     private inline fun <reified T> objectToJson(items: T?): String? = gson.toJson(items)
 
     private inline fun <reified T> jsonToObject(value: String?): T? =
