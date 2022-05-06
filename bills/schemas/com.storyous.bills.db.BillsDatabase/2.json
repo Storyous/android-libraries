@@ -1,0 +1,248 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "902eaad35369a3d48bbffce393744b09",
+    "entities": [
+      {
+        "tableName": "CachedBill",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`billId` TEXT NOT NULL, `paymentBillId` INTEGER, `billImage` TEXT, `billImageLores` TEXT, `createdAt` INTEGER NOT NULL, `createdBy` TEXT NOT NULL, `currencyCode` TEXT NOT NULL, `customerId` TEXT NOT NULL, `customTitle` TEXT, `customText` TEXT, `desk` TEXT, `discount` TEXT NOT NULL, `finalPrice` TEXT NOT NULL, `finalPriceWithoutTax` TEXT NOT NULL, `fiscalData` TEXT, `fiscalized` INTEGER NOT NULL, `fiscalizedAt` INTEGER, `invoiceData` TEXT, `issuedAsVatPayer` INTEGER NOT NULL, `merchant` TEXT, `orderProvider` TEXT, `paidAt` INTEGER, `paidBy` TEXT, `paymentMethod` TEXT NOT NULL, `personCount` INTEGER NOT NULL, `refunded` INTEGER NOT NULL, `refundedBillIdentifier` TEXT, `rounding` TEXT NOT NULL, `sessionCreated` INTEGER NOT NULL, `taxSummaries` TEXT, `tips` TEXT NOT NULL, `transactionId` TEXT, `transaction` TEXT, `additionalPrintData` TEXT, `items` TEXT NOT NULL, PRIMARY KEY(`billId`))",
+        "fields": [
+          {
+            "fieldPath": "billId",
+            "columnName": "billId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentBillId",
+            "columnName": "paymentBillId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "billImage",
+            "columnName": "billImage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "billImageLores",
+            "columnName": "billImageLores",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdBy",
+            "columnName": "createdBy",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currencyCode",
+            "columnName": "currencyCode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customerId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customTitle",
+            "columnName": "customTitle",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "customText",
+            "columnName": "customText",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "desk",
+            "columnName": "desk",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "discount",
+            "columnName": "discount",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finalPrice",
+            "columnName": "finalPrice",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finalPriceWithoutTax",
+            "columnName": "finalPriceWithoutTax",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fiscalData",
+            "columnName": "fiscalData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fiscalized",
+            "columnName": "fiscalized",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fiscalizedAt",
+            "columnName": "fiscalizedAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "invoiceData",
+            "columnName": "invoiceData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "issuedAsVatPayer",
+            "columnName": "issuedAsVatPayer",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "merchant",
+            "columnName": "merchant",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orderProvider",
+            "columnName": "orderProvider",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paidAt",
+            "columnName": "paidAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paidBy",
+            "columnName": "paidBy",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "paymentMethod",
+            "columnName": "paymentMethod",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "personCount",
+            "columnName": "personCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refunded",
+            "columnName": "refunded",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refundedBillIdentifier",
+            "columnName": "refundedBillIdentifier",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rounding",
+            "columnName": "rounding",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionCreated",
+            "columnName": "sessionCreated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "taxSummaries",
+            "columnName": "taxSummaries",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tips",
+            "columnName": "tips",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transactionId",
+            "columnName": "transactionId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "transaction",
+            "columnName": "transaction",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "additionalPrintData",
+            "columnName": "additionalPrintData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "items",
+            "columnName": "items",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "billId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_CachedBill_createdAt",
+            "unique": false,
+            "columnNames": [
+              "createdAt"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_CachedBill_createdAt` ON `${TABLE_NAME}` (`createdAt`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '902eaad35369a3d48bbffce393744b09')"
+    ]
+  }
+}

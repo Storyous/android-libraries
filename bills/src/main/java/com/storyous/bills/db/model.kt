@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.math.BigDecimal
-import java.util.*
+import java.util.Date
 
 @Entity(
     indices = [Index(value = ["createdAt"])]
@@ -15,10 +15,14 @@ import java.util.*
 data class CachedBill(
     @PrimaryKey val billId: String,
     val paymentBillId: Int?,
+    val billImage: String?,
+    val billImageLores: String?,
     val createdAt: Date,
     val createdBy: Person,
     val currencyCode: String,
     val customerId: String,
+    val customTitle: String?,
+    val customText: String?,
     val desk: Desk?,
     val discount: BigDecimal,
     val finalPrice: BigDecimal,
@@ -28,6 +32,7 @@ data class CachedBill(
     val fiscalizedAt: Date?,
     val invoiceData: InvoiceData?,
     val issuedAsVatPayer: Boolean,
+    val merchant: Merchant?,
     val orderProvider: OrderProvider?,
     val paidAt: Date?,
     val paidBy: Person?,
@@ -43,6 +48,18 @@ data class CachedBill(
     val transaction: Transaction?,
     val additionalPrintData: AdditionalPrintData?,
     val items: List<CachedBillItem> = listOf()
+)
+
+data class Merchant(
+    val merchantId: String?,
+    val company: String?,
+    val street: String?,
+    val town: String?,
+    val zip: String?,
+    val isVatPayer: Boolean,
+    val businessId: String?,
+    val vatId: String?,
+    val countryCode: String?
 )
 
 data class Person(

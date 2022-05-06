@@ -11,7 +11,7 @@ import com.storyous.bills.BuildConfig
     entities = [
         CachedBill::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class)
 abstract class BillsDatabase : RoomDatabase() {
