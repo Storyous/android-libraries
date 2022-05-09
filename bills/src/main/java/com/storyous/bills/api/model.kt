@@ -114,3 +114,7 @@ data class RefundBillRequest(
     val fiscalData: Map<String, String?>?,
     val isReopen: Boolean
 )
+
+data class UpdateBillRequest(
+    val fiscalData: Map<String, String?>?
+)

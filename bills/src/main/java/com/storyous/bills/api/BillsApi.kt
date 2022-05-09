@@ -2,6 +2,7 @@ package com.storyous.bills.api
 
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -35,4 +36,12 @@ interface BillsApi {
         @Path("billId") billId: String,
         @Body body: RefundBillRequest
     ): BillWithItems
+
+    @PATCH("/bills/{merchantId}-{placeId}/{billId}")
+    suspend fun updateBillData(
+        @Path("merchantId") merchantId: String,
+        @Path("placeId") placeId: String,
+        @Path("billId") billId: String,
+        @Body body: UpdateBillRequest
+    )
 }
