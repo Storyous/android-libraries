@@ -28,4 +28,8 @@ abstract class BillsDao {
     @Transaction
     @Query("SELECT * FROM CachedBill ORDER BY createdAt DESC LIMIT :start, :size")
     abstract suspend fun getCachedBills(start: Int, size: Int): List<CachedBill>
+
+    @Transaction
+    @Query("UPDATE CachedBill SET refunded=1 WHERE billId=:billId")
+    abstract suspend fun setRefunded(billId: String)
 }
