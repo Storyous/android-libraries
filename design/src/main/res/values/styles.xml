@@ -8,10 +8,18 @@
     <style name="Theme.MaterialDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
         <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
         <item name="android:backgroundDimAmount">0.5</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog</item>
     </style>
 
     <style name="Theme.MaterialDialog.Wider">
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="MaterialAlertDialog" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="backgroundInsetStart">@dimen/padding_16dp</item>
+        <item name="backgroundInsetTop">@dimen/padding_16dp</item>
+        <item name="backgroundInsetEnd">@dimen/padding_16dp</item>
+        <item name="backgroundInsetBottom">@dimen/padding_16dp</item>
     </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button.TextButton">

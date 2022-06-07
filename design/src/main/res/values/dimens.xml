@@ -6,6 +6,7 @@
     <dimen name="elevation_toolbar">4dp</dimen>
     <dimen name="elevation_bottom_bar">8dp</dimen>
     <dimen name="min_touchable_size">48dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
 
     <!-- Usage -->
     <dimen name="dialog_header_min_height">@dimen/min_touchable_size</dimen>
