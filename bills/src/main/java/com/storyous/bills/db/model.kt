@@ -224,7 +224,7 @@ data class PhysicalAddress(
     val municipality: String,
     val streetName: String,
     val buildingNumber: String?,
-    val propertyRegistrationNumber: String,
+    val propertyRegistrationNumber: String?,
     val deliveryAddress: DeliveryAddress?
 )
 
