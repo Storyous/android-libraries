@@ -2,7 +2,6 @@ package com.storyous.roottools.magisk;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.system.Os;
 import android.util.Log;
@@ -26,9 +25,7 @@ public class IsolatedService extends Service {
     private final IIsolatedService.Stub mBinder = new IIsolatedService.Stub() {
         public boolean isMagiskPresent() {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Log.d(TAG, "Isolated UID:" + Os.getuid());
-            }
+            Log.d(TAG, "Isolated UID:" + Os.getuid());
 
             boolean isMagiskPresent = false;
 

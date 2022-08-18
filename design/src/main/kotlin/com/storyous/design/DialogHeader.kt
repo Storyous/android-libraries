@@ -1,7 +1,6 @@
 package com.storyous.design
 
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -38,12 +37,10 @@ class DialogHeader @JvmOverloads constructor(
                 R.styleable.DialogHeader_android_minHeight,
                 resources.getDimensionPixelSize(R.dimen.dialog_header_min_height)
             )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                elevation = it.getDimension(
-                    R.styleable.DialogHeader_android_elevation,
-                    resources.getDimension(R.dimen.elevation_toolbar)
-                )
-            }
+            elevation = it.getDimension(
+                R.styleable.DialogHeader_android_elevation,
+                resources.getDimension(R.dimen.elevation_toolbar)
+            )
             setTitle(it.getText(R.styleable.DialogHeader_android_text))
         }
     }

@@ -64,7 +64,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/offset_8dp"
-            android:layout_marginRight="@dimen/offset_8dp"
             android:layout_marginBottom="@dimen/offset_8dp"
             android:orientation="vertical"
             android:visibility="gone"

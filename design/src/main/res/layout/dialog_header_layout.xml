@@ -11,9 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/offset_16dp"
-        android:layout_marginLeft="@dimen/offset_16dp"
         android:layout_marginEnd="@dimen/offset_8dp"
-        android:layout_marginRight="@dimen/offset_8dp"
         android:layout_weight="1"
         tools:text="Big Dialog Header" />
 
