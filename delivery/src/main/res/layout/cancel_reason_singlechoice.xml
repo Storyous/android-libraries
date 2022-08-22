@@ -8,8 +8,6 @@
     android:gravity="center_vertical"
     android:minHeight="@dimen/cancel_reason_choice_min_height"
     android:paddingStart="@dimen/offset_16dp"
-    android:paddingLeft="@dimen/offset_16dp"
     android:paddingEnd="@dimen/offset_8dp"
-    android:paddingRight="@dimen/offset_8dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="?android:attr/textColorAlertDialogListItem" />
