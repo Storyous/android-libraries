@@ -32,8 +32,6 @@ repositories {
 dependencies {
     implementation group: 'net.sourceforge.kxml', name: 'kxml', version: '2.2.4'
     implementation group: 'net.sourceforge.kobjects', name: 'kobjects-j2me', version: '0.0-SNAPSHOT-20040926-2'
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
 }
 
 ext {

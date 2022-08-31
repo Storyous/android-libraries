@@ -30,11 +30,11 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
 
-    // Retrofit
+    // Gson + OkHttp + Retrofit
+    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
-
-    implementation "com.google.code.gson:gson:$gson_version"
 }
