@@ -38,9 +38,8 @@ dependencies {
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    // Firestore
-    implementation platform("com.google.firebase:firebase-bom:$firebase_bom")
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+    // Firestore (don't use BOM unless publishing script of this lib can handle it)
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
 
     // JWT
