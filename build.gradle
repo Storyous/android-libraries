@@ -25,7 +25,6 @@ buildscript {
     ext.truetime_version = '3.4'
     ext.kronos_version = '0.0.1-alpha11'
     ext.fragment_ktx_version = '1.5.2'
-    ext.firebase_bom = '30.3.2'
     ext.constraint_layout = '2.1.4'
     ext.slf4j_version = '1.7.30'
 
