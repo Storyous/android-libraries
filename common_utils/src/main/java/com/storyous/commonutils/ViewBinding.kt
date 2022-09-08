@@ -2,6 +2,7 @@ package com.storyous.commonutils
 
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.MainThread
@@ -22,6 +23,12 @@ inline fun <reified T : ViewBinding> viewBinding(
     owner: LifecycleOwner,
     noinline getViewBinding: () -> T
 ) = ViewBindingDelegate(owner, getViewBinding)
+
+inline fun <T : ViewBinding> viewBinding(
+    bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T,
+    parent: ViewGroup,
+    attachToParent: Boolean = false
+) = bindingInflater.invoke(LayoutInflater.from(parent.context), parent, attachToParent)
 
 inline fun <reified T : ViewBinding> Fragment.viewBinding() = viewBinding(this) {
     bind<T>(requireView())
