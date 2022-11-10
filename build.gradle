@@ -64,6 +64,9 @@ task clean(type: Delete) {
 }
 
 apply plugin: "com.dipien.byebyejetifier"
+byeByeJetifier {
+    excludedProjectsFromScanning = ["lint"]
+}
 
 ext {
     publishingActive = true
