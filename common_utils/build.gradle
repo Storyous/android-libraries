@@ -62,6 +62,8 @@ dependencies {
 
     // Logging
     implementation "com.jakewharton.timber:timber:$timber_version"
+
+    lintChecks project(":lint")
 }
 
 ext {

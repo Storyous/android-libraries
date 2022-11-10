@@ -47,6 +47,8 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+
+    lintChecks project(":lint")
 }
 
 ext {
