@@ -11,30 +11,30 @@ object Toaster {
     @JvmStatic
     @JvmOverloads
     fun showLong(context: Context, resId: Int, applyBlock: ((Toast) -> Unit) = {}): Toast {
-        return show(context, resId, Toast.LENGTH_LONG, applyBlock)
+        return showInternal(context, resId, Toast.LENGTH_LONG, applyBlock)
     }
 
     @JvmStatic
     @JvmOverloads
     fun showShort(context: Context, resId: Int, applyBlock: ((Toast) -> Unit) = {}): Toast {
-        return show(context, resId, Toast.LENGTH_SHORT, applyBlock)
+        return showInternal(context, resId, Toast.LENGTH_SHORT, applyBlock)
     }
 
     @JvmStatic
     @JvmOverloads
     fun showLong(context: Context, text: String, applyBlock: ((Toast) -> Unit) = {}): Toast {
-        return show(context, text, Toast.LENGTH_LONG, applyBlock)
+        return showInternal(context, text, Toast.LENGTH_LONG, applyBlock)
     }
 
     @JvmStatic
     @JvmOverloads
     fun showShort(context: Context, text: String, applyBlock: ((Toast) -> Unit) = {}): Toast {
-        return show(context, text, Toast.LENGTH_SHORT, applyBlock)
+        return showInternal(context, text, Toast.LENGTH_SHORT, applyBlock)
     }
 
     @JvmStatic
     fun show(context: Context, text: String, duration: Int): Toast {
-        return show(context, text, duration, {})
+        return showInternal(context, text, duration, {})
     }
 
     @SuppressLint("ToastDetector")
@@ -46,15 +46,15 @@ object Toaster {
         }
     }
 
-    private fun show(
+    private fun showInternal(
         context: Context,
         resId: Int,
         duration: Int,
         applyBlock: ((Toast) -> Unit) = {}
-    ) = show(context, context.resources.getText(resId).toString(), duration, applyBlock)
+    ) = showInternal(context, context.resources.getText(resId).toString(), duration, applyBlock)
 
 
-    private fun show(
+    private fun showInternal(
         context: Context,
         text: String,
         length: Int,
