@@ -56,6 +56,8 @@ dependencies {
     // JWT
     implementation 'com.auth0.android:jwtdecode:2.0.0'
     testImplementation 'com.auth0:java-jwt:3.10.2'
+
+    lintChecks project(":lint")
 }
 
 ext {

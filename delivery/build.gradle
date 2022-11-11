@@ -87,6 +87,8 @@ dependencies {
 
     implementation 'me.grantland:autofittextview:0.2.1'
     implementation 'me.tankery.lib:circularSeekBar:1.3.2'
+
+    lintChecks project(":lint")
 }
 
 ext {

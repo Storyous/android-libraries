@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.storyous.commonutils.toaster.Toaster
 import com.storyous.commonutils.castOrNull
 import com.storyous.commonutils.extensions.positiveButton
 import com.storyous.commonutils.viewBinding
@@ -18,8 +18,8 @@ import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.Desk
 import com.storyous.delivery.common.databinding.FragmentDeliveryDetailBinding
-import java.math.BigDecimal
 import timber.log.Timber
+import java.math.BigDecimal
 
 @Suppress("TooManyFunctions")
 class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
@@ -46,11 +46,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         viewModel.printOrderBillState.observe(this) {
             binding.buttons.buttonPrintBill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
-                Toast.makeText(
-                    requireContext(),
-                    R.string.print_delivery_copy_failed,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toaster.showShort(requireContext(), R.string.print_delivery_copy_failed)
             }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
@@ -91,11 +87,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         binding.buttons.buttonAccept.setOnClickListener {
             Timber.i("Confirm order")
             viewModel.selectedOrder?.also { viewModel.acceptOrder(it) }
-                ?: Toast.makeText(
-                    context,
-                    R.string.delivery_confirm_error_other,
-                    Toast.LENGTH_SHORT
-                ).show()
+                ?: Toaster.showShort(requireContext(), R.string.delivery_confirm_error_other)
         }
         binding.buttons.buttonCancel.setOnClickListener {
             Timber.i("Cancel order")
@@ -104,11 +96,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         binding.buttons.buttonDispatch.setOnClickListener {
             Timber.i("Dispatch order")
             viewModel.selectedOrder?.also { viewModel.dispatchOrder(it) }
-                ?: Toast.makeText(
-                    context,
-                    R.string.delivery_dispatch_error_other,
-                    Toast.LENGTH_SHORT
-                ).show()
+                ?: Toaster.showShort(requireContext(), R.string.delivery_dispatch_error_other)
         }
         binding.buttons.buttonPrintBill.setOnClickListener {
             Timber.i("Print order bill")
@@ -132,7 +120,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
                 else -> null
             }
             if (context != null && message != null) {
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                Toaster.showLong(requireContext(), message)
             }
         }
         if (messages?.isNotEmpty() == true) {
