@@ -1,4 +1,4 @@
-package com.storyous.commonutils
+package com.storyous.commonutils.toaster
 
 import android.annotation.SuppressLint
 import android.content.Context

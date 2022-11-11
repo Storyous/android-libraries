@@ -1,4 +1,4 @@
-package com.storyous.commonutils
+package com.storyous.commonutils.toaster
 
 import android.content.Context
 import android.content.ContextWrapper
