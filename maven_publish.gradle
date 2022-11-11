@@ -11,7 +11,7 @@ if (publishingActive) {
                         version = ""
                     }
 
-                    from components.release
+                    from components.hasProperty("release") ? components.release : components.java
                     pom {
                         name = project.pomName
                         description = project.pomDescription

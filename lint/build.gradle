@@ -13,3 +13,9 @@ dependencies {
 
     compileOnly "com.android.tools.lint:lint-api:30.3.1"
 }
+
+ext {
+    pomName = 'Storyous Libraries: Lint'
+    pomDescription = 'Storyous Lint Rules'
+}
+apply from: '../maven_publish.gradle'
