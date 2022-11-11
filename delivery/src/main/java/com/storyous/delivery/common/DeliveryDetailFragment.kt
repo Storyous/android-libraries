@@ -46,7 +46,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         viewModel.printOrderBillState.observe(this) {
             binding.buttons.buttonPrintBill.showOverlay(it?.isLoading() == true)
             if (it?.isError() == true) {
-                Toaster.showShort(requireContext(), R.string.print_delivery_copy_failed).show()
+                Toaster.showShort(requireContext(), R.string.print_delivery_copy_failed)
             }
         }
         viewModel.messagesToShow.observe(this) { onNewMessages(it) }
@@ -87,7 +87,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
         binding.buttons.buttonAccept.setOnClickListener {
             Timber.i("Confirm order")
             viewModel.selectedOrder?.also { viewModel.acceptOrder(it) }
-                ?: Toaster.showShort(requireContext(), R.string.delivery_confirm_error_other).show()
+                ?: Toaster.showShort(requireContext(), R.string.delivery_confirm_error_other)
         }
         binding.buttons.buttonCancel.setOnClickListener {
             Timber.i("Cancel order")
@@ -97,7 +97,6 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             Timber.i("Dispatch order")
             viewModel.selectedOrder?.also { viewModel.dispatchOrder(it) }
                 ?: Toaster.showShort(requireContext(), R.string.delivery_dispatch_error_other)
-                    .show()
         }
         binding.buttons.buttonPrintBill.setOnClickListener {
             Timber.i("Print order bill")
@@ -121,7 +120,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
                 else -> null
             }
             if (context != null && message != null) {
-                Toaster.showLong(requireContext(), message).show()
+                Toaster.showLong(requireContext(), message)
             }
         }
         if (messages?.isNotEmpty() == true) {
