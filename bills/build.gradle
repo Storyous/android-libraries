@@ -9,6 +9,7 @@ repositories {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.bills'
 
     defaultConfig {
         minSdkVersion min_sdk_version

@@ -10,6 +10,7 @@ repositories {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.roottools'
 
     defaultConfig {
         minSdkVersion min_sdk_version

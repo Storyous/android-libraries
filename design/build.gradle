@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.design'
 
     defaultConfig {
         minSdkVersion min_sdk_version

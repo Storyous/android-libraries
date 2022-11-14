@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace 'com.storyous.apitools'
 
     defaultConfig {
         minSdkVersion min_sdk_version
