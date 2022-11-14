@@ -9,6 +9,7 @@ repositories {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.delivery.common'
 
     defaultConfig {
         minSdkVersion min_sdk_version

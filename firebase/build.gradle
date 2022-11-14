@@ -5,6 +5,7 @@ plugins {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.firebase'
 
     defaultConfig {
         minSdkVersion min_sdk_version

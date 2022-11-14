@@ -4,6 +4,7 @@ plugins {
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.ksoap2'
 
     defaultConfig {
         minSdkVersion min_sdk_version
