@@ -76,7 +76,7 @@ class DeliveryActivity : AppCompatActivity(R.layout.activity_delivery) {
 
     override fun onBackPressed() {
         if (overlappingDetailFragment?.isVisible != true) {
-            super.onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         viewModel.deselectOrder()
