@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -13,6 +15,7 @@ internal interface MagiskDetector : IIsolatedService {
 
     companion object {
 
+        private val mutex = Mutex()
         @Volatile
         private var instance: MagiskDetector? = null
 
@@ -49,11 +52,12 @@ internal interface MagiskDetector : IIsolatedService {
             }
         }
 
-        @Synchronized
-        suspend operator fun invoke(ctx: Context): MagiskDetector = instance ?: MagiskDetektorImpl(
-            getIsolatedService(ctx.applicationContext)
-                ?: throw IllegalStateException("IIsolatedService not found")
-        ).also { instance = it }
+        suspend operator fun invoke(ctx: Context): MagiskDetector = instance ?: mutex.withLock {
+            instance ?: MagiskDetektorImpl(
+                getIsolatedService(ctx.applicationContext)
+                    ?: throw IllegalStateException("IIsolatedService not found")
+            ).also { instance = it }
+        }
 
     }
 }

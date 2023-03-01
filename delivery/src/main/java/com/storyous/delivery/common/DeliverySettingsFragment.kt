@@ -103,7 +103,7 @@ class DeliverySettingsFragment : Fragment(R.layout.fragment_delivery_settings), 
 
     override fun collapse() {
         with(view as ConstraintLayout) {
-            if (binding.flow != null && !contains(binding.flow)) {
+            if (!contains(binding.flow)) {
                 addView(binding.flow)
             }
             constraintCollapsed.applyTo(this)

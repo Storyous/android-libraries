@@ -165,7 +165,7 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
             updateDiscount(discountWithVat?.takeIf { it > BigDecimal.ZERO })
             updateTips(tipWithVat?.takeIf { it > BigDecimal.ZERO })
             updateOrderNote(note)
-            updateOrderNumber(provider, orderId)
+            updateOrderNumber(provider)
             updateDates(this)
             binding.info.isVisible = state == DeliveryOrder.STATE_SCHEDULING_DELIVERY
             autodeclineTimer?.cancel()
@@ -209,14 +209,11 @@ class DeliveryDetailFragment : Fragment(R.layout.fragment_delivery_detail) {
     }
 
     @Suppress("unused")
-    private fun updateOrderNumber(provider: String, orderId: String) {
+    private fun updateOrderNumber(provider: String) {
         binding.meta.orderNumber.text = DeliveryModel.getOrderInfo(provider) { resId, param ->
             getString(resId, "$param")
         }
         binding.meta.orderNumber.isVisible = binding.meta.orderNumber.text.isNotEmpty()
-        /* we will use only provider name until we have correct order number. then we will add:
-         + "\n$orderId"
-         */
     }
 
     private fun updatePaymentType(alreadyPaid: Boolean) {
