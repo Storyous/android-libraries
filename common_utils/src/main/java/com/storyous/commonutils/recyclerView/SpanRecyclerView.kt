@@ -35,7 +35,11 @@ class SpanRecyclerView @JvmOverloads constructor(
         }
 
         a.recycle()
+        // works only if adapter is set view data binding
+        updateSpanCount()
+    }
 
+    fun updateSpanCount() {
         val gridLayoutManager = layoutManager
         if (gridLayoutManager is GridLayoutManager) {
             if (adapter is SpanSizeAdapter) {
