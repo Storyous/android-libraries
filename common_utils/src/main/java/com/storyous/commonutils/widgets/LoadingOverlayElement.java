@@ -76,7 +76,7 @@ public class LoadingOverlayElement extends FrameLayout {
 
     @Override
     public boolean isEnabled() {
-        return mViewToOverlay.isEnabled();
+        return mViewToOverlay == null ? false : mViewToOverlay.isEnabled();
     }
 
     public boolean isLoading() {
