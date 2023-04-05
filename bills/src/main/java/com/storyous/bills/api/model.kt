@@ -26,6 +26,7 @@ interface Bill {
     val paymentMethod: String
     val personCount: Int
     val refunded: Boolean
+    val refundedBillIdentifier: String?
     val rounding: BigDecimal
     val sessionCreated: Date
     val taxSummaries: Map<String, BigDecimal>
@@ -56,6 +57,7 @@ data class BillWithItems(
     override val paymentMethod: String,
     override val personCount: Int,
     override val refunded: Boolean,
+    override val refundedBillIdentifier: String?,
     override val rounding: BigDecimal,
     override val sessionCreated: Date,
     override val taxSummaries: Map<String, BigDecimal>,
