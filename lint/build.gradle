@@ -11,7 +11,7 @@ java {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    compileOnly "com.android.tools.lint:lint-api:30.3.1"
+    compileOnly "com.android.tools.lint:lint-api:31.0.0"
 }
 
 ext {
