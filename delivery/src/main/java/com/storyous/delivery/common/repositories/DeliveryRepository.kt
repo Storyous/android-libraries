@@ -3,7 +3,7 @@ package com.storyous.delivery.common.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.storyous.commonutils.CoroutineProviderScope
 import com.storyous.commonutils.provider
 import com.storyous.delivery.common.api.DeliveryErrorConverterWrapper
@@ -113,7 +113,7 @@ open class DeliveryRepository(
 
     suspend fun getOrder(orderId: String) = db.getOrder(orderId)?.toApi()
 
-    fun getOrderLive(orderId: String) = Transformations.map(db.getOrderLive(orderId)) {
+    fun getOrderLive(orderId: String) = db.getOrderLive(orderId).map() {
         it?.toApi()
     }
 
