@@ -2,7 +2,7 @@ package com.storyous.delivery.common
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.storyous.commonutils.TimestampUtil
 import com.storyous.delivery.common.api.Customer
 import com.storyous.delivery.common.api.DeliveryAddressParts
@@ -76,7 +76,7 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     timing
 )
 
-fun LiveData<List<DeliveryOrderDb>>.toApi() = Transformations.map(this) {
+fun LiveData<List<DeliveryOrderDb>>.toApi() = this.map {
     it.map { order -> order.toApi() }
 }
 
