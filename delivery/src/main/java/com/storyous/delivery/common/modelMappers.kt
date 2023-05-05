@@ -9,7 +9,7 @@ import com.storyous.delivery.common.api.DeliveryAddressParts
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
 import com.storyous.delivery.common.api.Desk
-import java.util.*
+import java.util.Date
 import com.storyous.delivery.common.db.DeliveryOrder as DeliveryOrderDb
 
 fun DeliveryOrder.toDb() = DeliveryOrderDb(

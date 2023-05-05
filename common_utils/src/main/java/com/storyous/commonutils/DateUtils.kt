@@ -3,7 +3,9 @@ package com.storyous.commonutils
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object DateUtils {
     val YMDHMS get() = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
