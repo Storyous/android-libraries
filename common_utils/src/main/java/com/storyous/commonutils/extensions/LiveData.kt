@@ -23,16 +23,16 @@ fun <T> LiveData<T>.getDistinct(compareInstances: Boolean = false): LiveData<T> 
         it.addSource(this, object : Observer<T> {
 
             private var initialized = false
-            private var lastObj: T? = null
+            private var lastValue: T? = null
 
-            override fun onChanged(obj: T?) {
+            override fun onChanged(value: T) {
                 if (!initialized) {
                     initialized = true
-                    lastObj = obj
-                    it.postValue(lastObj)
-                } else if ((compareInstances && obj !== lastObj) || obj != lastObj) {
-                    lastObj = obj
-                    it.postValue(lastObj)
+                    lastValue = value
+                    it.postValue(lastValue)
+                } else if ((compareInstances && value !== lastValue) || value != lastValue) {
+                    lastValue = value
+                    it.postValue(lastValue)
                 }
             }
         })
