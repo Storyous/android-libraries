@@ -9,7 +9,7 @@ import com.storyous.delivery.common.api.DeliveryAddressParts
 import com.storyous.delivery.common.api.DeliveryOrder
 import com.storyous.delivery.common.api.DeliveryTiming
 import com.storyous.delivery.common.api.Desk
-import java.util.Date
+import java.util.*
 import com.storyous.delivery.common.db.DeliveryOrder as DeliveryOrderDb
 
 fun DeliveryOrder.toDb() = DeliveryOrderDb(
@@ -76,7 +76,7 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     timing
 )
 
-fun LiveData<List<DeliveryOrderDb>>.toApi() = this.map {
+fun LiveData<List<DeliveryOrderDb>>.toApi() = map {
     it.map { order -> order.toApi() }
 }
 

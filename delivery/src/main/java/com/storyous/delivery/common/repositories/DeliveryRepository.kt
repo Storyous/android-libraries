@@ -113,8 +113,8 @@ open class DeliveryRepository(
 
     suspend fun getOrder(orderId: String) = db.getOrder(orderId)?.toApi()
 
-    fun getOrderLive(orderId: String) = db.getOrderLive(orderId).map() {
-        it?.toApi()
+    fun getOrderLive(orderId: String) = db.getOrderLive(orderId).map {
+        it.toApi()
     }
 
     suspend fun getNewOrdersFromDb() = db.getOrders(DeliveryOrder.STATE_NEW).map { it.toApi() }
