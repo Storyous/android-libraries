@@ -25,7 +25,7 @@ buildscript {
     ext.kronos_version = '0.0.1-alpha11'
     ext.fragment_ktx_version = '1.5.5'
     ext.constraint_layout = '2.1.4'
-    ext.slf4j_version = '1.7.30'
+    ext.slf4j_version = '2.0.7'
 
     repositories {
         google()
