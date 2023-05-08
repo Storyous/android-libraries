@@ -23,7 +23,7 @@ buildscript {
     ext.androidx_test_espresso = '3.4.0'
     ext.timber_version = '5.0.1'
     ext.kronos_version = '0.0.1-alpha11'
-    ext.fragment_ktx_version = '1.5.5'
+    ext.fragment_ktx_version = '1.5.7'
     ext.constraint_layout = '2.1.4'
     ext.slf4j_version = '1.7.30'
 
