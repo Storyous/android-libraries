@@ -76,7 +76,7 @@ fun DeliveryOrderDb.toApi() = DeliveryOrder(
     timing
 )
 
-fun LiveData<List<DeliveryOrderDb>>.toApi() = this.map {
+fun LiveData<List<DeliveryOrderDb>>.toApi() = map {
     it.map { order -> order.toApi() }
 }
 

@@ -15,7 +15,6 @@
  */
 package com.google.firebase.nongmsauth.internal
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.FirebaseApp
@@ -30,11 +29,11 @@ import com.google.firebase.nongmsauth.api.service.FirebaseKeyInterceptor
 import com.google.firebase.nongmsauth.api.service.IdentityToolkitApi
 import com.google.firebase.nongmsauth.api.service.SecureTokenApi
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInAnonymouslyRequest
+import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInAnonymouslyResponse
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithCustomTokenRequest
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithCustomTokenResponse
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithEmailRequest
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInWithEmailResponse
-import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignInAnonymouslyResponse
 import com.google.firebase.nongmsauth.api.types.identitytoolkit.SignUpWithEmailResponse
 import com.google.firebase.nongmsauth.api.types.securetoken.ExchangeTokenRequest
 import com.google.firebase.nongmsauth.api.types.securetoken.ExchangeTokenResponse
@@ -43,6 +42,7 @@ import com.google.firebase.nongmsauth.utils.IdTokenParser
 import com.google.firebase.nongmsauth.utils.RetrofitUtils
 import com.google.firebase.nongmsauth.utils.UserStorage
 import okhttp3.OkHttpClient
+import timber.log.Timber
 
 /**
  * Implementation of FirebaseRestAuth
@@ -62,7 +62,7 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
 
     override var currentUser: FirebaseRestAuthUser? = null
         set(value) {
-            Log.d(TAG, "currentUser = $value")
+            Timber.tag(TAG).d("currentUser = $value")
 
             // Set the local field
             field = value
@@ -96,7 +96,7 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
         ).addOnSuccessListener { res ->
             this.currentUser = FirebaseRestAuthUser(res.idToken, res.refreshToken)
         }.addOnFailureListener { e ->
-            Log.e(TAG, "signInAnonymously: failed", e)
+            Timber.tag(TAG).e(e, "signInAnonymously: failed")
             this.currentUser = null
         }
     }
@@ -109,7 +109,7 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
         ).addOnSuccessListener { res ->
             this.currentUser = FirebaseRestAuthUser(res.idToken, res.refreshToken)
         }.addOnFailureListener { e ->
-            Log.e(TAG, "signInWithCustomToken: failed", e)
+            Timber.tag(TAG).e(e, "signInWithCustomToken: failed")
             this.currentUser = null
         }
     }
@@ -122,7 +122,7 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
         ).addOnSuccessListener { res ->
             this.currentUser = FirebaseRestAuthUser(res.idToken, res.refreshToken)
         }.addOnFailureListener { e ->
-            Log.e(TAG, "signInWithEmail: failed", e)
+            Timber.tag(TAG).e(e, "signInWithEmail: failed")
             this.currentUser = null
         }
     }
@@ -135,7 +135,7 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
         ).addOnSuccessListener { res ->
             this.currentUser = FirebaseRestAuthUser(res.idToken, res.refreshToken)
         }.addOnFailureListener { e ->
-            Log.e(TAG, "signUpWithEmail: failed", e)
+            Timber.tag(TAG).e(e, "signUpWithEmail: failed")
             this.currentUser = null
         }
     }
@@ -163,12 +163,12 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
     }
 
     override fun getUid(): String? {
-        Log.d(TAG, "getUid()")
+        Timber.tag(TAG).d("getUid()")
         return this.currentUser?.userId
     }
 
     override fun getAccessToken(forceRefresh: Boolean): Task<GetTokenResult> {
-        Log.d(TAG, "getAccessToken($forceRefresh)")
+        Timber.tag(TAG).d("getAccessToken($forceRefresh)")
 
         val source = TaskCompletionSource<GetTokenResult>()
         val user = this.currentUser
@@ -201,12 +201,12 @@ class RestAuthProvider(app: FirebaseApp, apiKey: String = app.options.apiKey) : 
      * management, we force the user to manually start a "FirebaseTokenRefresher" instead.
      */
     override fun addIdTokenListener(listener: IdTokenListener) {
-        Log.d(TAG, "addIdTokenListener: $listener")
+        Timber.tag(TAG).d("addIdTokenListener: $listener")
         listeners.add(listener)
     }
 
     override fun removeIdTokenListener(listener: IdTokenListener) {
-        Log.d(TAG, "removeIdTokenListener $listener")
+        Timber.tag(TAG).d("removeIdTokenListener $listener")
         listeners.remove(listener)
     }
 
