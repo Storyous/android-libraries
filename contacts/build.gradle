@@ -44,7 +44,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
 
     // JWT
-    testImplementation 'com.auth0:java-jwt:3.10.2'
+    testImplementation 'com.auth0:java-jwt:4.4.0'
 
     lintChecks project(":lint")
 }
