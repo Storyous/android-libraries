@@ -30,6 +30,10 @@
 
     </style>
 
+    <style name="Button.Primary.UltraTiny">
+
+    </style>
+
     <style name="Button.Dialog">
 
     </style>
