@@ -3,7 +3,7 @@
   <string-array name="delivery_cancel_reasons">
     <item>Dupla narudžba</item>
     <item>Kapacitet kuhinje je dosegnut</item>
-    <item>Nema dovoljno konobara</item>
+    <item>Nema dovoljno kurira</item>
     <item>"Meni je nepotpun "</item>
     <item>Stavka iz menija nije dostupna</item>
     <item>Restoran je zatvoren</item>
