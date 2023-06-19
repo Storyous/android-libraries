@@ -3,10 +3,14 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion compile_sdk_version
+    namespace = 'com.storyous.androidlibraries'
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 
     defaultConfig {
@@ -25,13 +29,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    lintOptions {
+    lint {
         abortOnError true
         absolutePaths false
         enable 'StopShip'
         fatal 'StopShip'
     }
+
 }
 
 dependencies {
