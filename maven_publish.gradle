@@ -5,9 +5,6 @@ if (publishingActive) {
                 "$project.name"(MavenPublication) {
                     groupId = publishingGroupId
                     artifactId = project.name
-                    println("------ ENV START ------")
-                    for (e in System.getenv()) println(e)
-                    println("------ ENV END ------")
                     if (System.getenv("GITHUB_REF_TYPE") == "tag") {
                         version = System.getenv("GITHUB_REF_NAME")
                     } else {
