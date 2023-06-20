@@ -5,8 +5,11 @@ if (publishingActive) {
                 "$project.name"(MavenPublication) {
                     groupId = publishingGroupId
                     artifactId = project.name
+
                     if (System.getenv("GITHUB_REF_TYPE") == "tag") {
                         version = System.getenv("GITHUB_REF_NAME")
+                    } else if (System.getenv("VERSION") != '') {
+                        version = System.getenv("VERSION")
                     } else {
                         version = ""
                     }
