@@ -5,7 +5,7 @@ import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.math.BigDecimal
-import java.util.*
+import java.util.Date
 
 @Suppress("TooManyFunctions")
 @ProvidedTypeConverter
