@@ -35,12 +35,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
 
-    // Tests
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
-
     // Retrofit
     implementation "com.google.code.gson:gson:$gson_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
@@ -56,7 +50,6 @@ dependencies {
 
     // JWT
     implementation 'com.auth0.android:jwtdecode:2.0.2'
-    testImplementation 'com.auth0:java-jwt:4.4.0'
 
     lintChecks project(":lint")
 }
