@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontwarn org.kxml2.io.KXmlParser,org.kxml2.io.KXmlSerializer
+-keep class org.kxml2.io.** { *; }
