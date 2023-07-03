@@ -36,12 +36,11 @@
             android:id="@+id/orders_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/red"
+            style="?attr/buttonPrimaryContextualDark"
             android:gravity="center"
             android:minHeight="@dimen/dropdown_item_height"
             android:text="@string/show_with"
             android:textAllCaps="false"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@id/list_deliveries"
             app:layout_constraintTop_toBottomOf="@+id/list_deliveries_new" />
 
@@ -55,5 +54,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orders_filter"
             tools:listitem="@layout/list_item_delivery" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

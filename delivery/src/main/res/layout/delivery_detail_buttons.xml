@@ -10,7 +10,7 @@
 
         <com.storyous.commonutils.widgets.LoadingButton
             android:id="@+id/button_cancel"
-            style="@style/Button.Primary.Contextual.Dark"
+            style="?attr/buttonPrimaryContextualDark"
             android:layout_width="0dp"
             android:text="@string/cancel_delivery_order"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +19,7 @@
 
         <com.storyous.commonutils.widgets.LoadingButton
             android:id="@+id/button_accept"
-            style="@style/Button.Primary.Contextual.Light"
+            style="?attr/buttonPrimaryContextualLight"
             android:layout_width="0dp"
             android:gravity="center"
             android:text="@string/accept_order"
@@ -30,7 +30,7 @@
 
         <com.storyous.commonutils.widgets.LoadingButton
             android:id="@+id/button_dispatch"
-            style="@style/Button.Primary.Contextual.Dark"
+            style="?attr/buttonPrimaryContextualDark"
             android:layout_width="0dp"
             android:text="@string/dispatch_delivery_order"
             android:visibility="gone"
@@ -41,7 +41,7 @@
 
         <com.storyous.commonutils.widgets.LoadingButton
             android:id="@+id/button_print_bill"
-            style="@style/Button.Primary.Contextual.Dark"
+            style="?attr/buttonPrimaryContextualDark"
             android:layout_width="0dp"
             android:text="@string/print_delivery_order_bill"
             android:visibility="gone"
