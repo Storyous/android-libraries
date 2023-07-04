@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="MainTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="buttonPrimaryContextualLight">@style/Button.Primary.Contextual.Light</item>
         <item name="buttonPrimaryContextualDark">@style/Button.Primary.Contextual.Dark</item>
         <item name="coloredTextTintedImage">@style/ColoredTextTintedImage</item>
+        <item name="deliveryHeader">@style/DeliveryHeader</item>
+    </style>
+
+    <style name="DeliveryHeader" parent="TextAppearance.Medium">
+        <item name="android:background">@drawable/payment_detail_dialog_button_background_selector</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="ColoredTextTintedImage" parent="TextAppearance.Medium">
         <item name="android:textColor">@color/red</item>
         <item name="android:tint">@color/red</item>
-        <item name="android:drawableTint">@color/red</item>
+        <item name="android:drawableTint" tools:targetApi="23">@color/red</item>
     </style>
 
     <style name="SelectableItem">
