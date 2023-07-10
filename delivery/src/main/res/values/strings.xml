@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="accept_order">Accept order</string>
-    <string name="autodecline_declined">The time to accept the order has run out.</string>
-    <string name="autodecline_info">If not accepted, the order will be automatically declined in: %s</string>
-    <string name="cancel">Cancel</string>
-    <string name="cancel_delivery_order">Cancel order</string>
-    <string name="confirm">Confirm</string>
-    <string name="customer_detail_header">Customer detail</string>
-    <string name="default_currency" translatable="false">Kč</string>
-    <string name="delivery_already_paid">already paid</string>
-    <string name="delivery_asap">ASAP</string>
-    <string name="delivery_cancel_reason_title">Select cancel reason</string>
-    <string name="delivery_confirm_error_conflict">The order has changed, it is not possible to confirm it</string>
-    <string name="delivery_confirm_error_other">Could not confirm delivery order, please try again</string>
-    <string name="delivery_discount_header">Discount:</string>
-    <string name="delivery_dispatch_error_other">Could not dispatch delivery order, please try again</string>
-    <string name="delivery_meal_ready">Prepare</string>
-    <string name="delivery_order_items">Order items</string>
-    <string name="delivery_order_not_open">No open order</string>
-    <string name="delivery_orders_declined">Declined orders</string>
-    <string name="delivery_orders_new">New orders</string>
-    <string name="delivery_orders_processed">Processed orders</string>
-    <string name="delivery_orders_waiting">Accepted orders</string>
-    <string name="delivery_pay_on_delivery">pay on delivery</string>
-    <string name="delivery_payment_type_header">Payment type:</string>
-    <string name="delivery_service_damejidlo" translatable="false">Dáme jídlo</string>
-    <string name="delivery_service_deliverect" translatable="false">Deliverect</string>
-    <string name="delivery_service_delivery_hero">Delivery Hero</string>
-    <string name="delivery_service_info">Ordered via %1$s</string>
-    <string name="delivery_service_info_unknown">Order No.:</string>
-    <string name="delivery_service_onemenu_qr" translatable="false">OneMenuQR</string>
-    <string name="delivery_service_phone">phone</string>
-    <string name="delivery_service_storyous_takeaway" translatable="false">OneMenu</string>
-    <string name="delivery_service_ubereats" translatable="false">UberEats</string>
-    <string name="delivery_service_wolt" translatable="false">Wolt</string>
-    <string name="delivery_time_asap">As soon as possible</string>
-    <string name="delivery_time_courier">courier</string>
-    <string name="delivery_time_customer">customer</string>
-    <string name="delivery_time_estimated_delivery">Estimated delivery:</string>
-    <string name="delivery_time_estimated_pickup">Estimated pickup:</string>
-    <string name="delivery_time_estimated_pickup_by">Estimated pickup by %s:</string>
-    <string name="delivery_time_meal_ready">Estimated meal ready time:</string>
-    <string name="delivery_time_requested_delivery">Requested delivery:</string>
-    <string name="delivery_time_requested_pickup">Requested pickup:</string>
-    <string name="delivery_time_requested_pickup_by">Requested pickup by %s:</string>
-    <string name="delivery_tips_header">Tips:</string>
-    <string name="delivery_type_delivery">Delivery</string>
-    <string name="delivery_type_dispatch">Courier pickup</string>
-    <string name="delivery_type_order_to_table">Order to table</string>
-    <string name="delivery_type_takeaway">Takeaway</string>
-    <string name="dispatch_delivery_order">Dispatch order</string>
-    <string name="new_delivery">New delivery order</string>
-    <string name="order_note_header">Order note:</string>
-    <string name="piece_measure">pcs</string>
-    <string name="print_delivery_copy_failed">There was an error when printing, please use Bill overview to print the bill duplicate.</string>
-    <string name="print_delivery_order_bill">Print copy</string>
-    <string name="scheduling_delivery_info">Requesting courier pickup</string>
-    <string name="settings_accept_new_orders">New orders:</string>
-    <string name="settings_ask">ask</string>
-    <string name="settings_choose_preparation_time">Choose preparation time</string>
-    <string name="settings_integrated_dispatch">Integrated dispatch:</string>
-    <string name="settings_meal_preparation_time">Meal preparation time:</string>
-    <string name="settings_minutes">%d min.</string>
-    <string name="settings_no">no</string>
-    <string name="settings_yes">yes</string>
-    <string name="show_with">Show: %s</string>
-    <string name="table">Table: %s</string>
-    <string name="time_at">at %s</string>
-    <string name="time_from">from %s</string>
-    <string name="time_till">till %s</string>
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
+  <string name="accept_order">Accept order</string>
+  <string name="autodecline_declined">The time to accept the order has run out.</string>
+  <string name="autodecline_info">If not accepted, the order will be automatically declined in: %s</string>
+  <string name="cancel">Cancel</string>
+  <string name="cancel_delivery_order">Cancel order</string>
+  <string name="confirm">Confirm</string>
+  <string name="customer_detail_header">Customer detail</string>
+  <string name="default_currency" translatable="false">Kč</string>
+  <string name="delivery_already_paid">already paid</string>
+  <string name="delivery_asap">ASAP</string>
+  <string name="delivery_cancel_reason_title">Select cancellation reason</string>
+  <string name="delivery_confirm_error_conflict">The order has changed. It\'s not possible to confirm it</string>
+  <string name="delivery_confirm_error_other">Couldn\'t confirm delivery order. Please try again</string>
+  <string name="delivery_discount_header">Discount:</string>
+  <string name="delivery_dispatch_error_other">Couldn\'t dispatch delivery order. Please try again</string>
+  <string name="delivery_meal_ready">Prepare</string>
+  <string name="delivery_order_items">Order items</string>
+  <string name="delivery_order_not_open">No open order</string>
+  <string name="delivery_orders_declined">Declined orders</string>
+  <string name="delivery_orders_new">New orders</string>
+  <string name="delivery_orders_processed">Processed orders</string>
+  <string name="delivery_orders_waiting">Accepted orders</string>
+  <string name="delivery_pay_on_delivery">pay on delivery</string>
+  <string name="delivery_payment_type_header">Payment type:</string>
+  <string name="delivery_service_damejidlo" translatable="false">Dáme jídlo</string>
+  <string name="delivery_service_deliverect" translatable="false">Deliverect</string>
+  <string name="delivery_service_delivery_hero">Delivery Hero</string>
+  <string name="delivery_service_info">Ordered via %1$s</string>
+  <string name="delivery_service_info_unknown">Order no.:</string>
+  <string name="delivery_service_onemenu_qr" translatable="false">OneMenuQR</string>
+  <string name="delivery_service_phone">phone</string>
+  <string name="delivery_service_storyous_takeaway" translatable="false">OneMenu</string>
+  <string name="delivery_service_ubereats" translatable="false">UberEats</string>
+  <string name="delivery_service_wolt" translatable="false">Wolt</string>
+  <string name="delivery_time_asap">As soon as possible</string>
+  <string name="delivery_time_courier">courier</string>
+  <string name="delivery_time_customer">customer</string>
+  <string name="delivery_time_estimated_delivery">Estimated delivery:</string>
+  <string name="delivery_time_estimated_pickup">Estimated pickup:</string>
+  <string name="delivery_time_estimated_pickup_by">Estimated pickup by %s:</string>
+  <string name="delivery_time_meal_ready">Estimated meal ready time:</string>
+  <string name="delivery_time_requested_delivery">Requested delivery:</string>
+  <string name="delivery_time_requested_pickup">Requested pickup:</string>
+  <string name="delivery_time_requested_pickup_by">Requested pickup by %s:</string>
+  <string name="delivery_tips_header">Tips:</string>
+  <string name="delivery_type_delivery">Delivery</string>
+  <string name="delivery_type_dispatch">Courier pickup</string>
+  <string name="delivery_type_order_to_table">Order to table</string>
+  <string name="delivery_type_takeaway">Takeaway</string>
+  <string name="dispatch_delivery_order">Dispatch order</string>
+  <string name="new_delivery">New delivery order</string>
+  <string name="order_note_header">Order note:</string>
+  <string name="piece_measure">pcs</string>
+  <string name="print_delivery_copy_failed">There was an error when printing – please use Bill overview to print the bill duplicate.</string>
+  <string name="print_delivery_order_bill">Print copy</string>
+  <string name="scheduling_delivery_info">Requesting courier pickup</string>
+  <string name="settings_accept_new_orders">New orders:</string>
+  <string name="settings_ask">ask</string>
+  <string name="settings_choose_preparation_time">Choose preparation time</string>
+  <string name="settings_integrated_dispatch">Integrated dispatch:</string>
+  <string name="settings_meal_preparation_time">Meal preparation time:</string>
+  <string name="settings_minutes">%d min.</string>
+  <string name="settings_no">no</string>
+  <string name="settings_yes">yes</string>
+  <string name="show_with">Show: %s</string>
+  <string name="table">Table: %s</string>
+  <string name="time_at">at %s</string>
+  <string name="time_from">from %s</string>
+  <string name="time_till">till %s</string>
+  <string name="today">Today</string>
+  <string name="tomorrow">Tomorrow</string>
 </resources>
