@@ -2,11 +2,11 @@
 <resources>
   <string-array name="delivery_cancel_reasons">
     <item>Podwojone zamówienie</item>
-    <item>Kuchnia nie nadąża</item>
+    <item>Osiągnięte możliwości zamówień na kuchnie</item>
     <item>Brak kurierów</item>
-    <item>Menu nie jest kompletne</item>
-    <item>Pozycja nie jest do dyspozycji</item>
-    <item>Restauracja zamknięta</item>
-    <item>Klient jest poza obszarem dostawy</item>
+    <item>Menu jest niekompletne</item>
+    <item>Pozycja w menu jest niedostępna</item>
+    <item>Restauracja jest zamknięta</item>
+    <item>Klient znajduje się poza obszarem dostawy</item>
   </string-array>
 </resources>
