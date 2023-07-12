@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:textAppearance="@style/TextAppearance.Small"
+            android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/grey_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/value"

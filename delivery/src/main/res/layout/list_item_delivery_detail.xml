@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/offset_8dp"
-            android:textAppearance="@style/TextAppearance.Medium"
+            android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/subitems_barrier"
             app:layout_constraintEnd_toEndOf="@+id/item_title"
