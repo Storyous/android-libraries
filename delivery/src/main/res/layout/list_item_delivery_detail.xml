@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/item_title"
-            style="@style/Title"
+            style="?attr/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/offset_8dp"
