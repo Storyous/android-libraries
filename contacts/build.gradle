@@ -40,7 +40,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Firestore (don't use BOM unless publishing script of this lib can handle it)
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
 
     // Tests
     testImplementation "junit:junit:$junit_version"
