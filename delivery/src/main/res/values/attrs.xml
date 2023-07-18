@@ -4,5 +4,6 @@
         <attr name="buttonPrimaryContextualLight" format="reference" />
         <attr name="buttonPrimaryContextualDark" format="reference" />
         <attr name="coloredTextTintedImage" format="reference" />
+        <attr name="deliveryHeader" format="reference" />
     </declare-styleable>
 </resources>

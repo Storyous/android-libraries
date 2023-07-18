@@ -10,5 +10,7 @@
         <attr name="android:background" />
         <attr name="android:minHeight" />
         <attr name="android:elevation" />
+        <attr name="textAppearanceLarge" format="reference" />
+        <attr name="headerDialog" format="reference" />
     </declare-styleable>
 </resources>

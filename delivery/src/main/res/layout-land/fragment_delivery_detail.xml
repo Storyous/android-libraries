@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/delivery_order_items"
-            android:textAppearance="@style/TextAppearance.Medium"
+            android:textAppearance="?android:textAppearanceMedium"
             app:layout_constraintBottom_toTopOf="@+id/order_items"
             app:layout_constraintEnd_toEndOf="@+id/centerGuideline"
             app:layout_constraintHorizontal_bias="0.0"
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/autodecline_info"
-                    android:textAppearance="@style/TextAppearance.Medium" />
+                    android:textAppearance="?android:textAppearanceMedium" />
 
                 <include
                     android:id="@+id/meta"

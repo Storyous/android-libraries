@@ -11,10 +11,6 @@
         <item name="alertDialogStyle">@style/MaterialAlertDialog</item>
     </style>
 
-    <style name="Theme.MaterialDialog.Wider">
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-    </style>
-
     <style name="MaterialAlertDialog" parent="MaterialAlertDialog.MaterialComponents">
         <item name="backgroundInsetStart">@dimen/padding_16dp</item>
         <item name="backgroundInsetTop">@dimen/padding_16dp</item>
@@ -22,31 +18,18 @@
         <item name="backgroundInsetBottom">@dimen/padding_16dp</item>
     </style>
 
-    <style name="Button" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Button" parent="Widget.MaterialComponents.Button.TextButton"/>
 
-    </style>
-
-    <style name="Button.Primary">
-
-    </style>
-
-    <style name="Button.Primary.UltraTiny">
-
-    </style>
-
-    <style name="Button.Dialog">
-
-    </style>
+    <style name="Button.Dialog"/>
 
     <style name="Header">
-        <item name="android:textAppearance">@style/TextAppearance.Large</item>
+        <item name="android:textAppearance">?attr/textAppearanceLarge</item>
         <item name="android:maxLines">1</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <style name="Header.Dialog" parent="Header">
+    <style name="Header.Dialog">
         <item name="android:maxLines">2</item>
     </style>
 
-    <style name="TextAppearance.Large" parent="android:TextAppearance.Holo.Large" />
 </resources>
