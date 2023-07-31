@@ -2,7 +2,7 @@ allprojects {
     apply plugin: 'io.gitlab.arturbosch.detekt'
 
     detekt {
-        config = files("$rootDir/detekt/default-detekt-config.yml")
+        config.setFrom("$rootDir/detekt/default-detekt-config.yml")
         //Optional baseline, uncomment & run gradle command detektBaseline to exclude existing issues
         baseline = file("detekt-baseline.xml")
 
