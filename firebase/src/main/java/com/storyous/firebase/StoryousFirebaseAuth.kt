@@ -54,6 +54,6 @@ class StoryousFirebaseAuth(
         return JWTWrapper.decode(token)
             .takeIf { it.merchantId != null && it.placeId != null }
             ?.let { it.merchantId!! to it.placeId!! }
-            ?: throw IllegalStateException("JWT token not contains merchantId or placeId.")
+            ?: error("JWT token not contains merchantId or placeId.")
     }
 }
