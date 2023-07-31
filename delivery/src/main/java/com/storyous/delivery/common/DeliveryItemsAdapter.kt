@@ -42,17 +42,17 @@ class DeliveryItemsAdapter(
     private var mapItemsJob: Job? = null
     override var items: List<ListItem<DeliveryOrder>> = listOf()
 
-    private val clickListener: (Int, DeliveryOrder) -> Unit = { position, it ->
+    private val clickListener: (Int, DeliveryOrder) -> Unit = { position, item ->
 
         with(selectedState) {
-            orderId = it.orderId
+            orderId = item.orderId
             notifyItemChanged(position)
             onStateChanged()
             lastPosition = position
             onStateChanged = { notifyItemChanged(lastPosition) }
         }
 
-        onClickListener(it)
+        onClickListener(item)
     }
 
     fun setOrders(

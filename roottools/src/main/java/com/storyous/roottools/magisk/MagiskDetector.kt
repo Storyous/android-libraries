@@ -55,7 +55,7 @@ internal interface MagiskDetector : IIsolatedService {
         suspend operator fun invoke(ctx: Context): MagiskDetector = instance ?: mutex.withLock {
             instance ?: MagiskDetektorImpl(
                 getIsolatedService(ctx.applicationContext)
-                    ?: throw IllegalStateException("IIsolatedService not found")
+                    ?: error("IIsolatedService not found")
             ).also { instance = it }
         }
 

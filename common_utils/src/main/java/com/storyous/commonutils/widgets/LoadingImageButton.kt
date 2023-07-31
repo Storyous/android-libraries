@@ -1,4 +1,4 @@
-package com.storyous.storyouspay.widgets
+package com.storyous.commonutils.widgets
 
 import android.content.Context
 import android.util.AttributeSet
