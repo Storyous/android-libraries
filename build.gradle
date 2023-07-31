@@ -16,7 +16,7 @@ buildscript {
     ext.rx_android_version = '2.1.1'
     ext.lifecycle_version = '2.6.1'
     ext.livedata_version = '2.5.1'
-    ext.coroutines_version = '1.7.1'
+    ext.coroutines_version = '1.7.3'
     ext.gson_version = '2.10.1'
     ext.androidx_appcompat_version = '1.6.1'
     ext.androidx_test_runner = '1.5.2'
