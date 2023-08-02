@@ -74,6 +74,7 @@ class DeliveryActivity : AppCompatActivity(R.layout.activity_delivery) {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (overlappingDetailFragment?.isVisible != true) {
             onBackPressedDispatcher.onBackPressed()
