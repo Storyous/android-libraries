@@ -7,7 +7,6 @@
   <string name="cancel_delivery_order">Bestellung stornieren</string>
   <string name="confirm">Bestätigen</string>
   <string name="customer_detail_header">Kundendetails</string>
-  <string name="default_currency" translatable="false"></string>
   <string name="delivery_already_paid">schon bezahlt</string>
   <string name="delivery_asap">ASAP</string>
   <string name="delivery_cancel_reason_title">Wählen Sie den Abbruchgrund</string>
@@ -24,16 +23,10 @@
   <string name="delivery_orders_waiting">Akzeptierte Bestellungen</string>
   <string name="delivery_pay_on_delivery">Zahlung per Nachnahme</string>
   <string name="delivery_payment_type_header">Zahlungsart:</string>
-  <string name="delivery_service_damejidlo" translatable="false"></string>
-  <string name="delivery_service_deliverect" translatable="false"></string>
   <string name="delivery_service_delivery_hero">Delivery Hero</string>
   <string name="delivery_service_info">Bestellt über %1$s</string>
   <string name="delivery_service_info_unknown">Best.-Nr.:</string>
-  <string name="delivery_service_onemenu_qr" translatable="false"></string>
   <string name="delivery_service_phone">Telefon</string>
-  <string name="delivery_service_storyous_takeaway" translatable="false"></string>
-  <string name="delivery_service_ubereats" translatable="false"></string>
-  <string name="delivery_service_wolt" translatable="false"></string>
   <string name="delivery_time_asap">As soon as possible</string>
   <string name="delivery_time_courier">courier</string>
   <string name="delivery_time_customer">customer</string>
@@ -45,10 +38,6 @@
   <string name="delivery_time_requested_pickup">Requested pickup:</string>
   <string name="delivery_time_requested_pickup_by">Requested pickup by %s:</string>
   <string name="delivery_tips_header">Trinkgeld:</string>
-  <string name="delivery_type_delivery"></string>
-  <string name="delivery_type_dispatch"></string>
-  <string name="delivery_type_order_to_table"></string>
-  <string name="delivery_type_takeaway"></string>
   <string name="dispatch_delivery_order">Versandauftrag</string>
   <string name="new_delivery">Neuer Lieferauftrag</string>
   <string name="order_note_header">Bestellhinweis:</string>
