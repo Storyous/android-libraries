@@ -7,7 +7,6 @@
   <string name="cancel_delivery_order">Zrušiť objednávku</string>
   <string name="confirm">Potvrdiť</string>
   <string name="customer_detail_header">Detail zákazníka</string>
-  <string name="default_currency" translatable="false"></string>
   <string name="delivery_already_paid">platené vopred</string>
   <string name="delivery_asap">ihneď</string>
   <string name="delivery_cancel_reason_title">Vyberte dôvod odmietnutia</string>
@@ -24,16 +23,10 @@
   <string name="delivery_orders_waiting">Prijaté objednávky</string>
   <string name="delivery_pay_on_delivery">pri prevzatí</string>
   <string name="delivery_payment_type_header">Spôsob platby:</string>
-  <string name="delivery_service_damejidlo" translatable="false"></string>
-  <string name="delivery_service_deliverect" translatable="false"></string>
   <string name="delivery_service_delivery_hero">foodpanda</string>
   <string name="delivery_service_info">Objednané cez %1$s</string>
   <string name="delivery_service_info_unknown">Objednávka č.:</string>
-  <string name="delivery_service_onemenu_qr" translatable="false"></string>
   <string name="delivery_service_phone">telefón</string>
-  <string name="delivery_service_storyous_takeaway" translatable="false"></string>
-  <string name="delivery_service_ubereats" translatable="false"></string>
-  <string name="delivery_service_wolt" translatable="false"></string>
   <string name="delivery_time_asap">Pripraviť čo najskôr</string>
   <string name="delivery_time_courier">kuriérom</string>
   <string name="delivery_time_customer">zákazníkom</string>

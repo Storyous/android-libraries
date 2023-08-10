@@ -7,7 +7,6 @@
   <string name="cancel_delivery_order">Otkaži narudžbu</string>
   <string name="confirm">Potvrdi</string>
   <string name="customer_detail_header">Detalji o kupcu</string>
-  <string name="default_currency" translatable="false"></string>
   <string name="delivery_already_paid">Već plaćeno</string>
   <string name="delivery_asap">Što je brže moguće</string>
   <string name="delivery_cancel_reason_title">Odaberite razlog otkazivanja narudžbe</string>
@@ -24,16 +23,10 @@
   <string name="delivery_orders_waiting">Zaprimljene narudžbe</string>
   <string name="delivery_pay_on_delivery">Plati prilikom dostave</string>
   <string name="delivery_payment_type_header">"Vrsta plaćanja: "</string>
-  <string name="delivery_service_damejidlo" translatable="false"></string>
-  <string name="delivery_service_deliverect" translatable="false"></string>
   <string name="delivery_service_delivery_hero">Delivery Hero</string>
   <string name="delivery_service_info">Naručeno putem %1$s</string>
   <string name="delivery_service_info_unknown">Broj narudžbe.:</string>
-  <string name="delivery_service_onemenu_qr" translatable="false"></string>
   <string name="delivery_service_phone">telefon</string>
-  <string name="delivery_service_storyous_takeaway" translatable="false"></string>
-  <string name="delivery_service_ubereats" translatable="false"></string>
-  <string name="delivery_service_wolt" translatable="false"></string>
   <string name="delivery_time_asap">Što je brže moguće</string>
   <string name="delivery_time_courier">Dostavljač</string>
   <string name="delivery_time_customer">Kupac</string>
@@ -45,10 +38,6 @@
   <string name="delivery_time_requested_pickup">Zatraženo preuzimanje</string>
   <string name="delivery_time_requested_pickup_by">Zatraženo preuzimanje do %s</string>
   <string name="delivery_tips_header">Napojnice:</string>
-  <string name="delivery_type_delivery"></string>
-  <string name="delivery_type_dispatch"></string>
-  <string name="delivery_type_order_to_table"></string>
-  <string name="delivery_type_takeaway"></string>
   <string name="dispatch_delivery_order">Otpremni nalog</string>
   <string name="new_delivery">Nova narudžba za dostavu</string>
   <string name="order_note_header">Bilješka narudžbe:</string>
