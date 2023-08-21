@@ -7,6 +7,7 @@
   <string name="cancel_delivery_order">Cancelar pedido</string>
   <string name="confirm">Confirmar</string>
   <string name="customer_detail_header">Detalles del cliente</string>
+  <string name="default_currency" translatable="false"></string>
   <string name="delivery_already_paid">Pagado por adelantado</string>
   <string name="delivery_asap">ahora</string>
   <string name="delivery_cancel_reason_title">Seleccione el motivo de la cancelación</string>
@@ -23,10 +24,16 @@
   <string name="delivery_orders_waiting">Pedidos recibidos</string>
   <string name="delivery_pay_on_delivery">Pago en la entrega</string>
   <string name="delivery_payment_type_header">Método de pago:</string>
+  <string name="delivery_service_damejidlo" translatable="false"></string>
+  <string name="delivery_service_deliverect" translatable="false"></string>
   <string name="delivery_service_delivery_hero">Delivery Hero</string>
   <string name="delivery_service_info">Pedido de %1$s</string>
   <string name="delivery_service_info_unknown">Número de pedido:</string>
+  <string name="delivery_service_onemenu_qr" translatable="false"></string>
   <string name="delivery_service_phone">teléfono</string>
+  <string name="delivery_service_storyous_takeaway" translatable="false"></string>
+  <string name="delivery_service_ubereats" translatable="false"></string>
+  <string name="delivery_service_wolt" translatable="false"></string>
   <string name="delivery_time_asap">Lo antes posible</string>
   <string name="delivery_time_courier">repartidor</string>
   <string name="delivery_time_customer">cliente</string>
